@@ -1,5 +1,10 @@
 # Loop Lab — Status Timeline
 
+- `2026-04-15T12:53:39.210Z` **EVALUATE** — F8 sprint 2 — Implement GET /api/schema route with event names, property names, and inferred types from sampling
+- `2026-04-15T12:52:08.001Z` **GENERATE** — F8 sprint 2 — Implement GET /api/schema route with event names, property names, and inferred types from sampling
+- `2026-04-15T12:46:30.072Z` **EVALUATE** — F8 sprint 1 — Implement GET /api/schema route with event names, property names, and inferred types from sampling
+- `2026-04-15T12:43:37.639Z` **GENERATE** — F8 sprint 1 — Implement GET /api/schema route with event names, property names, and inferred types from sampling
+- `2026-04-15T12:42:18.290Z` **PLAN** — F8 — Implement GET /api/schema route with event names, property names, and inferred types from sampling
 - `2026-04-15T12:40:08.112Z` **EVALUATE** — F7 sprint 1 — Implement GET /api/events/list route with cursor pagination, event name and resolved_id filters
 - `2026-04-15T12:37:06.948Z` **GENERATE** — F7 sprint 1 — Implement GET /api/events/list route with cursor pagination, event name and resolved_id filters
 - `2026-04-15T12:36:05.072Z` **PLAN** — F7 — Implement GET /api/events/list route with cursor pagination, event name and resolved_id filters

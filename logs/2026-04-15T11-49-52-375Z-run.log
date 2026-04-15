@@ -1519,3 +1519,419 @@ All Phase A criteria verified independently:
 The implementation is correct: `next_cursor` is `events[last].timestamp` when `results.length === limit`, `null` otherwise. Limit validation (reject ≤0 and non-numeric, clamp to 200, default 50) is verified by 3 dedicated unit tests.
 ✓ Session 'EVAL:F7:1' complete  ($0.4360)
 ✓ Feature F7 approved after 1 sprint(s) ✅  ($1.4029)
+✓ Git commit created for F7
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  F8: Implement GET /api/schema route with event names, property names, and inferred types from sampling
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+  ▶ PLAN — F8: Implement GET /api/schema route with event names, property names, and inferred types from sampling
+
+→ Session : PLAN:F8  (budget: $30)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/status.md
+
+  [Glob] features/F*-done
+
+  [Glob] features/F*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/clickhouse.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/identity.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/tsconfig.json
+
+  [Glob] src/app/api/schema/**/*
+
+  [Glob] src/lib/schema*
+
+  [Glob] src/app/api/events/**/*
+
+  [Glob] playwright.config.*
+
+  [Glob] vitest.config.*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/list/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/list/__tests__/route.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/scripts/schema.sql
+Now let me check for any existing MEMORY.md and look at the vitest config for test conventions.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/vitest.config.ts
+
+  [Glob] MEMORY.md
+I have everything I need. Let me write the plan.
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F8-plan.md
+The plan is written to `features/F8-plan.md`. Here's the summary:
+
+**F8** implements `GET /api/schema` — an endpoint that returns distinct event names and per-event property names with inferred types (`"numeric"` or `"string"`), computed by sampling the last 10,000 events and cached in memory for 60 seconds.
+
+**4 files to create:**
+1. `src/lib/schema-cache.ts` — TTL-based in-memory cache
+2. `src/lib/__tests__/schema-cache.test.ts` — cache unit tests
+3. `src/app/api/schema/route.ts` — GET handler with ClickHouse sampling queries
+4. `src/app/api/schema/__tests__/route.test.ts` — route unit tests
+
+**Key design decisions:**
+- Single ClickHouse query samples the last 10,000 events across all event types, then groups by event name in application code (avoids N+1 queries)
+- Uses `JSONExtractKeys` for property discovery and `JSONExtractFloat` for numeric detection
+- Cache invalidation is exposed for testing
+✓ Session 'PLAN:F8' complete  ($0.3884)
+
+  ▶ GENERATE — F8 sprint 1: Implement GET /api/schema route with event names, property names, and inferred types from sampling
+
+→ Session : GEN:F8:1  (budget: $30)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F8-plan.md
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json
+
+  [Glob] src/lib/__tests__/*.test.ts
+
+  [Glob] src/app/api/**/__tests__/*.test.ts
+
+  [Glob] vitest.config.*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/vitest.config.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/identity.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/__tests__/route.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/clickhouse.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/list/__tests__/route.test.ts
+Now I have enough context to implement F8. Let me write the tests first, then implement the production code.
+
+  [ToolSearch] 
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/schema-cache.test.ts
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/schema/__tests__/route.test.ts
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/schema-cache.ts
+
+  [TodoWrite] 
+Now implement the route. The plan says to use a single query across all events (last 10,000), then group in application code. I'll use `JSONExtractKeys` per row and `JSONExtractFloat` per property key in ClickHouse using a query that produces one row per `(event_name, property_key, is_numeric)` aggregation.
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/schema/route.ts
+
+  [TodoWrite] 
+
+  [Bash] pnpm test 2>&1
+All tests pass. Now lint and typecheck:
+
+  [Bash] pnpm lint:fix 2>&1 && pnpm lint 2>&1
+Two remaining lint issues need the `--unsafe` fix (dot notation instead of string brackets on property access):
+
+  [Bash] pnpm biome check --write --unsafe src/app/api/schema/__tests__/route.test.ts 2>&1 && pnpm lint 2>&1
+Lint clean. Now typecheck and build:
+
+  [Bash] pnpm typecheck 2>&1
+
+  [Bash] pnpm build 2>&1
+All checks pass. Let me run the full test suite one more time to confirm 0 failures:
+
+  [Bash] pnpm test 2>&1
+
+  [TodoWrite] 
+Now write the handoff file:
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F8-draft-1.md
+Sprint complete. Here's the summary:
+
+## F8 Sprint 1 — Complete
+
+### What was implemented
+
+**`src/lib/schema-cache.ts`** — TTL-based in-memory cache (60 s) with three exports:
+- `getCachedSchema()` — returns cached value if within TTL, else `null`
+- `setCachedSchema(value)` — stores with current timestamp
+- `invalidateSchemaCache()` — clears cache (used in tests and future invalidation hooks)
+
+**`src/app/api/schema/route.ts`** — `GET /api/schema` handler that:
+1. Checks cache first; returns immediately on hit
+2. Runs a single ClickHouse query sampling the last 10,000 events using `ARRAY JOIN arrayJoin(JSONExtractKeys(properties))` to expand property keys, then `maxIf(1, JSONExtractFloat(...) != 0)` to detect numeric types
+3. Groups results into the spec response shape in application code
+4. Caches for 60 s
+
+### Sprint contract results
+
+| Criterion | Result |
+|---|---|
+| `schema-cache.ts` exists + exports | ✅ |
+| `schema/route.ts` exists + exports `GET` | ✅ |
+| `pnpm test` → 0 failures | ✅ 94 passing |
+| `pnpm lint` → exit 0 | ✅ |
+| `pnpm typecheck` → exit 0 | ✅ |
+| `pnpm build` → exit 0 | ✅ `/api/schema` shown as dynamic route |
+| HTTP check | — Integration gap (needs dev server + ClickHouse) |
+✓ Session 'GEN:F8:1' complete  ($0.6675)
+
+  ▶ EVALUATE — F8 sprint 1: Implement GET /api/schema route with event names, property names, and inferred types from sampling
+
+→ Session : EVAL:F8:1  (budget: $10)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/schema-cache.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/schema-cache.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/schema/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/schema/__tests__/route.test.ts
+
+  [Bash] pnpm test --reporter=verbose 2>&1 | tail -60
+
+  [Bash] pnpm lint --fix 2>&1 && pnpm lint 2>&1
+
+  [Bash] pnpm typecheck 2>&1
+
+  [Bash] pnpm build 2>&1 | tail -30
+
+  [Bash] curl -s --max-time 2 http://localhost:8123/ping 2>&1; echo "exit: $?"
+
+  [Bash] ls /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/.clickhouse/status 2>/dev/null && cat /Users/riccardocaranf
+
+  [Bash] ls -la /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/clickhouse 2>/dev/null && echo "binary exists" || echo 
+
+  [Bash] ./clickhouse server -- --path=.clickhouse > /tmp/clickhouse.log 2>&1 &
+CH_PID=$!
+echo "ClickHouse PID: $CH_PID"
+# wait f
+
+  [Bash] PORT=3000 next dev --port 3001 > /tmp/nextdev.log 2>&1 &
+DEV_PID=$!
+echo "Next.js PID: $DEV_PID"
+# Wait for Next.js to b
+
+  [Bash] for i in $(seq 1 20); do
+  CODE=$(curl -s --max-time 2 -o /dev/null -w "%{http_code}" http://localhost:3001/ 2>/dev/null
+
+  [Bash] cat /tmp/nextdev.log 2>&1 | tail -30
+
+  [Bash] npx next dev --port 3001 > /tmp/nextdev.log 2>&1 &
+DEV_PID=$!
+echo "Next.js PID: $DEV_PID"
+
+  [Bash] for i in $(seq 1 20); do
+  CODE=$(curl -s --max-time 2 -o /dev/null -w "%{http_code}" http://localhost:3001/ 2>/dev/null
+
+  [Bash] SCHEMA_RESPONSE=$(curl -s --max-time 5 http://localhost:3001/api/schema)
+echo "Response: $SCHEMA_RESPONSE"
+echo "---"
+ec
+
+  [Bash] curl -sv --max-time 10 http://localhost:3001/api/schema 2>&1 | head -50
+
+  [Bash] cat /tmp/nextdev.log 2>&1 | tail -30
+
+  [Bash] ls /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/.clickhouse/ 2>/dev/null; find /Users/riccardocaranfil/bitr
+
+  [Bash] ls -la /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/.env* 2>/dev/null || echo "no env files"
+
+  [Bash] curl -s "http://default:@localhost:8123/?query=SELECT+1" && echo "no-password works"
+curl -s "http://default:password@lo
+
+  [Bash] # Kill the dev server first
+kill $DEV_PID 2>/dev/null || kill $(lsof -ti:3001) 2>/dev/null; true
+sleep 1
+
+  [Bash] cat > /tmp/.env.local.test << 'EOF'
+CLICKHOUSE_URL=http://localhost:8123
+CLICKHOUSE_DB=minipanel
+CLICKHOUSE_PASSWORD=
+EO
+
+  [Bash] SCHEMA_RESPONSE=$(curl -s --max-time 10 http://localhost:3001/api/schema)
+echo "HTTP status: $(curl -s -o /dev/null -w '
+
+  [Bash] cat /tmp/nextdev2.log | tail -20
+
+  [Bash] CLICKHOUSE_PASSWORD="" pnpm migrate 2>&1
+
+  [Bash] ./clickhouse client --host=localhost --port=8123 --queries-file=/Users/riccardocaranfil/bitrefill/minipanel-blank-night-
+
+  [Bash] sleep 3 && curl -s "http://localhost:8123/?query=SELECT+count()+FROM+minipanel.events" 2>&1
+
+  [Bash] cat /private/tmp/claude-501/-Users-riccardocaranfil-bitrefill-minipanel-blank-night-2/bf5c5d54-f5be-4f7e-81c9-7cee309979
+
+  [Bash] curl -s "http://localhost:8123/?query=CREATE+DATABASE+IF+NOT+EXISTS+minipanel" && echo "created"
+curl -s "http://localho
+
+  [Bash] cat /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/scripts/schema.sql
+
+  [Bash] # Run migration via HTTP API with POST
+curl -s -X POST "http://localhost:8123/" --data-binary "CREATE DATABASE IF NOT EX
+
+  [Bash] # Now test the HTTP endpoint with empty password dev server
+SCHEMA_RESPONSE=$(curl -s --max-time 10 http://localhost:300
+
+  [Bash] cat /tmp/nextdev2.log | tail -20
+The HTTP check reveals a real bug in the SQL query. Let me verify it directly:
+
+  [Bash] # First insert a test event to verify the SQL
+curl -s -X POST "http://localhost:8123/?database=minipanel" \
+  --data-bin
+
+  [Bash] # Test corrected query using ARRAY JOIN alone (without arrayJoin())
+echo "=== Testing FIXED query (ARRAY JOIN only) ==="
+
+  [Bash] # Test fixed query on empty properties event
+curl -s -X POST "http://localhost:8123/?database=minipanel" \
+  --data-bina
+Critical bug confirmed. The SQL query fails at runtime against real ClickHouse. Let me kill the dev server and write the evaluation:
+
+  [Bash] kill $(lsof -ti:3001) 2>/dev/null; kill $(lsof -ti:3001) 2>/dev/null; true
+sleep 1
+# Also stop ClickHouse (we started it
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F8-eval-1.md
+**Score: 5/10 — NEEDS_WORK**
+
+All Phase A checks pass cleanly (tests, lint, type check, build). Phase B (HTTP check) reveals a critical runtime bug:
+
+**The bug:** `src/app/api/schema/route.ts:43` uses `ARRAY JOIN arrayJoin(JSONExtractKeys(properties)) AS property_key`. This is invalid ClickHouse SQL — `arrayJoin()` is a table function that already expands into scalar `String` rows; wrapping it in an `ARRAY JOIN` clause (which requires `Array` or `Map` type) causes a TYPE_MISMATCH error (code 53), returning HTTP 500 on every request.
+
+**Fix:** Change that line to `ARRAY JOIN JSONExtractKeys(properties) AS property_key` — verified to work against ClickHouse v26.4.1.951.
+
+**Why unit tests missed it:** The ClickHouse client is fully mocked, so the SQL string is never parsed by a real server. Only the HTTP integration check caught this.
+
+Secondary note: with the corrected query, events with `{}` empty properties won't appear in `event_names` (ARRAY JOIN drops empty-array rows). This is a spec conformance gap but non-blocking.
+✓ Session 'EVAL:F8:1' complete  ($0.8324)
+⚠ Sprint 1 NEEDS_WORK — starting sprint 2
+
+  ▶ GENERATE — F8 sprint 2: Implement GET /api/schema route with event names, property names, and inferred types from sampling
+
+→ Session : GEN:F8:2  (budget: $30)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/schema-cache.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/schema/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/schema-cache.test.ts
+
+  [Glob] src/app/api/schema/**
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/schema/__tests__/route.test.ts
+Now I understand the issue. The eval identified the SQL bug at line 43: `ARRAY JOIN arrayJoin(JSONExtractKeys(properties)) AS property_key` — wrapping `JSONExtractKeys` inside `arrayJoin()` passes a `String` to `ARRAY JOIN` which expects an `Array` or `Map`.
+
+The fix is `LEFT ARRAY JOIN JSONExtractKeys(properties) AS property_key`. Using `LEFT ARRAY JOIN` (vs plain `ARRAY JOIN`) also addresses the secondary issue: events with `properties = '{}'` get an empty array, and `LEFT ARRAY JOIN` preserves the row with `property_key = ''` — which the current test already expects.
+
+Let me first run the existing test suite to confirm the current state:
+
+  [Bash] pnpm test 2>&1 | tail -30
+Tests pass. Now apply the SQL fix:
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/schema/route.ts
+Now run all checks:
+
+  [Bash] pnpm test 2>&1 | tail -10
+
+  [Bash] pnpm lint 2>&1 | tail -5
+
+  [Bash] pnpm typecheck 2>&1 | tail -5
+
+  [Bash] pnpm build 2>&1 | tail -15
+All checks pass. Now write the handoff file:
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F8-draft-2.md
+Done. Here's a summary of what changed:
+
+**Root cause (from eval):** `src/app/api/schema/route.ts:43` combined two conflicting ClickHouse mechanisms — `arrayJoin()` (table function, returns `String` scalars) wrapped inside `ARRAY JOIN` (clause that expects `Array`/`Map`). This caused a TYPE_MISMATCH at runtime.
+
+**Fix:** One-line change — `ARRAY JOIN arrayJoin(JSONExtractKeys(properties)) AS property_key` → `LEFT ARRAY JOIN JSONExtractKeys(properties) AS property_key`
+
+Using `LEFT ARRAY JOIN` (instead of plain `ARRAY JOIN`) also fixes the secondary issue: events with `properties = '{}'` are no longer silently dropped from `event_names` — the empty-array case now produces a row with `property_key = ''`, which the existing `if (!row.property_key) continue` guard handles correctly.
+
+**Self-eval results:** 94 tests passing, lint clean, type check clean, build clean with `/api/schema` as a Dynamic route.
+✓ Session 'GEN:F8:2' complete  ($0.2847)
+
+  ▶ EVALUATE — F8 sprint 2: Implement GET /api/schema route with event names, property names, and inferred types from sampling
+
+→ Session : EVAL:F8:2  (budget: $10)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/schema-cache.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/schema/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/schema-cache.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/schema
+
+  [Glob] src/app/api/schema/**/*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/schema/__tests__/route.test.ts
+Now let me run Phase A checks in parallel:
+
+  [Bash] pnpm test 2>&1 | tail -40
+
+  [Bash] pnpm typecheck 2>&1
+
+  [Bash] pnpm lint --fix 2>&1 && echo "---LINT-FIX-DONE---" && pnpm lint 2>&1
+
+  [Bash] pnpm build 2>&1 | tail -30
+All Phase A checks pass. Now for Phase B — HTTP check. Let me check ClickHouse status and start the dev server.
+
+  [Bash] curl -s http://localhost:8123/ping 2>&1
+
+  [Bash] ls /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/.env.local 2>&1
+
+  [Bash] ls /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/clickhouse 2>&1 && echo "binary exists"
+
+  [Bash] ./clickhouse server -- --path=.clickhouse > /tmp/ch-server.log 2>&1 & echo "CH_PID=$!"
+
+  [Bash] sleep 3 && curl -s --retry 6 --retry-connrefused --retry-delay 1 http://localhost:8123/ping 2>&1
+
+  [Bash] CLICKHOUSE_PASSWORD="" pnpm migrate 2>&1 | tail -10
+
+  [Bash] ./clickhouse client --host=localhost --port=8123 --queries-file=/Users/riccardocaranfil/bitrefill/minipanel-blank-night-
+
+  [Bash] sleep 3 && ./clickhouse client --host=localhost --port=9000 --queries-file=/Users/riccardocaranfil/bitrefill/minipanel-b
+
+  [Bash] ./clickhouse client --query "SELECT count() FROM minipanel.events" 2>&1
+
+  [Bash] CLICKHOUSE_PASSWORD="" next dev --port 3099 > /tmp/next-dev.log 2>&1 & echo "NEXT_PID=$!"
+
+  [Bash] curl -s --retry 12 --retry-connrefused --retry-delay 2 -o /dev/null -w "%{http_code}" http://localhost:3099 2>&1
+
+  [Bash] cat /tmp/next-dev.log 2>&1 | head -20
+
+  [Bash] CLICKHOUSE_PASSWORD="" pnpm next dev --port 3099 > /tmp/next-dev.log 2>&1 & echo "NEXT_PID=$!"
+
+  [Bash] sleep 10 && curl -s --retry 6 --retry-connrefused --retry-delay 2 -o /dev/null -w "%{http_code}" http://localhost:3099 2
+
+  [Bash] curl -s http://localhost:3099/api/schema 2>&1
+The HTTP check passes. Let me kill the servers and write the eval.
+
+  [Bash] kill 22435 2>/dev/null; kill $(lsof -ti:3099) 2>/dev/null; kill 19516 2>/dev/null; true
+Now let me write the eval file:
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F8-eval-2.md
+**F8 Eval Sprint 2 — Score: 10/10 — APPROVED**
+
+All sprint contract criteria passed:
+
+| Criterion | Result |
+|---|---|
+| `schema-cache.ts` exports (get/set/invalidate) | ✅ |
+| `route.ts` exports `GET` | ✅ |
+| Test suite 0 failures | ✅ 94 passed, 16 skipped |
+| Lint exit 0 | ✅ |
+| Type check exit 0 | ✅ |
+| Build exit 0 + `/api/schema` Dynamic route | ✅ |
+| HTTP GET `/api/schema` → JSON with `event_names` + `properties` | ✅ |
+
+The Sprint 1 bug (`ARRAY JOIN arrayJoin(...)` TYPE_MISMATCH causing HTTP 500) is confirmed fixed. The HTTP response correctly shows `event_names` populated with all event types (including `"Empty Event"` which has `properties = '{}'`), and property types are correctly inferred (`amount: "numeric"`, `page: "string"`). The `LEFT ARRAY JOIN` fix handles the secondary issue of events with empty properties too.
+✓ Session 'EVAL:F8:2' complete  ($0.5072)
+✓ Feature F8 approved after 2 sprint(s) ✅  ($2.6802)
