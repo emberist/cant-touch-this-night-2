@@ -1935,3 +1935,158 @@ All sprint contract criteria passed:
 The Sprint 1 bug (`ARRAY JOIN arrayJoin(...)` TYPE_MISMATCH causing HTTP 500) is confirmed fixed. The HTTP response correctly shows `event_names` populated with all event types (including `"Empty Event"` which has `properties = '{}'`), and property types are correctly inferred (`amount: "numeric"`, `page: "string"`). The `LEFT ARRAY JOIN` fix handles the secondary issue of events with empty properties too.
 ✓ Session 'EVAL:F8:2' complete  ($0.5072)
 ✓ Feature F8 approved after 2 sprint(s) ✅  ($2.6802)
+✓ Git commit created for F8
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  F9: Implement in-memory schema cache with 60-second TTL in src/lib/schema-cache.ts
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+  ▶ PLAN — F9: Implement in-memory schema cache with 60-second TTL in src/lib/schema-cache.ts
+
+→ Session : PLAN:F9  (budget: $30)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/tsconfig.json
+
+  [Glob] features/F*-done
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/status.md
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/schema-cache.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/schema/route.ts
+Now let me check existing test patterns and whether there are any existing tests for the schema cache.
+
+  [Glob] src/**/*.test.ts
+
+  [Glob] vitest.config.*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/identity.ts
+Now let me check the existing schema-cache test to understand what's already covered.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/schema-cache.test.ts
+
+  [Glob] features/F*-plan.md
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F8-plan.md
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/vitest.config.ts
+Now I have all the context needed. Let me check if there's a `MEMORY.md` file.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/MEMORY.md
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F9-plan.md
+The plan is written to `features/F9-plan.md`. 
+
+Key observations:
+
+- **`src/lib/schema-cache.ts` already exists** — it was created during the F8 sprint (commit `274ebae`) along with its tests. The module exports `getCachedSchema`, `setCachedSchema`, `invalidateSchemaCache`, and the `SchemaResponse` type with a 60-second TTL.
+- **Tests already exist** — `src/lib/__tests__/schema-cache.test.ts` has 7 test cases covering empty cache, TTL hit, TTL expiry, manual invalidation, re-set, and overwrite scenarios using `vi.useFakeTimers()`.
+- **Integration is already wired** — `src/app/api/schema/route.ts` calls `getCachedSchema()` before querying ClickHouse and `setCachedSchema()` after building the response.
+
+The sprint contract includes 9 checks (4 export/behavior checks + 4 toolchain checks + test suite). No new files need to be created — the generator should verify the existing implementation and fill any gaps if found.
+✓ Session 'PLAN:F9' complete  ($0.4472)
+
+  ▶ GENERATE — F9 sprint 1: Implement in-memory schema cache with 60-second TTL in src/lib/schema-cache.ts
+
+→ Session : GEN:F9:1  (budget: $30)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F9-plan.md
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/status.md
+
+  [Glob] src/lib/**/*.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/schema-cache.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/schema-cache.test.ts
+Both files already exist and look complete. Let me verify the schema route integration and run the tests.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/schema/route.ts
+
+  [Bash] pnpm test 2>&1 | tail -40
+
+  [Bash] pnpm lint 2>&1 | tail -20
+
+  [Bash] pnpm typecheck 2>&1 | tail -20
+
+  [Bash] pnpm build 2>&1 | tail -20
+All checks pass. Now I'll write the handoff file.
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F9-draft-1.md
+F9 Sprint 1 is complete. Here's the summary:
+
+## F9 — Schema Cache (Sprint 1)
+
+Both implementation files were already created during F8 and fully meet the sprint contract. No code changes were needed — only verification.
+
+**Verification results:**
+
+| Check | Result |
+|---|---|
+| `src/lib/schema-cache.ts` exports correct symbols | ✅ |
+| TTL correctly set to 60,000 ms | ✅ |
+| All 7 test cases present and passing | ✅ |
+| `/api/schema` route uses cache correctly | ✅ |
+| `pnpm test` | ✅ 94 passing, 0 failing |
+| `pnpm lint` | ✅ exit 0 |
+| `pnpm typecheck` | ✅ exit 0 |
+| `pnpm build` | ✅ exit 0 |
+
+Handoff written to `features/F9-draft-1.md`.
+✓ Session 'GEN:F9:1' complete  ($0.2262)
+
+  ▶ EVALUATE — F9 sprint 1: Implement in-memory schema cache with 60-second TTL in src/lib/schema-cache.ts
+
+→ Session : EVAL:F9:1  (budget: $10)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F9-plan.md
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F9-draft-1.md
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/schema-cache.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/schema-cache.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/schema/route.ts
+Now let me run the Phase A checks:
+
+  [Bash] pnpm test --run 2>&1 | tail -30
+
+  [Bash] pnpm lint 2>&1
+
+  [Bash] pnpm typecheck 2>&1
+
+  [Bash] pnpm build 2>&1 | tail -20
+All Phase A checks pass. Let me verify the behavioral criteria by reading the implementation once more and confirm the TTL boundary logic:
+
+The implementation at `src/lib/schema-cache.ts:19` uses `>= TTL_MS` — meaning at exactly 60,000ms elapsed, the cache is expired. The test at line 46 advances exactly 60,000ms and expects `null`, which matches. That's correct.
+
+The route at `src/app/api/schema/route.ts:18` calls `getCachedSchema()` before the ClickHouse query and `setCachedSchema()` at line 79 after building the response. Integration verified.
+
+No integration gaps were noted in the test plan — all cases are pure unit tests with fake timers. No new page or user-facing flow was introduced, so e2e is not warranted.
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F9-eval-1.md
+**F9 Eval Sprint 1 — APPROVED (10/10)**
+
+All Phase A checks verified independently:
+
+| Check | Result |
+|-------|--------|
+| `src/lib/schema-cache.ts` exports all 4 required symbols | ✅ |
+| `getCachedSchema` null on empty cache | ✅ |
+| `getCachedSchema` returns value within TTL (59s test) | ✅ |
+| `getCachedSchema` returns null at/after 60s (`>=` boundary is correct) | ✅ |
+| `invalidateSchemaCache` clears entry | ✅ |
+| `pnpm test` — 94 passing, 0 failing | ✅ |
+| `pnpm lint` — exit 0, 35 files, no issues | ✅ |
+| `pnpm typecheck` — exit 0, no errors | ✅ |
+| `pnpm build` — exit 0, all routes compiled | ✅ |
+
+No new tests were needed — the plan marked all cases as pure unit tests with fake timers, and the generator's 7-case test file covers every scenario in the test plan exactly. Route integration confirmed: `getCachedSchema()` is called before the ClickHouse query, `setCachedSchema()` after.
+✓ Session 'EVAL:F9:1' complete  ($0.2335)
+✓ Feature F9 approved after 1 sprint(s) ✅  ($0.9069)
