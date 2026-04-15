@@ -40,10 +40,16 @@ type ClickHouseClientLike = typeof clickhouse;
 
 // ─── Internal helpers ─────────────────────────────────────────────────────────
 
-/** Returns the exclusive upper bound timestamp for the given ISO date. */
+/** Returns the exclusive upper bound timestamp for the given ISO date.
+ *  Returns ClickHouse-compatible format: "YYYY-MM-DD HH:MM:SS.mmm" (no T/Z).
+ */
 function computeEndExclusive(end: string): string {
   const [y, m, d] = end.split("-").map(Number);
-  return new Date(Date.UTC(y, m - 1, d + 1)).toISOString();
+  const dt = new Date(Date.UTC(y, m - 1, d + 1));
+  const year = dt.getUTCFullYear();
+  const month = String(dt.getUTCMonth() + 1).padStart(2, "0");
+  const day = String(dt.getUTCDate()).padStart(2, "0");
+  return `${year}-${month}-${day} 00:00:00.000`;
 }
 
 /** Builds the SQL aggregate expression for the given measure. */
@@ -88,7 +94,7 @@ export function buildTrendsQuery(params: TrendsParams): TrendsQuerySpec {
 
   const query_params: Record<string, string> = {
     event_name,
-    start: `${start}T00:00:00.000Z`,
+    start: `${start} 00:00:00.000`,
     end_exclusive: computeEndExclusive(end),
   };
 

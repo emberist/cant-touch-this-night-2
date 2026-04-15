@@ -176,4 +176,59 @@ describe("GET /api/trends — integration", () => {
     const body = await res.json();
     expect(body).toHaveProperty("error");
   });
+
+  // Integration gap from F11: breakdown + seeded data produces multiple series
+  it("breakdown returns 200 with multiple series, each with label and data", async () => {
+    if (!serverAvailable) {
+      console.log("[skip] Dev server not running — skipping integration test.");
+      return;
+    }
+
+    // Seed data first so there are events with page properties
+    const seedRes = await fetch(`${BASE_URL}/api/seed`, {
+      method: "POST",
+      signal: AbortSignal.timeout(40000),
+    });
+    expect(seedRes.status).toBe(200);
+
+    const url = new URL(ENDPOINT);
+    url.searchParams.set("event_name", "Page Viewed");
+    url.searchParams.set("start", "2026-03-15");
+    url.searchParams.set("end", "2026-04-15");
+    url.searchParams.set("breakdown", "page");
+    url.searchParams.set("breakdown_limit", "3");
+
+    const res = await fetch(url.toString());
+    expect(res.status).toBe(200);
+
+    const body = await res.json();
+    expect(body).toHaveProperty("series");
+    expect(Array.isArray(body.series)).toBe(true);
+    // With seeded data and breakdown, we expect multiple series
+    expect(body.series.length).toBeGreaterThan(1);
+
+    // Each series must have label (string) and data (array of {date, value})
+    for (const series of body.series) {
+      expect(typeof series.label).toBe("string");
+      expect(Array.isArray(series.data)).toBe(true);
+      for (const point of series.data) {
+        expect(typeof point.date).toBe("string");
+        expect(typeof point.value).toBe("number");
+      }
+    }
+
+    // breakdown_limit=3 means at most 4 series (top 3 + optional "Other")
+    expect(body.series.length).toBeLessThanOrEqual(4);
+
+    // Series must be sorted by total value descending ("Other" last if present)
+    const nonOther = body.series.filter(
+      (s: { label: string }) => s.label !== "Other",
+    );
+    const totals = nonOther.map((s: { data: { value: number }[] }) =>
+      s.data.reduce((sum: number, p: { value: number }) => sum + p.value, 0),
+    );
+    for (let i = 0; i + 1 < totals.length; i++) {
+      expect(totals[i]).toBeGreaterThanOrEqual(totals[i + 1]);
+    }
+  });
 });

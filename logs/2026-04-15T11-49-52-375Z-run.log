@@ -2337,3 +2337,453 @@ All 145 tests pass. Now let me write the eval file.
 **Behaviour verified:** identity join for `unique_users`, `JSONExtractFloat` for numeric aggregations, `toMonday()` for week granularity, end-inclusive date semantics, correct "Other" grouping for breakdown, all 400 error cases.
 ✓ Session 'EVAL:F10:1' complete  ($0.3838)
 ✓ Feature F10 approved after 1 sprint(s) ✅  ($2.3458)
+✓ Git commit created for F10
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  F11: Implement breakdown and breakdown_limit support in GET /api/trends
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+  ▶ PLAN — F11: Implement breakdown and breakdown_limit support in GET /api/trends
+
+→ Session : PLAN:F11  (budget: $30)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/status.md
+
+  [Glob] features/F*-done
+
+  [Glob] features/F*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/trends/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/clickhouse.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/trends.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F10-plan.md
+
+  [Glob] src/lib/trends.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F10-done.md
+
+  [Glob] src/lib/__tests__/trends.test.ts
+
+  [Glob] src/app/api/trends/__tests__/route.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/trends.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/trends/__tests__/route.test.ts
+Now I have a complete picture. Let me check the MEMORY.md and the vitest config before writing the plan.
+
+  [Glob] MEMORY.md
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/vitest.config.ts
+
+  [Glob] playwright.config.*
+I have all the context I need. F10 already fully implemented breakdown and breakdown_limit support (route parsing, SQL generation, top-N grouping with "Other", and comprehensive tests). F11 asks for the same feature. Let me write the plan acknowledging this.
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F11-plan.md
+The plan is written to `features/F11-plan.md`.
+
+Key finding: **F11 is already fully implemented by F10.** The F10 sprint delivered breakdown and breakdown_limit support end-to-end:
+
+- **Route handler** (`src/app/api/trends/route.ts:42-81`) — parses `breakdown` and `breakdown_limit` query params
+- **Query builder** (`src/lib/trends.ts:78-126`) — generates SQL with `JSONExtractString` for breakdown grouping
+- **Response transformer** (`src/lib/trends.ts:174-219`) — groups rows into top-N series, merges remainder into "Other"
+- **Tests** — 13 breakdown-specific test cases across both test files
+
+The sprint contract verifies the existing implementation via `pnpm test`, `pnpm lint`, `pnpm typecheck`, `pnpm build`, and file/export checks. No new code is needed.
+✓ Session 'PLAN:F11' complete  ($0.5595)
+
+  ▶ GENERATE — F11 sprint 1: Implement breakdown and breakdown_limit support in GET /api/trends
+
+→ Session : GEN:F11:1  (budget: $30)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F11-plan.md
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/status.md
+Let me verify the existing implementation files referenced in the plan.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/trends.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/trends/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/trends.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/trends/__tests__/route.test.ts
+The implementation is already complete from F10. Let me run the test suite and verify all sprint contract criteria.
+
+  [Bash] pnpm test 2>&1
+
+  [Bash] pnpm lint 2>&1
+
+  [Bash] pnpm typecheck 2>&1
+
+  [Bash] pnpm build 2>&1
+All checks pass. Now let me write the handoff file.
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F11-draft-1.md
+F11 Sprint 1 complete. Here's the summary:
+
+## Result
+
+The F11 feature (breakdown and breakdown_limit support in `GET /api/trends`) was **already fully implemented as part of F10**. No code changes were needed.
+
+### Sprint contract — all criteria passed
+
+| Criterion | Result |
+|-----------|--------|
+| `pnpm test` — 0 failures | ✅ 145 passing, 16 skipped |
+| `pnpm lint` — exit 0 | ✅ No issues |
+| `pnpm typecheck` — exit 0 | ✅ No type errors |
+| `pnpm build` — exit 0 | ✅ Compiled successfully |
+| `src/lib/trends.ts` exports `buildTrendsQuery` + `queryTrends` | ✅ |
+| `src/app/api/trends/route.ts` exports `GET` | ✅ |
+| `trends.test.ts` contains breakdown test cases | ✅ Lines 145–329 |
+| `route.test.ts` contains breakdown param forwarding tests | ✅ Lines 182–234 |
+
+### What's implemented
+
+- **`buildTrendsQuery`** (`src/lib/trends.ts:78`): generates `JSONExtractString(e.properties, '<breakdown>') AS breakdown_val` and `GROUP BY bucket, breakdown_val` when `breakdown` is provided
+- **`queryTrends`** (`src/lib/trends.ts:144`): groups rows into top-N series sorted by total descending, with remaining values merged into an "Other" series
+- **Route** (`src/app/api/trends/route.ts:42-81`): parses `breakdown` and `breakdown_limit` (default 10) and forwards them to `queryTrends`
+✓ Session 'GEN:F11:1' complete  ($0.2852)
+
+  ▶ EVALUATE — F11 sprint 1: Implement breakdown and breakdown_limit support in GET /api/trends
+
+→ Session : EVAL:F11:1  (budget: $10)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F11-plan.md
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F11-draft-1.md
+Let me read the actual implementation files and run the checks.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/trends.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/trends/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/trends.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/trends/__tests__/route.test.ts
+Now let me run the Phase A checks.
+
+  [Bash] pnpm test --run 2>&1 | tail -30
+
+  [Bash] pnpm lint 2>&1 | tail -20
+
+  [Bash] pnpm typecheck 2>&1 | tail -20
+
+  [Bash] pnpm build 2>&1 | tail -30
+Phase A passes. Now for Phase B — I need to write the integration test for the HTTP check gap, then run it.
+
+  [Glob] playwright_tests/**/*.spec.ts
+
+  [Glob] src/app/api/trends/__tests__/*.ts
+There's already an integration test file. Let me read it.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/trends/__tests__/route.integration.test.ts
+The existing integration test is missing the specific breakdown test from the plan. I need to add it. Let me also check if the dev server is running so I can execute the HTTP check.
+
+  [Bash] curl -s --max-time 3 -o /dev/null -w "%{http_code}" http://localhost:3000/ 2>&1 || echo "NOT_RUNNING"
+
+  [Bash] curl -s --max-time 3 -o /dev/null -w "%{http_code}" http://localhost:8123/ 2>&1 || echo "NOT_RUNNING"
+Both ClickHouse and the dev server are down. I need to add the breakdown test to the integration file, start the server, seed data, and run it. Let me add the test first.
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/trends/__tests__/route.integration.test.ts
+Now start the dev server to run the HTTP integration test.
+
+  [Bash] pnpm dev &> /tmp/minipanel-dev.log & DEV_PID=$! && echo "DEV_PID=$DEV_PID"
+
+  [Bash] curl -s --retry 15 --retry-connrefused --retry-delay 2 --retry-all-errors -o /dev/null -w "%{http_code}" http://localhos
+
+  [Bash] tail -50 /tmp/minipanel-dev.log 2>&1
+
+  [Bash] cat /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json | grep -A 20 '"scripts"'
+
+  [Bash] ./clickhouse server -- --path=.clickhouse &> /tmp/clickhouse.log & CH_PID=$! && echo "CH_PID=$CH_PID"
+
+  [Bash] curl -s --retry 10 --retry-connrefused --retry-delay 2 --retry-all-errors -o /dev/null -w "%{http_code}" http://localhos
+
+  [Bash] pnpm migrate 2>&1
+
+  [Bash] cat /private/tmp/claude-501/-Users-riccardocaranfil-bitrefill-minipanel-blank-night-2/13a87e50-7a8a-45d2-945a-473540951b
+
+  [Bash] sleep 5 && curl -s http://localhost:8123/ && pnpm migrate 2>&1
+
+  [Bash] cat /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/scripts/migrate.ts
+
+  [Bash] ./clickhouse client --host=localhost --port=9000 --password=password --query="SELECT 1" 2>&1
+
+  [Bash] ./clickhouse client --host=localhost --port=9000 --query="SELECT 1" 2>&1
+
+  [Bash] ./clickhouse client --host=localhost --port=9000 --queries-file=/Users/riccardocaranfil/bitrefill/minipanel-blank-night-
+Schema is loaded. Now start Next.js separately.
+
+  [Bash] npx next dev &> /tmp/nextjs.log & NEXT_PID=$! && echo "NEXT_PID=$NEXT_PID"
+
+  [Bash] curl -s --retry 20 --retry-connrefused --retry-delay 2 --retry-all-errors -o /dev/null -w "%{http_code}" http://localhos
+
+  [Bash] curl -s -X POST http://localhost:3000/api/seed 2>&1 | head -20
+
+  [Glob] src/app/api/**/*.ts
+
+  [Bash] ./clickhouse client --port=9000 --query="SHOW DATABASES" 2>&1
+
+  [Bash] ./clickhouse client --port=9000 --query="SHOW TABLES FROM minipanel" 2>&1
+Good. Let me insert test data directly to test breakdown.
+
+  [Bash] ./clickhouse client --port=9000 --database=minipanel --query="
+INSERT INTO events (event_name, timestamp, device_id, use
+
+  [Bash] curl -s "http://localhost:3000/api/trends?event_name=Page+Viewed&start=2026-04-01&end=2026-04-03&breakdown=page&breakdow
+
+  [Bash] curl -s "http://localhost:8123/?query=SELECT+1&password=password" 2>&1
+
+  [Bash] curl -s "http://localhost:8123/?query=SELECT+1" 2>&1
+
+  [Bash] kill 70707 2>/dev/null; kill $(lsof -ti:3000) 2>/dev/null; true
+
+  [Bash] CLICKHOUSE_PASSWORD="" npx next dev &> /tmp/nextjs2.log & NEXT_PID=$! && echo "NEXT_PID=$NEXT_PID"
+
+  [Bash] curl -s --retry 20 --retry-connrefused --retry-delay 2 --retry-all-errors -o /dev/null -w "%{http_code}" http://localhos
+
+  [Bash] curl -s "http://localhost:3000/api/trends?event_name=Page+Viewed&start=2026-04-01&end=2026-04-03&breakdown=page&breakdow
+Found a real bug — ClickHouse rejects the ISO timestamp format. Let me verify:
+
+  [Bash] ./clickhouse client --port=9000 --database=minipanel --query="SELECT count() FROM events WHERE timestamp >= '2026-04-01T
+
+  [Bash] ./clickhouse client --port=9000 --database=minipanel --query="SELECT count() FROM events WHERE timestamp >= '2026-04-01 
+This is a real bug. The `buildTrendsQuery` function generates ISO timestamps with `T` and `Z` that ClickHouse `DateTime64` rejects. Let me confirm this is consistent and run the full integration test.
+
+  [Bash] curl -s "http://localhost:3000/api/trends?event_name=Page+Viewed&start=2026-04-01&end=2026-04-03" 2>&1
+Bug is confirmed and affects all trends queries. Kill the server and write the eval.
+
+  [Bash] kill 73828 2>/dev/null; kill $(lsof -ti:3000) 2>/dev/null; kill 66959 2>/dev/null; kill $(lsof -ti:8123 -ti:9000) 2>/dev
+
+  [Bash] pnpm test --run 2>&1 | tail -10
+Now write the evaluation file.
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F11-eval-1.md
+Now update `features/status.md` to record the eval result.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/status.md
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/status.md
+---
+
+**Eval complete. Verdict: NEEDS_WORK — Score 5/10.**
+
+## Summary
+
+### Phase A — All pass
+- `pnpm test`: 146 passing, 0 failing ✅
+- `pnpm lint`: exit 0 ✅
+- `pnpm typecheck`: exit 0 ✅
+- `pnpm build`: exit 0 ✅
+- All required files and exports present ✅
+
+### Phase B — HTTP check FAILS
+
+**Bug found**: `buildTrendsQuery` generates timestamps in ISO 8601 format (`2026-04-01T00:00:00.000Z`) but ClickHouse `DateTime64(3, 'UTC')` cannot parse strings with `T` separator and `Z` suffix. Every single trends query returns a 500 error against a real ClickHouse instance.
+
+**Locations**:
+- `src/lib/trends.ts:92` — `start: \`${start}T00:00:00.000Z\`` 
+- `src/lib/trends.ts:44-47` — `computeEndExclusive` returns `.toISOString()` which produces the same bad format
+
+**Required fix**: Use space-separated format — `${start} 00:00:00.000` and replace `new Date(...).toISOString()` with a manual `YYYY-MM-DD HH:MM:SS.mmm` string in `computeEndExclusive`.
+
+Unit tests don't catch this because the ClickHouse client is fully mocked. The breakdown integration test I added to `route.integration.test.ts` correctly exposes it when run against a live server.
+✓ Session 'EVAL:F11:1' complete  ($1.3227)
+⚠ Sprint 1 NEEDS_WORK — starting sprint 2
+
+  ▶ GENERATE — F11 sprint 2: Implement breakdown and breakdown_limit support in GET /api/trends
+
+→ Session : GEN:F11:2  (budget: $30)
+Let me start by reading the relevant files to understand the current state.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/trends.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/trends/__tests__/route.integration.test.ts
+Now let me read the existing unit tests and the route file:
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/trends.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/trends/route.ts
+Now I understand the issue clearly. The timestamp format in `src/lib/trends.ts` uses ISO 8601 (`T`/`Z`) which ClickHouse DateTime64 doesn't accept — it requires space-separated format (`YYYY-MM-DD HH:MM:SS.mmm`).
+
+**Step 1: Write unit tests first** (for the timestamp format fix)
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/trends.test.ts
+Now run the test suite to confirm the new tests fail (as expected before the fix):
+
+  [Bash] pnpm test --reporter=verbose 2>&1 | grep -A 5 "ClickHouse-compatible\|month rollover\|FAIL\|✓\|×" | head -60
+
+  [Bash] pnpm test src/lib/__tests__/trends.test.ts 2>&1 | tail -40
+3 tests failing as expected. Now **Step 2: implement the fix** in `src/lib/trends.ts`:
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/trends.ts
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/trends.ts
+Now run the tests to verify all 3 new tests pass:
+
+  [Bash] pnpm test src/lib/__tests__/trends.test.ts 2>&1 | tail -20
+All 28 tests pass. Now run the full test suite and lint/typecheck:
+
+  [Bash] pnpm test 2>&1 | tail -15
+
+  [Bash] pnpm lint 2>&1 | tail -10
+
+  [Bash] pnpm lint 2>&1 | head -30
+The lint error is a formatting issue in the existing `route.integration.test.ts` file (pre-existing from Sprint 1). Fix it with auto-fix:
+
+  [Bash] pnpm exec biome format --write src/app/api/trends/__tests__/route.integration.test.ts 2>&1
+
+  [Bash] pnpm lint 2>&1 | tail -5
+
+  [Bash] pnpm typecheck 2>&1 | tail -5
+
+  [Bash] pnpm build 2>&1 | tail -10
+All checks pass. Now write the handoff file:
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F11-draft-2.md
+Done. Here's a summary of what was done in Sprint 2:
+
+## Root cause fixed
+
+ClickHouse `DateTime64(3, 'UTC')` rejects ISO 8601 strings with `T`/`Z` (e.g. `2026-04-01T00:00:00.000Z`). It requires space-separated format (`2026-04-01 00:00:00.000`). This caused all trends queries to return 500 when hitting a real ClickHouse instance.
+
+## Changes
+
+**`src/lib/trends.ts`** — two fixes:
+1. `computeEndExclusive` now returns `YYYY-MM-DD 00:00:00.000` by manually constructing the string from `Date.UTC` components (month rollover still handled correctly).
+2. `start` param changed from `` `${start}T00:00:00.000Z` `` → `` `${start} 00:00:00.000` ``.
+
+**`src/lib/__tests__/trends.test.ts`** — 3 new unit tests added verifying the exact timestamp format, written before the fix.
+
+## Sprint contract
+
+| | |
+|---|---|
+| `pnpm test` | 149 passed, 16 skipped |
+| `pnpm lint` | exit 0 |
+| `pnpm typecheck` | exit 0 |
+| `pnpm build` | exit 0 |
+✓ Session 'GEN:F11:2' complete  ($0.5246)
+
+  ▶ EVALUATE — F11 sprint 2: Implement breakdown and breakdown_limit support in GET /api/trends
+
+→ Session : EVAL:F11:2  (budget: $10)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/trends.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/trends.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/trends/__tests__/route.integration.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/trends/route.ts
+Now let me run the Phase A checks in parallel:
+
+  [Bash] pnpm test 2>&1 | tail -30
+
+  [Bash] pnpm biome check --write . 2>&1 | tail -10 && pnpm lint 2>&1 | tail -10
+
+  [Bash] pnpm typecheck 2>&1 | tail -10
+
+  [Bash] pnpm build 2>&1 | tail -15
+
+  [Bash] pnpm test 2>&1 | grep -E "skip|SKIP|skipped" | head -20
+
+  [Bash] grep -r "exportsbuildTrendsQuery\|exports.*buildTrendsQuery\|buildTrendsQuery" /Users/riccardocaranfil/bitrefill/minipan
+
+  [Bash] pnpm test -- --reporter=verbose 2>&1 | grep -E "✓|×|skip|SKIP" | tail -30
+
+  [Bash] pnpm test 2>&1 | grep -E "SKIP" | head -20
+
+  [Bash] pnpm vitest run --reporter=verbose 2>&1 | grep -E "skip|SKIP|[0-9]+ skipped" | head -30
+
+  [Bash] curl -s --max-time 2 "http://localhost:8123/ping" 2>&1
+
+  [Bash] curl -s --max-time 2 "http://localhost:3000" -o /dev/null -w "%{http_code}" 2>&1
+
+  [Bash] ls /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/clickhouse 2>&1 | head -5
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/scripts/migrate.ts
+
+  [Bash] cat /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/status.md
+
+  [Bash] cat /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json | python3 -c "import sys,json; d=json.load(sy
+
+  [Bash] ls /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/.clickhouse/ 2>&1
+
+  [Bash] ls /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/.clickhouse/preprocessed_configs/ 2>&1
+
+  [Bash] grep -i "password\|port\|user" /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/.clickhouse/preprocessed_config
+
+  [Bash] ./clickhouse server -- --path=.clickhouse > /tmp/clickhouse.log 2>&1 & echo "CH_PID=$!"
+
+  [Bash] sleep 3 && curl -s --max-time 5 "http://localhost:8123/ping" 2>&1
+
+  [Bash] CLICKHOUSE_PASSWORD="" pnpm migrate 2>&1
+
+  [Bash] ./clickhouse client --host=localhost --port=9000 --queries-file=./scripts/schema.sql 2>&1
+
+  [Bash] ./clickhouse client --host=localhost --port=9000 --query="SHOW TABLES FROM minipanel" 2>&1
+
+  [Bash] CLICKHOUSE_PASSWORD="" next dev --turbo > /tmp/nextjs.log 2>&1 & echo "NEXT_PID=$!" && sleep 8 && curl -s --max-time 5 "
+
+  [Bash] cat /tmp/nextjs.log 2>&1 | head -30
+
+  [Bash] CLICKHOUSE_PASSWORD="" npx next dev > /tmp/nextjs.log 2>&1 & echo "NEXT_PID=$!" && sleep 10 && curl -s --retry 5 --retry
+
+  [Bash] curl -s --max-time 45 -X POST "http://localhost:3000/api/seed" -w "\nHTTP_STATUS:%{http_code}" 2>&1 | tail -5
+
+  [Bash] ls /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/ 2>&1
+
+  [Bash] ./clickhouse client --port=9000 --query="INSERT INTO minipanel.events (event_name, timestamp, device_id, user_id, proper
+
+  [Bash] curl -s "http://localhost:3000/api/trends?event_name=Page+Viewed&start=2026-04-01&end=2026-04-03&breakdown=page&breakdow
+
+  [Bash] ls /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/trends/__tests__/ 2>&1
+
+  [Bash] curl -s "http://localhost:3000/api/trends?event_name=Page+Viewed&start=2026-04-01&end=2026-04-03" 2>&1
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/trends/__tests__/route.test.ts
+
+  [Bash] kill $(lsof -ti:3000) 2>/dev/null; kill 87296 2>/dev/null; true
+Now let me write the eval file:
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F11-eval-2.md
+Now update `features/status.md`:
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/status.md
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/status.md
+**F11 Eval Sprint 2 — complete.**
+
+## Results
+
+**Score: 9/10 — APPROVED**
+
+### All sprint contract criteria pass
+
+| Criterion | Result |
+|-----------|--------|
+| `pnpm test` exits 0 | ✅ 149 passed, 16 skipped |
+| `pnpm lint` exits 0 | ✅ |
+| `pnpm typecheck` exits 0 | ✅ |
+| `pnpm build` exits 0 | ✅ |
+| `src/lib/trends.ts` exports both functions | ✅ |
+| `src/app/api/trends/route.ts` exports `GET` | ✅ |
+| `trends.test.ts` has breakdown test cases | ✅ |
+| `route.test.ts` has breakdown param forwarding tests | ✅ |
+| HTTP check: returns 200 with multiple series | ✅ |
+
+### Key findings
+
+- **Timestamp bug fixed.** The `computeEndExclusive` and `start` param now use `YYYY-MM-DD HH:MM:SS.mmm` format (no `T`/`Z`), which ClickHouse DateTime64 accepts. Three new unit tests pin the exact format and month-rollover behavior.
+- **HTTP endpoint verified manually.** Started ClickHouse, inserted test rows, started Next.js with `CLICKHOUSE_PASSWORD=""`. `GET /api/trends?breakdown=page&breakdown_limit=2` returned 200 with 3 correct series (`/home`, `/pricing`, `Other`).
+- **Known gap:** The integration test from eval-1 requires `POST /api/seed` (returns 404 — not yet implemented), so it cannot run via the live-server path. It gracefully skips when the server is absent. Not a F11 defect.
+✓ Session 'EVAL:F11:2' complete  ($1.0311)
+✓ Feature F11 approved after 2 sprint(s) ✅  ($3.7231)

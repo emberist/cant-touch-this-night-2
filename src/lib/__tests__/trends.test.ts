@@ -127,6 +127,34 @@ describe("buildTrendsQuery", () => {
       expect(query_params.end_exclusive).toContain("2026-04-16");
     });
 
+    it("start param uses ClickHouse-compatible space-separated format (no T or Z)", () => {
+      const { query_params } = buildTrendsQuery({
+        ...baseParams,
+        start: "2026-04-01",
+      });
+      expect(query_params.start).toBe("2026-04-01 00:00:00.000");
+      expect(query_params.start).not.toContain("T");
+      expect(query_params.start).not.toContain("Z");
+    });
+
+    it("end_exclusive param uses ClickHouse-compatible space-separated format (no T or Z)", () => {
+      const { query_params } = buildTrendsQuery({
+        ...baseParams,
+        end: "2026-04-15",
+      });
+      expect(query_params.end_exclusive).toBe("2026-04-16 00:00:00.000");
+      expect(query_params.end_exclusive).not.toContain("T");
+      expect(query_params.end_exclusive).not.toContain("Z");
+    });
+
+    it("end_exclusive correctly handles month rollover (April 30 → May 1)", () => {
+      const { query_params } = buildTrendsQuery({
+        ...baseParams,
+        end: "2026-04-30",
+      });
+      expect(query_params.end_exclusive).toBe("2026-05-01 00:00:00.000");
+    });
+
     it("references start and end_exclusive params in the WHERE clause", () => {
       const { query } = buildTrendsQuery(baseParams);
       expect(query).toContain("{start:String}");

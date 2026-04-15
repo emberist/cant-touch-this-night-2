@@ -1,5 +1,12 @@
 # Loop Lab — Status Timeline
 
+- `2026-04-15T13:26:00.000Z` **EVALUATE** — F11 sprint 2 — APPROVED (9/10) — timestamp bug fixed; all criteria pass; HTTP endpoint verified
+- `2026-04-15T13:24:46.192Z` **EVALUATE** — F11 sprint 2 — Implement breakdown and breakdown_limit support in GET /api/trends
+- `2026-04-15T13:22:25.363Z` **GENERATE** — F11 sprint 2 — Implement breakdown and breakdown_limit support in GET /api/trends
+- `2026-04-15T13:21:00.000Z` **EVALUATE** — F11 sprint 1 — NEEDS_WORK (5/10) — timestamp format bug: ClickHouse DateTime64 rejects ISO strings with T/Z
+- `2026-04-15T13:14:17.878Z` **EVALUATE** — F11 sprint 1 — Implement breakdown and breakdown_limit support in GET /api/trends
+- `2026-04-15T13:13:04.545Z` **GENERATE** — F11 sprint 1 — Implement breakdown and breakdown_limit support in GET /api/trends
+- `2026-04-15T13:10:52.074Z` **PLAN** — F11 — Implement breakdown and breakdown_limit support in GET /api/trends
 - `2026-04-15T13:09:16.654Z` **EVALUATE** — F10 sprint 1 — Implement GET /api/trends route with count, unique_users, and numeric aggregation measures
 - `2026-04-15T13:01:37.689Z` **GENERATE** — F10 sprint 1 — Implement GET /api/trends route with count, unique_users, and numeric aggregation measures
 - `2026-04-15T13:00:12.265Z` **PLAN** — F10 — Implement GET /api/trends route with count, unique_users, and numeric aggregation measures
