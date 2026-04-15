@@ -1,5 +1,10 @@
 # Loop Lab — Status Timeline
 
+- `2026-04-15T16:06:29.244Z` **EVALUATE** — F17 sprint 2 — Implement GET /api/live SSE route polling ClickHouse for new events every second
+- `2026-04-15T16:03:44.816Z` **GENERATE** — F17 sprint 2 — Implement GET /api/live SSE route polling ClickHouse for new events every second
+- `2026-04-15T15:59:27.819Z` **EVALUATE** — F17 sprint 1 — Implement GET /api/live SSE route polling ClickHouse for new events every second
+- `2026-04-15T15:14:45.845Z` **GENERATE** — F17 sprint 1 — Implement GET /api/live SSE route polling ClickHouse for new events every second
+- `2026-04-15T15:13:28.899Z` **PLAN** — F17 — Implement GET /api/live SSE route polling ClickHouse for new events every second
 - `2026-04-15T15:11:50.073Z` **EVALUATE** — F16 sprint 1 — Implement POST /api/seed and GET /api/seed/status routes
 - `2026-04-15T15:09:38.552Z` **GENERATE** — F16 sprint 1 — Implement POST /api/seed and GET /api/seed/status routes
 - `2026-04-15T15:08:33.908Z` **PLAN** — F16 — Implement POST /api/seed and GET /api/seed/status routes
