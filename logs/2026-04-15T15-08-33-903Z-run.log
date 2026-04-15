@@ -1160,3 +1160,435 @@ All 10 sprint contract criteria pass:
 The generator's implementation is correct end-to-end. No fixes needed.
 ✓ Session 'EVAL:F19:1' complete  ($0.4951)
 ✓ Feature F19 approved after 1 sprint(s) ✅  ($1.4973)
+✓ Git commit created for F19
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  F20: Build Event Explorer page at /explore with event table, filters, and cursor-based infinite scroll
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+  ▶ PLAN — F20: Build Event Explorer page at /explore with event table, filters, and cursor-based infinite scroll
+
+→ Session : PLAN:F20  (budget: $30)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/status.md
+
+  [Glob] features/F*-done
+
+  [Glob] features/F*-done*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/list/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/schema/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/layout.tsx
+
+  [Glob] src/components/**/*.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/identity.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/Sidebar.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/page.tsx
+
+  [Glob] src/app/explore/**/*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/tsconfig.json
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/explore/page.tsx
+
+  [Glob] src/components/ui/**/*
+
+  [Glob] playwright.config.*
+
+  [Glob] vitest.config.*
+
+  [Glob] src/**/*.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/vitest.config.ts
+
+  [Glob] MEMORY.md
+Now I have everything I need. Let me write the plan.
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F20-plan.md
+Plan written to `features/F20-plan.md`. 
+
+**Summary of F20 — Event Explorer page:**
+
+- **6 files** to create/modify: `JsonChip`, `IdentityChip`, `EventTable`, `EventFilterBar`, `useEventExplorer` hook, and the `explore/page.tsx` replacement
+- Builds on existing APIs: `GET /api/events/list` (cursor pagination) and `GET /api/schema` (event name dropdown)
+- **12 sprint contract checks**: test suite, lint, typecheck, build, 6 file existence checks, 2 HTTP checks
+- **3 test files** covering JsonChip rendering, IdentityChip linking, and the useEventExplorer hook state management
+- **Key risk**: vitest is configured with `environment: "node"` — component tests will need `jsdom` environment support and possibly `@testing-library/react` as a new devDependency
+✓ Session 'PLAN:F20' complete  ($0.4473)
+
+  ▶ GENERATE — F20 sprint 1: Build Event Explorer page at /explore with event table, filters, and cursor-based infinite scroll
+
+→ Session : GEN:F20:1  (budget: $30)
+
+  [Agent] 
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json
+
+  [Glob] **/vitest.config.{ts,js}
+
+  [Glob] **/*.test.{ts,tsx}
+
+  [Glob] **/*.spec.{ts,tsx}
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/vitest.config.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/clickhouse.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/identity.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/clickhouse.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/identity.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/schema-cache.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/list/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/schema/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/explore/page.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/layout.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/Sidebar.tsx
+
+  [Glob] src/components/*.tsx
+
+  [Bash] find /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components -type f -name "*.tsx" 2>/dev/null | head -
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/list/__tests__/route.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/schema/__tests__/route.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/schema-cache.test.ts
+
+  [Bash] find /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src -type d | sort | head -30
+
+  [Bash] ls -la /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/ | grep -v __tests__
+
+  [Bash] ls -la /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/route.ts
+
+  [Bash] head -50 /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/trends.ts
+
+  [Bash] git log --oneline | head -20
+
+  [Bash] ls -la
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/tsconfig.json
+
+  [Bash] find /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app -type f -name "page.tsx" | head -10
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/generate/page.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/test/page.tsx
+Let me read a few key files before writing any code.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/vitest.config.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/identity.ts
+
+  [Glob] src/**/__tests__/*.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/list/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/identity.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/list/__tests__/route.test.ts
+Now let me check a few more things before writing code:
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/explore/page.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/tsconfig.json
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/schema/route.ts
+
+  [Bash] ls /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/biome.json 2>/dev/null || ls /Users/riccardocaranfil/bitref
+
+  [ToolSearch] 
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/biome.json
+
+  [TodoWrite] 
+
+  [Bash] pnpm add -D jsdom @testing-library/react 2>&1 | tail -20
+
+  [TodoWrite] 
+Now write the three test files:
+
+  [Bash] mkdir -p /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/ui/__tests__ && mkdir -p /Users/riccar
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/ui/__tests__/JsonChip.test.tsx
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/ui/__tests__/IdentityChip.test.tsx
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/explore/__tests__/useEventExplorer.test.ts
+
+  [TodoWrite] 
+Now implement the production code:
+
+  [Bash] mkdir -p /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/explore
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/ui/JsonChip.tsx
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/ui/IdentityChip.tsx
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/EventTable.tsx
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/explore/EventFilterBar.tsx
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/explore/useEventExplorer.ts
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/explore/page.tsx
+
+  [TodoWrite] 
+Now run the tests:
+
+  [Bash] pnpm test 2>&1
+The failures are caused by `@testing-library/react` auto-cleanup not firing (vitest doesn't expose `afterEach` globally). I need to call `cleanup()` explicitly. Also the `queryByText` issue is the same DOM accumulation problem.
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/ui/__tests__/JsonChip.test.tsx
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/ui/__tests__/IdentityChip.test.tsx
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/ui/__tests__/IdentityChip.test.tsx
+
+  [Bash] pnpm test 2>&1
+All 292 tests pass. Now run lint:
+
+  [Bash] pnpm lint:fix 2>&1 | tail -30
+
+  [Bash] pnpm lint 2>&1 | tail -20
+
+  [Bash] pnpm lint; echo "Exit: $?"
+Lint exits 0. Now typecheck:
+
+  [Bash] pnpm typecheck 2>&1
+MUI v9 Box doesn't accept shorthand system props directly — they must go in `sx`. Fixing both:
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/explore/page.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/ui/JsonChip.tsx
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/ui/JsonChip.tsx
+
+  [Bash] pnpm typecheck 2>&1
+Type check passes. Now run the build:
+
+  [Bash] pnpm build 2>&1
+Build passes (ClickHouse connection errors are expected — no DB running during build). 
+
+But the HTTP check requires `data-testid="event-table"` to be in the SSR'd HTML. Since the table currently only renders after events load, I need to ensure the table (with its testid) is always rendered — showing an empty-state row when there are no events:
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/explore/page.tsx
+Now update `EventTable` to accept and display the empty message:
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/EventTable.tsx
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/EventTable.tsx
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/EventTable.tsx
+Now remove the unused Typography import from explore/page.tsx:
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/explore/page.tsx
+`Typography` is still used for the heading — that's fine. Now run all checks together:
+
+  [Bash] pnpm test 2>&1 | tail -8
+
+  [Bash] pnpm lint:fix 2>&1 | tail -5 && pnpm lint; echo "Lint exit: $?"
+
+  [Bash] pnpm typecheck 2>&1; echo "TypeCheck exit: $?"
+All checks pass. Now verify all required files exist and do the HTTP check:
+
+  [Bash] ls /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/ui/JsonChip.tsx \
+   /Users/riccardocaranfil
+
+  [Bash] pnpm build 2>&1 | grep -E "(Event Explorer|event-table|explore|error|Error)" | head -20
+
+  [Bash] pnpm build 2>&1 | tail -10
+Now do the HTTP check. I'll start the production Next.js server briefly:
+
+  [Bash] node node_modules/.bin/next start -p 13001 &
+DEV_PID=$!
+sleep 4
+curl -s http://localhost:13001/explore | grep -o "Event 
+
+  [Bash] pnpm start -- -p 13001 &
+DEV_PID=$!
+sleep 5
+curl -s http://localhost:13001/explore | grep -o "Event Explorer" | head -1
+
+
+  [Bash] PORT=13001 pnpm start &
+DEV_PID=$!
+sleep 5
+curl -s http://localhost:13001/explore | grep -o "Event Explorer" | head -1
+c
+Both HTTP checks pass. Now write the handoff file:
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F20-draft-1.md
+
+  [TodoWrite] 
+F20 Sprint 1 is complete. Here's the summary:
+
+---
+
+## What was built
+
+**F20 — Event Explorer page at `/explore`**
+
+### New files
+| File | Purpose |
+|---|---|
+| `src/components/ui/JsonChip.tsx` | Collapsible JSON chip — shows key preview, Popover with full JSON on click |
+| `src/components/ui/IdentityChip.tsx` | Resolved identity chip linking to `/users/[encoded_id]` |
+| `src/components/EventTable.tsx` | MUI Table with IntersectionObserver infinite-scroll sentinel, loading skeleton, inline empty state |
+| `src/components/explore/EventFilterBar.tsx` | MUI Autocomplete populated from `/api/schema` |
+| `src/components/explore/useEventExplorer.ts` | Hook managing events, cursor pagination, filter, loading, hasMore |
+| `src/app/explore/page.tsx` | Full Explorer page — replaces placeholder |
+| 3 test files | Unit tests with `// @vitest-environment jsdom` |
+
+### Sprint contract — all passing
+| Criterion | Result |
+|---|---|
+| `pnpm test` 0 failures | ✅ 292 passing |
+| `pnpm lint` exit 0 | ✅ |
+| `pnpm typecheck` exit 0 | ✅ |
+| `pnpm build` exit 0 | ✅ |
+| All 6 required files exist | ✅ |
+| GET `/explore` contains `Event Explorer` | ✅ |
+| GET `/explore` contains `data-testid="event-table"` | ✅ |
+
+### Two gotchas documented in the handoff
+1. **`@testing-library/react` cleanup** — must call `cleanup()` explicitly in `afterEach` because vitest doesn't expose `afterEach` globally (no `globals: true` in config)
+2. **MUI v9 Box** — shorthand props like `mb={2}` and `p={2}` are type errors; use `sx={{ mb: 2 }}` instead
+✓ Session 'GEN:F20:1' complete  ($2.7338)
+
+  ▶ EVALUATE — F20 sprint 1: Build Event Explorer page at /explore with event table, filters, and cursor-based infinite scroll
+
+→ Session : EVAL:F20:1  (budget: $10)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F20-plan.md
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F20-draft-1.md
+Now let me read the implementation files to verify them independently.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/ui/JsonChip.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/ui/IdentityChip.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/EventTable.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/explore/EventFilterBar.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/explore/useEventExplorer.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/explore/page.tsx
+Now let me read the test files to verify their correctness.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/ui/__tests__/JsonChip.test.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/ui/__tests__/IdentityChip.test.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/explore/__tests__/useEventExplorer.test.ts
+Now let me run Phase A checks — tests, lint, typecheck, and build — in parallel.
+
+  [Bash] pnpm test --reporter=verbose 2>&1 | tail -40
+
+  [Bash] pnpm typecheck 2>&1 | tail -20
+Tests pass and typecheck passes. Now run lint and build:
+
+  [Bash] pnpm lint 2>&1 | tail -20
+
+  [Bash] pnpm build 2>&1 | tail -30
+All Phase A checks pass. Now Phase B — HTTP checks via dev server:
+
+  [Bash] pnpm start &> /tmp/nextjs-start.log & START_PID=$!; echo $START_PID > /tmp/nextjs-start.pid; echo "Started PID $START_PI
+
+  [Bash] curl -s --retry 10 --retry-connrefused --retry-delay 1 -o /dev/null -w "%{http_code}" http://localhost:3000 2>&1
+
+  [Bash] curl -s http://localhost:3000/explore 2>&1 | grep -o 'Event Explorer' | head -3
+
+  [Bash] curl -s http://localhost:3000/explore 2>&1 | grep -o 'data-testid="event-table"' | head -3
+Both HTTP checks pass. Now kill the server and check Playwright availability for integration gap tests:
+
+  [Bash] kill $(cat /tmp/nextjs-start.pid) 2>/dev/null; kill $(lsof -ti:3000) 2>/dev/null; true
+
+  [Bash] ls playwright_tests/ 2>&1; cat playwright.config.ts 2>&1 | head -30
+Now let me write a test for the EventFilterBar integration gap (fetching from `/api/schema`), and check if there are existing test conventions to follow:
+
+  [Bash] ls src/components/explore/__tests__/ 2>&1; ls src/components/ui/__tests__/ 2>&1
+
+  [Bash] cat vitest.config.ts
+Now I'll write the EventFilterBar component test to cover the schema-fetch integration gap:
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/explore/__tests__/EventFilterBar.test.tsx
+
+  [Bash] pnpm test src/components/explore/__tests__/EventFilterBar.test.tsx --reporter=verbose 2>&1
+All 3 new tests pass. Run the full suite to confirm nothing broken:
+
+  [Bash] pnpm test 2>&1 | tail -10
+295 passing, 0 failures. Now run lint to confirm the new test file is clean:
+
+  [Bash] pnpm lint 2>&1 | tail -10
+
+  [Bash] pnpm lint 2>&1 | grep -A 10 "error\|Error"
+
+  [Bash] pnpm exec biome check --reporter=github 2>&1 | grep "error\|::error\|ERROR" | head -20
+The new test file has a formatting error. Let me auto-fix it:
+
+  [Bash] pnpm exec biome format --write src/components/explore/__tests__/EventFilterBar.test.tsx 2>&1
+
+  [Bash] pnpm lint 2>&1 | tail -5
+
+  [Bash] pnpm test src/components/explore/__tests__/EventFilterBar.test.tsx 2>&1 | tail -8
+All checks pass. Now I'll write the eval file:
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F20-eval-1.md
+**F20 Eval — Sprint 1 complete.**
+
+---
+
+## Summary
+
+**Score: 10/10 — APPROVED**
+
+All sprint contract criteria verified independently:
+
+**Phase A (fast checks):**
+- `pnpm test`: 295 passing, 25 skipped, **0 failures** ✅
+- `pnpm lint`: exit 0, 4 pre-existing warnings in `seed.test.ts` only ✅
+- `pnpm typecheck`: exit 0 ✅
+- `pnpm build`: exit 0, `/explore` compiled as static ✅
+- All 6 required files exist and export the correct symbols ✅
+- `explore/page.tsx` imports `EventTable` ✅
+
+**Phase B (HTTP checks via production server):**
+- `GET /explore` → contains `Event Explorer` ✅
+- `GET /explore` → contains `data-testid="event-table"` ✅
+
+**New test written:** `src/components/explore/__tests__/EventFilterBar.test.tsx` — covers the plan's integration gap: EventFilterBar fetches from `/api/schema` on mount, renders the combobox, and handles fetch errors gracefully.
+
+**Known gaps carried forward:**
+- IntersectionObserver-triggered `loadMore` is not tested at the browser level. Requires Playwright + running ClickHouse. The hook logic itself is covered by unit tests.
+✓ Session 'EVAL:F20:1' complete  ($0.6487)
+✓ Feature F20 approved after 1 sprint(s) ✅  ($3.8297)
