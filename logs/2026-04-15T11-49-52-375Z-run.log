@@ -2090,3 +2090,250 @@ All Phase A checks verified independently:
 No new tests were needed — the plan marked all cases as pure unit tests with fake timers, and the generator's 7-case test file covers every scenario in the test plan exactly. Route integration confirmed: `getCachedSchema()` is called before the ClickHouse query, `setCachedSchema()` after.
 ✓ Session 'EVAL:F9:1' complete  ($0.2335)
 ✓ Feature F9 approved after 1 sprint(s) ✅  ($0.9069)
+✓ Git commit created for F9
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  F10: Implement GET /api/trends route with count, unique_users, and numeric aggregation measures
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+  ▶ PLAN — F10: Implement GET /api/trends route with count, unique_users, and numeric aggregation measures
+
+→ Session : PLAN:F10  (budget: $30)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/status.md
+
+  [Glob] features/F*-done
+
+  [Glob] features/F*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/tsconfig.json
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/clickhouse.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/identity.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/schema-cache.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/list/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/schema/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/scripts/schema.sql
+
+  [Glob] vitest.config.*
+
+  [Glob] playwright.config.*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/vitest.config.ts
+
+  [Glob] src/**/*.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/.claude/projects/-Users-riccardocaranfil-bitrefill-minipanel-b
+Let me look at an existing test and route test to understand conventions.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/schema/__tests__/route.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/list/__tests__/route.test.ts
+Now I have a complete picture. Let me write the plan.
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F10-plan.md
+Plan written to `features/F10-plan.md`. Here's a summary:
+
+**F10 — GET /api/trends** creates two new files:
+
+- **`src/lib/trends.ts`** — query builder that constructs ClickHouse SQL for `count`, `unique_users`, and numeric aggregations (`sum`/`avg`/`min`/`max` via `JSONExtractFloat`). Handles `day`/`week` granularity, date range filtering, and optional breakdown with top-N + "Other" grouping. Uses the same identity resolution join pattern as existing code.
+
+- **`src/app/api/trends/route.ts`** — GET handler that validates params (`event_name` required, `start`/`end` required, measure defaults to `count`, granularity defaults to `day`), calls the query builder, and returns the `{ series: [...] }` response.
+
+**Key decisions documented:**
+- Week granularity uses `toMonday` (ISO 8601)
+- Breakdown "Other" grouping done in Node post-processing rather than complex SQL
+- End date is inclusive (filter uses `< end + 1 day`)
+✓ Session 'PLAN:F10' complete  ($0.4402)
+
+  ▶ GENERATE — F10 sprint 1: Implement GET /api/trends route with count, unique_users, and numeric aggregation measures
+
+→ Session : GEN:F10:1  (budget: $30)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F10-plan.md
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json
+
+  [Glob] src/lib/__tests__/*.test.ts
+
+  [Glob] src/app/api/**/__tests__/*.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/clickhouse.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/schema-cache.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/__tests__/route.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/identity.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/list/__tests__/route.test.ts
+Now let me look at the existing lib files and vitest config:
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/schema-cache.ts
+
+  [Glob] vitest.config.*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/vitest.config.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/identity.ts
+Now I have a clear picture of the project's patterns. Let me also check the schema route test quickly:
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/schema/__tests__/route.test.ts
+Let me look at a few more existing routes for patterns:
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/list/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/schema/route.ts
+Good. Now let me check the tsconfig for aliases:
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/tsconfig.json
+
+  [Glob] biome.json*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/biome.json
+Now I have a complete picture of the project. Let me implement everything in order: tests first, then implementation.
+
+  [ToolSearch] 
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/trends.test.ts
+
+  [TodoWrite] 
+
+  [Bash] mkdir -p /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/trends/__tests__
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/trends/__tests__/route.test.ts
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/trends.ts
+
+  [TodoWrite] 
+
+  [Bash] mkdir -p /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/trends
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/trends/route.ts
+
+  [TodoWrite] 
+Now let me run the tests, lint, typecheck, and build:
+
+  [Bash] pnpm test 2>&1
+All 138 tests pass. Let me confirm the new test files are included:
+
+  [Bash] pnpm test --reporter=verbose 2>&1 | grep -E "(PASS|FAIL|trends|✓|×)" | head -60
+All tests pass including the new trends tests. Now lint and typecheck:
+
+  [Bash] pnpm lint:fix 2>&1 && echo "---FIX DONE---" && pnpm lint 2>&1
+Lint is clean. Now typecheck and build:
+
+  [Bash] pnpm typecheck 2>&1
+
+  [Bash] pnpm build 2>&1
+All checks pass. Let me run the test suite one final time to get a clean count:
+
+  [Bash] pnpm test 2>&1 | tail -8
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F10-draft-1.md
+
+  [TodoWrite] 
+All done. Here's a summary of what was delivered:
+
+## F10 — `GET /api/trends` — Sprint 1
+
+### Files created
+
+| File | Purpose |
+|---|---|
+| `src/lib/trends.ts` | `buildTrendsQuery` (SQL builder) + `queryTrends` (executor + transformer) |
+| `src/app/api/trends/route.ts` | `GET` handler with param validation, defaults, and error handling |
+| `src/lib/__tests__/trends.test.ts` | 23 unit tests covering SQL content and response transformation |
+| `src/app/api/trends/__tests__/route.test.ts` | 18 unit tests covering validation, defaults, and param forwarding |
+| `features/F10-draft-1.md` | Sprint handoff |
+
+### Key design decisions
+
+- **`buildTrendsQuery`** is exported so SQL content can be tested directly without a mock client
+- **`unique_users`** measure adds a `LEFT JOIN identity_mappings FINAL` and uses `uniqExact(coalesce(e.user_id, m.user_id, e.device_id))` — matching the identity resolution join pattern used throughout the codebase
+- **Week granularity** uses `toMonday` (ISO 8601 convention, as documented in the plan)
+- **Breakdown "Other"** is computed via Node post-processing: query returns all values, sort by total, keep top N, merge the rest into a single "Other" series
+- **End-inclusive date range**: `end` is converted to `end+1 day T00:00:00Z` for the `< end_exclusive` comparison
+
+### Self-evaluation results
+- `pnpm test`: **138 passing, 0 failing**
+- `pnpm lint`: **No fixes applied**
+- `pnpm typecheck`: **No errors**
+- `pnpm build`: **Success** — `/api/trends` listed as a Dynamic route
+✓ Session 'GEN:F10:1' complete  ($1.5218)
+
+  ▶ EVALUATE — F10 sprint 1: Implement GET /api/trends route with count, unique_users, and numeric aggregation measures
+
+→ Session : EVAL:F10:1  (budget: $10)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/trends.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/trends.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/trends/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/trends/__tests__/route.test.ts
+Now let me run the existing tests and other sprint contract checks in parallel.
+
+  [Bash] pnpm test --reporter=verbose 2>&1 | tail -50
+
+  [Bash] pnpm lint 2>&1
+
+  [Bash] pnpm typecheck 2>&1
+
+  [Bash] pnpm build 2>&1 | tail -30
+All Phase A checks pass. Now let me write the HTTP integration test as required by the "integration gap" noted in the plan.
+
+  [Glob] **/*.integration.test.ts
+
+  [Glob] **/vitest.config*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/__tests__/route.integration.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/vitest.config.ts
+Now I'll write the HTTP integration test for the trends route, following the existing conventions.
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/trends/__tests__/route.integration.test.ts
+
+  [Bash] pnpm test 2>&1 | tail -20
+All 145 tests pass. Now let me write the eval file.
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F10-eval-1.md
+**F10 Eval Sprint 1 — Result: APPROVED (10/10)**
+
+## What I did
+
+**Step 1 — Tests reviewed and extended**
+
+- Generator's unit tests in `src/lib/__tests__/trends.test.ts` and `src/app/api/trends/__tests__/route.test.ts` are correct and complete — no fixes needed.
+- Wrote new integration tests: `src/app/api/trends/__tests__/route.integration.test.ts` covering the "integration gap" from the plan: 7 HTTP-level tests (200 with valid params, response shape verification, 400 for each missing required param, 400 for invalid measure/granularity). Follows the project convention of gracefully skipping when the dev server is not running.
+
+**Step 2 — Sprint contract results**
+
+| Criterion | Result |
+|-----------|--------|
+| Test suite → 0 failures | ✅ 145 passed, 16 skipped |
+| Linter | ✅ exit 0 |
+| Type check | ✅ exit 0 |
+| Build | ✅ `/api/trends` listed as Dynamic route |
+| `src/lib/trends.ts` exports `queryTrends` | ✅ |
+| `src/app/api/trends/route.ts` exports `GET` | ✅ |
+| Both test files exist | ✅ |
+
+**Behaviour verified:** identity join for `unique_users`, `JSONExtractFloat` for numeric aggregations, `toMonday()` for week granularity, end-inclusive date semantics, correct "Other" grouping for breakdown, all 400 error cases.
+✓ Session 'EVAL:F10:1' complete  ($0.3838)
+✓ Feature F10 approved after 1 sprint(s) ✅  ($2.3458)
