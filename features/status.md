@@ -1,5 +1,8 @@
 # Loop Lab — Status Timeline
 
+- `2026-04-15T18:24:43.146Z` **EVALUATE** — F29 sprint 1 — Implement POST /api/generate/start route with streaming batch insert job using in-memory job store
+- `2026-04-15T18:15:55.411Z` **GENERATE** — F29 sprint 1 — Implement POST /api/generate/start route with streaming batch insert job using in-memory job store
+- `2026-04-15T18:14:09.046Z` **PLAN** — F29 — Implement POST /api/generate/start route with streaming batch insert job using in-memory job store
 - `2026-04-15T18:11:07.109Z` **EVALUATE** — F28 sprint 1 — Build Testing page right panel with SSE-powered live event feed, pause/resume, and status indicator
 - `2026-04-15T18:02:57.936Z` **GENERATE** — F28 sprint 1 — Build Testing page right panel with SSE-powered live event feed, pause/resume, and status indicator
 - `2026-04-15T18:01:32.947Z` **PLAN** — F28 — Build Testing page right panel with SSE-powered live event feed, pause/resume, and status indicator

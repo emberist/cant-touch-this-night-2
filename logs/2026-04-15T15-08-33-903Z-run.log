@@ -4023,3 +4023,317 @@ All sprint contract criteria verified independently:
 **No new test files written** — the integration gap was HTTP checks, verified directly. No e2e tests required by the plan.
 ✓ Session 'EVAL:F28:1' complete  ($0.4693)
 ✓ Feature F28 approved after 1 sprint(s) ✅  ($2.4957)
+✓ Git commit created for F28
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  F29: Implement POST /api/generate/start route with streaming batch insert job using in-memory job store
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+  ▶ PLAN — F29: Implement POST /api/generate/start route with streaming batch insert job using in-memory job store
+
+→ Session : PLAN:F29  (budget: $30)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/status.md
+
+  [Glob] features/F*-done
+Let me explore the existing codebase to understand the dependencies and current state.
+
+  [Glob] src/lib/identity.ts
+
+  [Glob] src/lib/seed.ts
+
+  [Glob] src/app/api/generate/**/*
+
+  [Glob] src/app/api/events/route.ts
+
+  [Glob] src/lib/clickhouse.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/clickhouse.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/identity.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/seed.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/route.ts
+
+  [Glob] src/app/api/events/batch/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/batch/route.ts
+
+  [Glob] src/lib/**/*.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/vitest.config.ts
+
+  [Glob] playwright.config.*
+Let me check the existing test patterns and the MEMORY.md file.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/seed.test.ts
+
+  [Glob] MEMORY.md
+
+  [Glob] tsconfig.json
+Now I have all the information I need. Let me check if there's a `MEMORY.md` in the project memory directory.
+
+  [Glob] /Users/riccardocaranfil/.claude/projects/-Users-riccardocaranfil-bitrefill-minipanel-blank-night-2/memory/MEMORY.md
+Now let me check the existing seed.ts more carefully for what `mulberry32` exports and the pattern for the generator to reuse, plus examine how the existing API routes handle SSE (the live route will be a pattern reference).
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/live/route.ts
+I have a complete picture of the codebase. Let me write the plan.
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F29-plan.md
+The plan is written at `features/F29-plan.md`. Here's a summary:
+
+**F29** implements the bulk generation backend — 5 new files:
+
+1. **`src/lib/generator.ts`** — Core engine with in-memory `Map<string, JobState>` store, async batch insertion loop (10k rows/batch), `mulberry32` PRNG reuse from seed.ts, cancellation support, throughput/ETA tracking
+2. **`src/app/api/generate/start/route.ts`** — POST handler that validates config and kicks off the job
+3. **`src/app/api/generate/[job_id]/status/route.ts`** — SSE stream that polls job state and emits progress
+4. **`src/app/api/generate/[job_id]/cancel/route.ts`** — POST handler to cancel a running job
+5. **`src/app/api/generate/jobs/route.ts`** — GET handler listing all jobs
+
+Key design decisions:
+- Reuses `mulberry32` and property generation patterns from `src/lib/seed.ts`
+- Applies the same `T`/`Z` timestamp fix for ClickHouse DateTime64
+- Identity mappings inserted in a separate batch after all event batches
+- Cancellation checked between batches (not mid-batch)
+✓ Session 'PLAN:F29' complete  ($0.5750)
+
+  ▶ GENERATE — F29 sprint 1: Implement POST /api/generate/start route with streaming batch insert job using in-memory job store
+
+→ Session : GEN:F29:1  (budget: $30)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F29-plan.md
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/MEMORY.md
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/seed.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/clickhouse.ts
+
+  [Glob] src/lib/__tests__/**/*.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/seed.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/identity.test.ts
+
+  [Glob] vitest.config.*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/seed/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/vitest.config.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/live/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/live.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/identity.ts
+Now I have enough context. Let me look at the existing `src/lib/__tests__/trends.test.ts` briefly to understand patterns, then start implementing.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/trends.test.ts
+
+  [Glob] src/app/api/generate/**
+Now I have all the context I need. Let me use the TodoWrite tool to track the sprint tasks, then implement everything.
+
+  [ToolSearch] 
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/generator.test.ts
+
+  [TodoWrite] 
+Now implement `src/lib/generator.ts`:
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/generator.ts
+
+  [TodoWrite] 
+Now create the API routes. First, create the necessary directories:
+
+  [Bash] mkdir -p /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/generate/start /Users/riccardocaranfil/bi
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/generate/start/route.ts
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/generate/[job_id]/status/route.ts
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/generate/[job_id]/cancel/route.ts
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/generate/jobs/route.ts
+
+  [TodoWrite] 
+Now run the tests:
+
+  [Bash] pnpm test --reporter=verbose 2>&1 | tail -120
+All 520 tests pass. Now run lint and typecheck:
+
+  [Bash] pnpm lint:fix 2>&1 | tail -30
+
+  [Bash] pnpm lint 2>&1 | grep -E "(generator|generate)" | head -30
+
+  [Bash] pnpm lint 2>&1 | tail -5; echo "Exit code: $?"
+Lint exits 0 (26 warnings, none from my new files). Now typecheck:
+
+  [Bash] pnpm typecheck 2>&1
+Clean. Now build:
+
+  [Bash] pnpm build 2>&1 | tail -20
+
+  [Bash] pnpm build 2>&1 | grep "generate"
+All routes appear in the build. Let me do a final test run to confirm everything still passes:
+
+  [Bash] pnpm test 2>&1 | tail -8
+520 passed, 0 failures. Now write the handoff file:
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F29-draft-1.md
+
+  [TodoWrite] 
+Sprint complete. Here's a summary of what was done:
+
+## F29 Sprint 1 — Complete
+
+### Tests written first (`src/lib/__tests__/generator.test.ts`)
+37 unit tests covering all test-plan cases: job creation, config defaults, invalid config, cancellation, completion, ClickHouse insert verification, batch event correctness, identity mapping generation, and throughput calculation.
+
+### Files created
+
+| File | Purpose |
+|---|---|
+| `src/lib/generator.ts` | Core engine: in-memory `Map<string, JobState>`, `startGenerationJob` (sync, fire-and-forget async loop), `getJob`, `cancelJob`, `listJobs`, `generateBatchEvents`, `_clearJobs` |
+| `src/app/api/generate/start/route.ts` | `POST /api/generate/start` → `{ job_id }` |
+| `src/app/api/generate/[job_id]/status/route.ts` | `GET` SSE stream, polls every 500ms, closes on terminal state |
+| `src/app/api/generate/[job_id]/cancel/route.ts` | `POST` → `{ cancelled: true }` or 404 |
+| `src/app/api/generate/jobs/route.ts` | `GET` → JSON array of all jobs |
+| `features/F29-draft-1.md` | Handoff with self-evaluation |
+
+### Self-evaluation results
+- `pnpm test`: **520 passed, 0 failures** (25 skipped = integration tests needing ClickHouse)
+- `pnpm lint`: **exit 0** (26 pre-existing warnings)
+- `pnpm typecheck`: **exit 0** (clean)
+- `pnpm build`: **exit 0** (all 5 generate routes compiled)
+
+### Key implementation decisions
+- `startGenerationJob` is **synchronous** — validation and job creation happen inline; the async generation loop is fire-and-forget
+- Cancellation flag is checked at the **top of each batch** (before insert), so an immediate cancel after `startGenerationJob` will insert 0 batches
+- Timestamps are converted from ISO 8601 to ClickHouse format (`"YYYY-MM-DD HH:MM:SS.mmm"`) at insert time, matching the pattern established in `seed.ts`
+- `_clearJobs()` exported for test isolation without needing `vi.resetModules()`
+✓ Session 'GEN:F29:1' complete  ($1.5813)
+
+  ▶ EVALUATE — F29 sprint 1: Implement POST /api/generate/start route with streaming batch insert job using in-memory job store
+
+→ Session : EVAL:F29:1  (budget: $10)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/generator.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/generator.ts
+
+  [Glob] src/app/api/generate/**/*.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F29-plan.md
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/generate/start/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/generate/[job_id]/status/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/generate/[job_id]/cancel/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/generate/jobs/route.ts
+Now let me run the Phase A checks in parallel.
+
+  [Bash] pnpm test --reporter=verbose 2>&1 | tail -60
+
+  [Bash] cat package.json | grep -E '"(test|lint|typecheck|build|dev)"'
+
+  [Bash] pnpm lint 2>&1 | tail -20
+
+  [Bash] pnpm typecheck 2>&1 | tail -20
+
+  [Bash] pnpm lint 2>&1; echo "EXIT: $?"
+
+  [Bash] pnpm build 2>&1 | tail -30
+
+  [Bash] pnpm build 2>&1; echo "EXIT: $?"
+
+  [Bash] 
+# Verify file exports using grep
+grep -n "export.*POST\|export.*GET\|export.*startGenerationJob\|export.*getJob\|export
+Phase A all passes. Now I need to write integration tests for the HTTP gap criteria, then run Phase B.
+
+Let me look at how existing integration tests are structured:
+
+  [Glob] src/**/*.integration.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/clickhouse.integration.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/__tests__/route.integration.test.ts
+Now I'll write the integration tests for the generate endpoints:
+
+  [Bash] ls src/app/api/generate/
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/generate/__tests__/route.integration.test.ts
+Now let me run the tests to make sure the new file compiles and the existing tests still pass:
+
+  [Bash] pnpm test 2>&1 | tail -20
+Now let me proceed to Phase B. First, let me check if ClickHouse is running and if not, whether I can start Next.js directly:
+
+  [Bash] cat package.json | grep -E '"pre|post|dev|start"'
+
+  [Bash] curl -s --max-time 2 http://localhost:8123/ping 2>&1; echo "EXIT: $?"
+
+  [Bash] cat scripts/migrate.ts
+
+  [Bash] 
+# Start next start (prod server from existing build) in background
+pnpm start > /tmp/next-server.log 2>&1 &
+NEXT_PID=$!
+
+  [Bash] 
+# Integration gap check 1: POST /api/generate/start with {"total":100,"users":10}
+echo "=== POST /api/generate/start ==
+
+  [Bash] 
+# Test cancel endpoint
+echo "=== POST /api/generate/[job_id]/cancel (existing job) ==="
+JOB=$(curl -s -X POST http://lo
+
+  [Bash] 
+# Now run the integration tests with the server running
+pnpm test src/app/api/generate/__tests__/route.integration.test
+
+  [Bash] kill $(lsof -ti:3000) 2>/dev/null; echo "Server killed"
+Now let me write the eval file:
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F29-eval-1.md
+**F29 Eval Sprint 1 — APPROVED (10/10)**
+
+---
+
+## Tests written
+
+- `src/app/api/generate/__tests__/route.integration.test.ts` — 10 tests covering both integration gap criteria plus cancel and SSE status endpoints. All 10 passed with the dev server running.
+
+## Sprint contract results
+
+| Criterion | Pass |
+|-----------|------|
+| `pnpm test` → 0 failures (530 passed, 25 skipped) | ✅ |
+| `pnpm lint` → exit 0 (26 pre-existing warnings) | ✅ |
+| `pnpm typecheck` → exit 0 | ✅ |
+| `pnpm build` → exit 0 | ✅ |
+| `generator.ts` exports `startGenerationJob`, `getJob`, `cancelJob`, `listJobs` | ✅ |
+| All 4 route files export the correct HTTP method handlers | ✅ |
+| `generator.test.ts` exists (37 tests, all pass) | ✅ |
+| Integration gap: POST `/api/generate/start` → HTTP 201 with `job_id` | ✅ |
+| Integration gap: GET `/api/generate/jobs` → HTTP 200 JSON array | ✅ |
+
+## Score: 10/10 — APPROVED
+
+Everything ships. No fixes needed.
+✓ Session 'EVAL:F29:1' complete  ($0.7963)
+✓ Feature F29 approved after 1 sprint(s) ✅  ($2.9526)
