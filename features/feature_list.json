@@ -1,0 +1,97 @@
+[
+  {
+    "description": "Create ClickHouse client singleton with env-based configuration in src/lib/clickhouse.ts"
+  },
+  {
+    "description": "Create idempotent migration script (scripts/migrate.ts + scripts/schema.sql) for database and tables"
+  },
+  {
+    "description": "Add concurrently dev script and predev hook to start ClickHouse and Next.js together"
+  },
+  {
+    "description": "Implement identity resolution logic in src/lib/identity.ts with mapping insert and conflict detection"
+  },
+  {
+    "description": "Implement POST /api/events route for single event ingestion with identity resolution"
+  },
+  {
+    "description": "Implement POST /api/events/batch route for bulk event ingestion"
+  },
+  {
+    "description": "Implement GET /api/events/list route with cursor pagination, event name and resolved_id filters"
+  },
+  {
+    "description": "Implement GET /api/schema route with event names, property names, and inferred types from sampling"
+  },
+  {
+    "description": "Implement in-memory schema cache with 60-second TTL in src/lib/schema-cache.ts"
+  },
+  {
+    "description": "Implement GET /api/trends route with count, unique_users, and numeric aggregation measures"
+  },
+  {
+    "description": "Implement breakdown and breakdown_limit support in GET /api/trends"
+  },
+  {
+    "description": "Implement POST /api/funnels route with ordered step conversion using resolved identities"
+  },
+  {
+    "description": "Implement GET /api/users route with search and cursor pagination"
+  },
+  {
+    "description": "Implement GET /api/users/[id] route returning profile, identity cluster, and event timeline"
+  },
+  {
+    "description": "Implement seed data generator in src/lib/seed.ts with 70 users, 12k events, and 6 event types"
+  },
+  { "description": "Implement POST /api/seed and GET /api/seed/status routes" },
+  {
+    "description": "Implement GET /api/live SSE route polling ClickHouse for new events every second"
+  },
+  {
+    "description": "Build MUI navigation shell with persistent left sidebar and route links in layout.tsx"
+  },
+  {
+    "description": "Build dashboard home page with headline metrics: total events, total users, top event last 7 days"
+  },
+  {
+    "description": "Build Event Explorer page at /explore with event table, filters, and cursor-based infinite scroll"
+  },
+  { "description": "Build JsonChip and IdentityChip shared UI components" },
+  {
+    "description": "Build Trends page at /trends with event, measure, granularity, and date range selectors"
+  },
+  {
+    "description": "Build TrendChart component with Recharts LineChart and chart type switcher (Line/Bar/Area/Table)"
+  },
+  {
+    "description": "Build Funnels page at /funnels with 2-5 step builder, date range, and horizontal funnel bar chart"
+  },
+  {
+    "description": "Build User search page at /users with search input and results list"
+  },
+  {
+    "description": "Build User profile page at /users/[id] with identity cluster chips and event timeline"
+  },
+  {
+    "description": "Build Testing page left panel with quick-fire buttons and custom event form at /test"
+  },
+  {
+    "description": "Build Testing page right panel with SSE-powered live event feed, pause/resume, and status indicator"
+  },
+  {
+    "description": "Implement POST /api/generate/start route with streaming batch insert job using in-memory job store"
+  },
+  {
+    "description": "Implement GET /api/generate/[job_id]/status SSE, POST cancel, and GET /api/generate/jobs routes"
+  },
+  {
+    "description": "Build Bulk Generator page at /generate with config form, preset templates, and progress panel"
+  },
+  {
+    "description": "Write Vitest unit tests for identity resolution against real ClickHouse (minipanel_test database)"
+  },
+  {
+    "description": "Write Playwright e2e tests for test page, explorer, trends, funnels, and identity flows"
+  }
+]
