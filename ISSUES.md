@@ -1,3 +1,12 @@
+## F13 – getUserProfile null detection for missing users
+
+`min(DateTime64)` in ClickHouse returns the epoch (`1970-01-01 00:00:00.000`) rather than
+`NULL` when the aggregation runs over an empty result set (non-nullable column type).
+Checking `statsRows[0].first_seen === null` would therefore never detect a missing user.
+Decision: include `count() AS event_count` in the stats query and check
+`Number(event_count) === 0` to detect "no events found". The unit test was updated to mock
+`{ event_count: 0, first_seen: epoch, ... }` to match this behaviour.
+
 ## F2 – TCP vs HTTP port mismatch for `./clickhouse client --port`
 
 `CLICKHOUSE_URL` (e.g. `http://localhost:8123`) uses the HTTP port, but `./clickhouse client`
