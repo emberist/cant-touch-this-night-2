@@ -4589,3 +4589,404 @@ All criteria pass cleanly.
 - The route code for `failed`/`cancelled` status emits `throughput`/`eta_seconds` (same branch as `running`) rather than `elapsed_ms`. Minor semantic inconsistency with the spec, but all required fields are present and the stream closes correctly on terminal status.
 ✓ Session 'EVAL:F30:1' complete  ($0.4662)
 ✓ Feature F30 approved after 1 sprint(s) ✅  ($2.3643)
+✓ Git commit created for F30
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  F31: Build Bulk Generator page at /generate with config form, preset templates, and progress panel
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+  ▶ PLAN — F31: Build Bulk Generator page at /generate with config form, preset templates, and progress panel
+
+→ Session : PLAN:F31  (budget: $30)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/status.md
+
+  [Glob] features/F*-done
+Let me explore the existing generate API routes and related files to understand what F29/F30 built.
+
+  [Glob] src/app/api/generate/**/*
+
+  [Glob] src/app/generate/**/*
+
+  [Glob] src/components/generate/**/*
+
+  [Glob] src/lib/seed.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/generate/start/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/generate/[job_id]/status/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/generate/[job_id]/cancel/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/generate/jobs/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/generate/page.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/generator.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/seed.ts
+Now let me look at existing UI patterns for reference — the test page and sidebar.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/test/page.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/Sidebar.tsx
+Now let me check for any existing MEMORY.md and the Playwright config.
+
+  [Glob] MEMORY.md
+
+  [Glob] playwright.config.*
+
+  [Glob] vitest.config.*
+Now let me check the existing F30 plan and the test page components for the existing patterns, plus the trends page for form UI patterns.
+
+  [Glob] features/F30-plan.md
+
+  [Glob] features/F31-plan.md
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/trends/page.tsx
+Let me check the existing hook patterns and test conventions.
+
+  [Glob] src/components/**/*.test.*
+
+  [Glob] src/components/test/useEventSender.ts*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/useEventSender.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/useEventSender.test.ts
+Now I have everything needed. Let me write the plan.
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F31-plan.md
+Plan written to `features/F31-plan.md`. 
+
+**Summary:** F31 builds the Bulk Generator page at `/generate` on top of the API routes from F29/F30. It creates 4 new component files:
+
+1. **`useGenerator` hook** — manages form state, preset templates, job submission via POST, SSE progress tracking, and cancellation
+2. **`GeneratorForm`** — MUI form with all config fields (total events, users, date range, event mix checkboxes+sliders, identity toggle, anonymous ratio, variance) plus 3 preset template buttons
+3. **`ProgressPanel`** — progress bar, throughput/ETA display, status chip, cancel button, and completion links
+4. **`JobList`** — compact list of recent generation jobs
+
+The existing placeholder `page.tsx` is modified to compose these components. 14 sprint contract checks cover tests, lint, typecheck, build, file existence, and HTTP verification of the rendered page.
+✓ Session 'PLAN:F31' complete  ($0.6986)
+
+  ▶ GENERATE — F31 sprint 1: Build Bulk Generator page at /generate with config form, preset templates, and progress panel
+
+→ Session : GEN:F31:1  (budget: $30)
+
+  [Agent] 
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json
+
+  [Glob] **/vitest.config.*
+
+  [Glob] src/components/**/*.test.{ts,tsx}
+
+  [Glob] src/components/generate/**
+
+  [Bash] find /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2 -type d -name "test" | head -20
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/vitest.config.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/ui/__tests__/JsonChip.test.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/CustomEventForm.test.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/generator.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/generate/page.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/generate/start/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/generate/[job_id]/status/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/generate/[job_id]/cancel/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/generate/jobs/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/layout.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/useEventSender.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/trends/__tests__/useTrends.test.ts
+
+  [Bash] find /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components -type f -name "*.tsx" | grep -v test | hea
+
+  [Bash] ls -la /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/ | head -30
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test
+
+  [Bash] ls -la /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/
+Let me read the key files before writing any code.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/generator.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/generate/page.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/vitest.config.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/CustomEventForm.test.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/trends/__tests__/useTrends.test.ts
+Now let me read one existing hook implementation to understand the patterns:
+
+  [Glob] src/components/test/*.ts
+
+  [Glob] src/components/generate/*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/useLiveFeed.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/useEventSender.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json
+
+  [Glob] src/components/**/*.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/funnels/FunnelDateRange.tsx
+Now I have a thorough understanding. Let me implement F31. I'll start with the test files (Step 1), then the production code.
+
+  [ToolSearch] 
+
+  [TodoWrite] 
+
+  [Bash] mkdir -p /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/generate/__tests__
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/generate/__tests__/useGenerator.test.ts
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/generate/__tests__/GeneratorForm.test.tsx
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/generate/__tests__/ProgressPanel.test.tsx
+
+  [TodoWrite] 
+Now let me implement the production code:
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/generate/useGenerator.ts
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/generate/GeneratorForm.tsx
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/generate/ProgressPanel.tsx
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/generate/JobList.tsx
+Now modify the generate page:
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/generate/page.tsx
+
+  [TodoWrite] 
+Now let's run the tests:
+
+  [Bash] pnpm test 2>&1 | tail -80
+There's a failing test. Let me look at the MUI Switch component in the installed version to understand what role it uses:
+
+  [Bash] grep -n "role" /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/node_modules/@mui/material/Switch/Switch.js | h
+
+  [Bash] grep -n "role" /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/node_modules/@mui/material/Checkbox/Checkbox.js
+
+  [Bash] grep -n "inputProps\|slotProps" /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/node_modules/@mui/material/Swi
+MUI v9 Switch uses `role="switch"` and `slotProps.input` instead of `inputProps`. The test has a factual error (wrong role). Let me fix both:
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/generate/__tests__/GeneratorForm.test.tsx
+Now fix the Switch component to use `slotProps.input` and also update the disabled state test to use the correct role:
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/generate/GeneratorForm.tsx
+
+  [Bash] pnpm test 2>&1 | tail -30
+Still failing. Let me debug the actual rendered DOM to understand what's happening:
+
+  [Bash] cat > /tmp/debug-switch.test.tsx << 'EOF'
+// @vitest-environment jsdom
+import { cleanup, render, screen } from "@testing
+
+  [Bash] cat > src/components/generate/__tests__/debug-switch.test.tsx << 'EOF'
+// @vitest-environment jsdom
+import { cleanup, re
+
+  [Bash] pnpm exec vitest run src/components/generate/__tests__/debug-switch.test.tsx 2>&1
+
+  [Bash] pnpm exec vitest run src/components/generate/__tests__/debug-switch.test.tsx --reporter=verbose 2>&1
+The debug shows the Switch IS a checkbox role with aria-label "Identity resolution". I need to revert the test back to `role="checkbox"` since I already fixed the component to use `slotProps.input`:
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/generate/__tests__/GeneratorForm.test.tsx
+
+  [Bash] pnpm exec vitest run src/components/generate/__tests__/GeneratorForm.test.tsx --reporter=verbose 2>&1 | tail -40
+All GeneratorForm tests pass. Now delete the debug test and run the full suite:
+
+  [Bash] rm /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/generate/__tests__/debug-switch.test.tsx && 
+613 tests passing, 0 failing. Now run lint and typecheck:
+
+  [Bash] pnpm lint:fix 2>&1 | tail -20
+Good. Now let's run lint in check-only mode:
+
+  [Bash] pnpm lint 2>&1 | tail -40
+
+  [Bash] pnpm lint 2>&1 | grep "src/components/generate\|src/app/generate" | head -20
+
+  [Bash] pnpm lint 2>&1 | grep -E "Checked|Found|exit" | tail -5 && echo "Exit: $?"
+Lint exits 0 with only warnings. Now run typecheck:
+
+  [Bash] pnpm typecheck 2>&1
+Two TypeScript errors in ProgressPanel.tsx. MUI v9 moved `alignItems` and `fontWeight` to the `sx` prop. Let me fix them:
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/generate/ProgressPanel.tsx
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/generate/ProgressPanel.tsx
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/generate/ProgressPanel.tsx
+
+  [Bash] pnpm typecheck 2>&1
+Typecheck passes. Now run the full test suite one more time and then run build:
+
+  [Bash] pnpm test 2>&1 | tail -8
+
+  [Bash] pnpm build 2>&1 | tail -20
+Build succeeds. `/generate` is listed as a static page. Now let me verify the HTTP contract criteria with a quick dev server check. Let me update the features/status.md and write the handoff:
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/status.md
+Let me check the built static HTML for the `/generate` page:
+
+  [Bash] cat /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/.next/server/app/generate.html 2>/dev/null | grep -o "Gene
+All three strings are in the built HTML. Now update the status file and write the handoff:
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/status.md
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F31-draft-1.md
+
+  [TodoWrite] 
+Done. Here's a summary of what was built:
+
+---
+
+## F31 Sprint 1 Complete
+
+**613 tests passing, 0 failing. lint/typecheck/build all exit 0.**
+
+### Files created
+
+| File | Purpose |
+|---|---|
+| `src/components/generate/useGenerator.ts` | Hook: form state, presets, startJob (POST + SSE), cancelJob, fetchJobs |
+| `src/components/generate/GeneratorForm.tsx` | MUI form: total/users, dates, event-type checkboxes+weight sliders, identity switch, anonymous ratio slider, variance slider, preset chips, Generate button |
+| `src/components/generate/ProgressPanel.tsx` | Progress bar, throughput/ETA, status chip, Cancel button, /explore + /trends links on complete |
+| `src/components/generate/JobList.tsx` | Compact MUI Table of recent jobs |
+| `src/app/generate/page.tsx` | Replaced placeholder — composes all three components |
+| `src/components/generate/__tests__/useGenerator.test.ts` | 30 hook tests |
+| `src/components/generate/__tests__/GeneratorForm.test.tsx` | 19 form component tests |
+| `src/components/generate/__tests__/ProgressPanel.test.tsx` | 17 progress panel tests |
+| `features/F31-draft-1.md` | Handoff file |
+
+**One test comment corrected:** MUI v9 Switch requires `slotProps.input` (not deprecated `inputProps`) to propagate `aria-label`. Component was fixed; test comment updated to note the API.
+✓ Session 'GEN:F31:1' complete  ($3.1053)
+
+  ▶ EVALUATE — F31 sprint 1: Build Bulk Generator page at /generate with config form, preset templates, and progress panel
+
+→ Session : EVAL:F31:1  (budget: $10)
+
+  [Glob] src/components/generate/**/*
+
+  [Glob] src/app/generate/**/*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/generate/__tests__/useGenerator.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/generate/__tests__/GeneratorForm.test.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/generate/__tests__/ProgressPanel.test.tsx
+Now let me read the source implementation files:
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/generate/useGenerator.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/generate/page.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/generate/GeneratorForm.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/generate/ProgressPanel.tsx
+Now let me run Phase A checks in parallel:
+
+  [Bash] pnpm test --reporter=verbose 2>&1 | tail -60
+
+  [Bash] pnpm typecheck 2>&1
+
+  [Bash] pnpm lint --fix 2>&1 | tail -20; echo "---FIX DONE---"; pnpm lint 2>&1 | tail -20; echo "EXIT:$?"
+
+  [Bash] pnpm build 2>&1 | tail -30
+Phase A checks all pass. Now Phase B - HTTP check. Let me start the dev server and check the `/generate` page:
+
+  [Bash] cat /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json | grep -A5 '"dev"'
+
+  [Bash] next start -p 3099 &>/tmp/next-generate-eval.log & DEV_PID=$!
+echo "PID=$DEV_PID"
+sleep 5
+curl -s --retry 8 --retry-conn
+
+  [Bash] cat /tmp/next-generate-eval.log 2>&1 | head -20
+
+  [Bash] pnpm next start -p 3099 &>/tmp/next-generate-eval.log & DEV_PID=$!
+echo "PID=$DEV_PID"
+sleep 5
+curl -s --retry 8 --retry
+
+  [Bash] PAGE=$(curl -s http://localhost:3099/generate)
+echo "Contains 'Generate': $(echo "$PAGE" | grep -c 'Generate')"
+echo "Co
+
+  [Bash] curl -s http://localhost:3099/generate | grep -o 'Generate\|Realistic\|Total events'
+
+  [Bash] kill $DEV_PID 2>/dev/null; kill $(lsof -ti:3099) 2>/dev/null; true
+
+  [Bash] grep "export function JobList" /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/generate/JobList
+Let me check existing e2e infrastructure:
+
+  [Glob] playwright_tests/**/*.spec.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/playwright_tests/trends.spec.ts
+The Playwright infrastructure is in place. I'll write a generate page e2e test to cover the integration gap:
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/playwright_tests/generate.spec.ts
+Now let me write the evaluation file:
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F31-eval-1.md
+## F31 Eval Sprint 1 — Result: **APPROVED (10/10)**
+
+All 13 sprint contract criteria pass.
+
+### Phase A — Fast checks
+
+| Check | Result |
+|---|---|
+| `pnpm test` | 613 pass, 0 failures |
+| `pnpm lint` | exit 0 (31 pre-existing warnings, 0 errors) |
+| `pnpm typecheck` | exit 0 |
+| `pnpm build` | exit 0 (`/generate` as static page) |
+| File existence + exports (`useGenerator`, `GeneratorForm`, `ProgressPanel`, `JobList`) | all present |
+| Test files exist | all 3 present |
+
+### Phase B — HTTP checks (via `pnpm next start`)
+
+| Check | Result |
+|---|---|
+| GET `/generate` contains `Generate` | ✅ |
+| GET `/generate` contains `Realistic` | ✅ |
+| GET `/generate` contains `Total events` | ✅ |
+
+### Integration test written
+
+`playwright_tests/generate.spec.ts` — covers the plan's integration gap: heading, preset buttons, form label, submit button state, and progress panel hidden on initial load. Requires a running server to execute.
+
+### Notes
+
+- Generator's unit tests are correct — no wrong assertions or symbol names found.
+- The MUI v9 Switch `slotProps.input` fix noted in the draft is accurate and implemented correctly.
+- The 31 lint warnings are pre-existing in `seed.test.ts`; none introduced by this sprint.
+✓ Session 'EVAL:F31:1' complete  ($0.6132)
+✓ Feature F31 approved after 1 sprint(s) ✅  ($4.4171)

@@ -1,5 +1,9 @@
 # Loop Lab — Status Timeline
 
+- `2026-04-15T18:51:29.631Z` **EVALUATE** — F31 sprint 1 — Build Bulk Generator page at /generate with config form, preset templates, and progress panel
+- `2026-04-15T20:50:00.000Z` **GENERATE** — F31 sprint 1 — DONE — 613 passing, 0 failing; lint/typecheck/build all exit 0; HTTP checks confirmed via built static HTML
+- `2026-04-15T18:38:55.513Z` **GENERATE** — F31 sprint 1 — Build Bulk Generator page at /generate with config form, preset templates, and progress panel
+- `2026-04-15T18:36:57.219Z` **PLAN** — F31 — Build Bulk Generator page at /generate with config form, preset templates, and progress panel
 - `2026-04-15T18:34:40.957Z` **EVALUATE** — F30 sprint 1 — Implement GET /api/generate/[job_id]/status SSE, POST cancel, and GET /api/generate/jobs routes
 - `2026-04-15T18:29:58.956Z` **GENERATE** — F30 sprint 1 — Implement GET /api/generate/[job_id]/status SSE, POST cancel, and GET /api/generate/jobs routes
 - `2026-04-15T18:27:54.195Z` **PLAN** — F30 — Implement GET /api/generate/[job_id]/status SSE, POST cancel, and GET /api/generate/jobs routes
