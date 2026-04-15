@@ -3,9 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "tsx scripts/migrate.ts",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "migrate": "tsx scripts/migrate.ts",
     "lint": "biome check",
     "lint:fix": "biome check --fix",
     "test": "vitest run",
@@ -30,6 +32,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "tailwindcss": "^4",
+    "tsx": "^4.19.3",
     "typescript": "^5",
     "vitest": "^4.1.4"
   }
