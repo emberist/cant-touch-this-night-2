@@ -1,5 +1,16 @@
 import { clickhouse } from "@/lib/clickhouse";
 
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
+/**
+ * Converts an ISO 8601 UTC timestamp to the ClickHouse DateTime64 format.
+ * ClickHouse JSONEachRow rejects the "T" separator and "Z" suffix; it requires
+ * "YYYY-MM-DD HH:MM:SS.mmm" with a space separator and no timezone suffix.
+ */
+function toClickHouseTs(iso: string): string {
+  return iso.replace("T", " ").replace(/Z$/, "");
+}
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface EventInput {
@@ -143,7 +154,7 @@ export async function insertEvent(
       {
         event_id,
         event_name: input.event_name,
-        timestamp,
+        timestamp: toClickHouseTs(timestamp),
         device_id: input.device_id ?? null,
         user_id: input.user_id ?? null,
         properties,

@@ -90,7 +90,10 @@ describe("insertEvent", () => {
     const after = Date.now();
 
     const insertCall = mockInsert.mock.calls[0][0];
-    const insertedTs = new Date(insertCall.values[0].timestamp).getTime();
+    // INSERT uses ClickHouse format ("YYYY-MM-DD HH:MM:SS.mmm"); re-add the T+Z
+    // suffix to parse as UTC for comparison with Date.now() (always UTC).
+    const chTs = insertCall.values[0].timestamp as string;
+    const insertedTs = new Date(`${chTs.replace(" ", "T")}Z`).getTime();
     expect(insertedTs).toBeGreaterThanOrEqual(before);
     expect(insertedTs).toBeLessThanOrEqual(after);
   });
@@ -104,7 +107,8 @@ describe("insertEvent", () => {
     });
 
     const insertCall = mockInsert.mock.calls[0][0];
-    expect(insertCall.values[0].timestamp).toBe(ts);
+    // insertEvent converts to ClickHouse format before inserting
+    expect(insertCall.values[0].timestamp).toBe("2026-01-15 10:30:00.000");
   });
 
   it("inserts event into the events table", async () => {

@@ -1,5 +1,10 @@
 # Loop Lab — Status Timeline
 
+- `2026-04-15T19:35:16.721Z` **EVALUATE** — F32 sprint 2 — Write Vitest unit tests for identity resolution against real ClickHouse (minipanel_test database)
+- `2026-04-15T19:10:37.757Z` **GENERATE** — F32 sprint 2 — Write Vitest unit tests for identity resolution against real ClickHouse (minipanel_test database)
+- `2026-04-15T18:57:38.924Z` **EVALUATE** — F32 sprint 1 — Write Vitest unit tests for identity resolution against real ClickHouse (minipanel_test database)
+- `2026-04-15T18:55:14.946Z` **GENERATE** — F32 sprint 1 — Write Vitest unit tests for identity resolution against real ClickHouse (minipanel_test database)
+- `2026-04-15T18:53:50.341Z` **PLAN** — F32 — Write Vitest unit tests for identity resolution against real ClickHouse (minipanel_test database)
 - `2026-04-15T18:51:29.631Z` **EVALUATE** — F31 sprint 1 — Build Bulk Generator page at /generate with config form, preset templates, and progress panel
 - `2026-04-15T20:50:00.000Z` **GENERATE** — F31 sprint 1 — DONE — 613 passing, 0 failing; lint/typecheck/build all exit 0; HTTP checks confirmed via built static HTML
 - `2026-04-15T18:38:55.513Z` **GENERATE** — F31 sprint 1 — Build Bulk Generator page at /generate with config form, preset templates, and progress panel

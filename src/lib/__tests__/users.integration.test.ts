@@ -86,7 +86,10 @@ describe.skipIf(!(await isClickHouseReachable()))(
       await testClient.command({ query: "TRUNCATE TABLE identity_mappings" });
     });
 
-    // Helper: insert a minimal event row directly
+    // Helper: insert a minimal event row directly.
+    // Converts ISO 8601 timestamps to ClickHouse DateTime64 format
+    // ("YYYY-MM-DD HH:MM:SS.mmm") since ClickHouse JSONEachRow rejects the
+    // "T" separator and "Z" suffix.
     async function insertRawEvent(
       eventName: string,
       userId: string | null,
@@ -98,7 +101,7 @@ describe.skipIf(!(await isClickHouseReachable()))(
         values: [
           {
             event_name: eventName,
-            timestamp: ts,
+            timestamp: ts.replace("T", " ").replace(/Z$/, ""),
             device_id: deviceId,
             user_id: userId,
             properties: "{}",

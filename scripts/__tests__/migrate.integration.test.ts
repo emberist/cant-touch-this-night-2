@@ -51,7 +51,8 @@ function runMigrationCli(): void {
       "client",
       "--host=localhost",
       "--port=9000",
-      `--password=${CLICKHOUSE_PASSWORD}`,
+      // Omit --password entirely when empty; ClickHouse CLI rejects "--password="
+      ...(CLICKHOUSE_PASSWORD ? [`--password=${CLICKHOUSE_PASSWORD}`] : []),
       `--queries-file=${SCHEMA_FILE}`,
     ],
     { stdio: "inherit" },
@@ -144,6 +145,8 @@ describe.skipIf(!(await isClickHouseReachable()))(
     it("runMigration() fails at runtime due to TCP/HTTP port mismatch (known bug in ISSUES.md)", () => {
       // When called without overriding CLICKHOUSE_URL, runMigration() passes --port=8123
       // to the CLI, which expects the native TCP port 9000. This causes a connection failure.
+      // The CLI hangs when connecting native TCP to the HTTP port, so a 3s timeout is used
+      // to ensure the command fails fast enough for Vitest's 5s default test timeout.
       const { execFileSync: realExecFileSync } = require("node:child_process");
       expect(() => {
         realExecFileSync(
@@ -155,7 +158,7 @@ describe.skipIf(!(await isClickHouseReachable()))(
             "--password=password",
             `--queries-file=${SCHEMA_FILE}`,
           ],
-          { stdio: "pipe" },
+          { stdio: "pipe", timeout: 3000 },
         );
       }).toThrow();
     });

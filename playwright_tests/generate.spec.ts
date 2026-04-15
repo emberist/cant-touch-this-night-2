@@ -17,7 +17,9 @@ const BASE_URL = process.env.BASE_URL ?? "http://localhost:3000";
 test.describe("Generate page (/generate)", () => {
   test("page renders with 'Generate' heading", async ({ page }) => {
     await page.goto(`${BASE_URL}/generate`);
-    await expect(page.getByRole("heading", { name: /generate/i })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: /generate/i }),
+    ).toBeVisible();
   });
 
   test("'Realistic' preset button is visible", async ({ page }) => {
