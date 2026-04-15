@@ -144,10 +144,9 @@ describe("POST /api/generate/[job_id]/cancel — integration", () => {
     expect(startRes.status).toBe(201);
     const { job_id } = await startRes.json();
 
-    const cancelRes = await fetch(
-      `${BASE_URL}/api/generate/${job_id}/cancel`,
-      { method: "POST" },
-    );
+    const cancelRes = await fetch(`${BASE_URL}/api/generate/${job_id}/cancel`, {
+      method: "POST",
+    });
     expect(cancelRes.status).toBe(200);
     const body = await cancelRes.json();
     expect(body).toEqual({ cancelled: true });
@@ -187,10 +186,9 @@ describe("GET /api/generate/[job_id]/status — integration", () => {
     expect(startRes.status).toBe(201);
     const { job_id } = await startRes.json();
 
-    const statusRes = await fetch(
-      `${BASE_URL}/api/generate/${job_id}/status`,
-      { signal: AbortSignal.timeout(5000) },
-    );
+    const statusRes = await fetch(`${BASE_URL}/api/generate/${job_id}/status`, {
+      signal: AbortSignal.timeout(5000),
+    });
     expect(statusRes.status).toBe(200);
     expect(statusRes.headers.get("content-type")).toContain(
       "text/event-stream",

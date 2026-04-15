@@ -1,5 +1,8 @@
 # Loop Lab — Status Timeline
 
+- `2026-04-15T18:34:40.957Z` **EVALUATE** — F30 sprint 1 — Implement GET /api/generate/[job_id]/status SSE, POST cancel, and GET /api/generate/jobs routes
+- `2026-04-15T18:29:58.956Z` **GENERATE** — F30 sprint 1 — Implement GET /api/generate/[job_id]/status SSE, POST cancel, and GET /api/generate/jobs routes
+- `2026-04-15T18:27:54.195Z` **PLAN** — F30 — Implement GET /api/generate/[job_id]/status SSE, POST cancel, and GET /api/generate/jobs routes
 - `2026-04-15T18:24:43.146Z` **EVALUATE** — F29 sprint 1 — Implement POST /api/generate/start route with streaming batch insert job using in-memory job store
 - `2026-04-15T18:15:55.411Z` **GENERATE** — F29 sprint 1 — Implement POST /api/generate/start route with streaming batch insert job using in-memory job store
 - `2026-04-15T18:14:09.046Z` **PLAN** — F29 — Implement POST /api/generate/start route with streaming batch insert job using in-memory job store
