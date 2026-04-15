@@ -3416,3 +3416,364 @@ curl http://localhost:3099/users/test → contains:
 **One issue found:** The eval-1 Playwright test at `playwright_tests/user-profile.spec.ts:36` asserts `identity-cluster` is NOT visible for 404 users, but the sprint-2 page always renders the container (with "No identity data available." fallback). This assertion fails on all 3 browsers. Per instructions the test was not rewritten, but a follow-up should change it to check content rather than visibility.
 ✓ Session 'EVAL:F26:2' complete  ($0.5733)
 ✓ Feature F26 approved after 2 sprint(s) ✅  ($4.1134)
+✓ Git commit created for F26
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  F27: Build Testing page left panel with quick-fire buttons and custom event form at /test
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+  ▶ PLAN — F27: Build Testing page left panel with quick-fire buttons and custom event form at /test
+
+→ Session : PLAN:F27  (budget: $30)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/status.md
+
+  [Glob] features/F*-done
+Let me examine the existing test page, related components, and API routes.
+
+  [Glob] features/F*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/test/page.tsx
+
+  [Glob] src/components/test/**/*
+
+  [Glob] src/app/api/events/route.ts
+
+  [Glob] features/F2[4-6]-done*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/live/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/seed/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/identity.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/layout.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/Sidebar.tsx
+
+  [Glob] playwright.config.*
+Now let me check existing component patterns and test conventions.
+
+  [Glob] src/**/*.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/vitest.config.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/tsconfig.json
+Let me look at how existing component tests and UI hooks are structured to follow conventions.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/users/__tests__/useUserSearch.test.ts
+
+  [Glob] src/components/test/**/*
+
+  [Glob] src/components/**/*.tsx
+Let me check existing hook patterns for conventions.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/funnels/__tests__/StepBuilder.test.tsx
+
+  [Glob] src/components/explore/useEventExplorer.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/ui/JsonChip.tsx
+Now I have a thorough understanding of the project. Let me write the plan.
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F27-plan.md
+The plan is written to `features/F27-plan.md`. Here's a summary:
+
+**F27** builds the Testing page left panel at `/test` with:
+
+- **`useEventSender` hook** — manages event sending via `POST /api/events`, tracks `lastDeviceId` for the anonymous→identify flow, and handles seed data via `POST /api/seed`
+- **`QuickFireButtons`** — 5 pre-configured buttons (Anonymous Page View, Button Click, Identify User, Purchase, Signup) with inline success/error feedback
+- **`CustomEventForm`** — collapsible form with event_name, device_id, user_id, timestamp, and properties textarea
+- **`SeedDataButton`** — triggers seed data generation with loading indicator and result display
+- **Updated `page.tsx`** — two-panel layout with left panel components composed, right panel placeholder for future Live Feed
+
+**9 implementation steps**, all independently runnable. **14 sprint contract checks** including type/lint/build/test gates and 3 HTTP checks. **4 test files** covering the hook and all 3 components.
+✓ Session 'PLAN:F27' complete  ($0.5819)
+
+  ▶ GENERATE — F27 sprint 1: Build Testing page left panel with quick-fire buttons and custom event form at /test
+
+→ Session : GEN:F27:1  (budget: $30)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F27-plan.md
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json
+
+  [Glob] vitest.config*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/test/page.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/vitest.config.ts
+
+  [Glob] src/**/__tests__/*.test.*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/explore/__tests__/useEventExplorer.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/ui/__tests__/JsonChip.test.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/users/__tests__/useUserSearch.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/users/__tests__/useUserProfile.test.ts
+Now let me look at a component test and a few existing components to understand the patterns:
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/funnels/__tests__/StepBuilder.test.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/funnels/__tests__/useFunnels.test.ts
+Now let me look at the existing test files for components in the explore directory to understand the pattern better:
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/explore/__tests__/EventFilterBar.test.tsx
+
+  [Glob] src/components/explore/*.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/explore/EventFilterBar.tsx
+
+  [Glob] src/components/users/*.tsx
+
+  [Glob] src/components/users/*.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/funnels/useFunnels.ts
+Let me check the tsconfig and a few more component files:
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/tsconfig.json
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/users/useUserSearch.ts
+Now I have enough context. Let me start implementing everything. I'll write the test files first, then implement the production code.
+
+  [ToolSearch] 
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/useEventSender.test.ts
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/QuickFireButtons.test.tsx
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/CustomEventForm.test.tsx
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/SeedDataButton.test.tsx
+
+  [TodoWrite] 
+Now let me implement the production code:
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/useEventSender.ts
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/QuickFireButtons.tsx
+Now implement `CustomEventForm`:
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/CustomEventForm.tsx
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/SeedDataButton.tsx
+Let me look at existing page patterns before modifying `page.tsx`:
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/explore/page.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/funnels/page.tsx
+Now I'll modify `page.tsx`:
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/test/page.tsx
+
+  [TodoWrite] 
+Now let me run the tests to see what happens:
+
+  [Bash] pnpm test --reporter=verbose 2>&1 | tail -100
+One test failure: `queryByText` throws when multiple elements match the text. Let me fix the test:
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/CustomEventForm.test.tsx
+
+  [Bash] pnpm test --reporter=verbose 2>&1 | grep -E "(FAIL|PASS|Tests|Test Files|✓|✗|×|✓|failed|passed)" | tail -20
+All 454 tests pass. Now let's run the linter and type checker:
+
+  [Bash] pnpm lint:fix 2>&1 | tail -20
+Good, lint auto-fixed 7 files (import ordering). Let's confirm clean lint and run tests again:
+
+  [Bash] pnpm lint 2>&1 | tail -10
+
+  [Bash] pnpm typecheck 2>&1 | tail -20
+Two issues to fix: `vi.fn` generic syntax and deprecated `inputProps` in MUI v9. Let me check the existing MUI TextField usage:
+
+  [Grep] inputProps|slotProps.*htmlInput
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/CustomEventForm.tsx
+Now fix the `vi.fn` generic syntax in the test files (Vitest 4.x uses function type, not `[args], return` tuple):
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/SeedDataButton.test.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/CustomEventForm.test.tsx
+Let me check the Vitest version being used and how existing tests use vi.fn with generics:
+
+  [Bash] grep -r "vi\.fn<" /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src --include="*.ts" --include="*.tsx" | gre
+The Vitest 4.x `vi.fn` generic changed from `<[Args], Return>` to `<FunctionType>`. Let me fix both test files:
+
+  [Bash] sed -i '' 's/vi\.fn<\[\], Promise<SeedResult>>()/vi.fn<() => Promise<SeedResult>>()/g' /Users/riccardocaranfil/bitrefill
+
+  [Bash] sed -i '' 's/vi\.fn<\[EventPayload\], Promise<SendResult>>()/vi.fn<(payload: EventPayload) => Promise<SendResult>>()/g' 
+
+  [Bash] pnpm typecheck 2>&1 | tail -15
+
+  [Bash] grep "vi\.fn<" /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/SeedDataButton.te
+
+  [Bash] grep -n "vi\.fn" /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/SeedDataButton.
+
+  [Bash] grep -n "vi\.fn" /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/CustomEventForm
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/CustomEventForm.test.tsx
+The sed didn't replace multi-line patterns. I'll fix each directly:
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/CustomEventForm.test.tsx
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/CustomEventForm.test.tsx
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/CustomEventForm.test.tsx
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/CustomEventForm.test.tsx
+Now fix SeedDataButton.test.tsx - the grep showed only one line was replaced. Let me read and fix the remaining ones:
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/SeedDataButton.test.tsx
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/SeedDataButton.test.tsx
+
+  [Bash] pnpm typecheck 2>&1 | tail -15
+Type check passes. Now run tests and lint one final time:
+
+  [Bash] pnpm test 2>&1 | tail -8
+
+  [Bash] pnpm lint 2>&1 | tail -5
+
+  [Bash] pnpm lint 2>&1 | grep -E "^src/components/test|^src/app/test"
+No warnings in my files. Now run the build:
+
+  [Bash] pnpm build 2>&1 | tail -20
+Build passes and `/test` is listed as a static page. Now verify file existence and imports:
+
+  [Bash] ls /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/
+grep -c "useEventSender" /Users/riccar
+All files exist with correct imports. Let me do the HTTP checks by starting a dev server briefly:
+
+  [Bash] pnpm exec next build --no-lint 2>/dev/null; pnpm exec next start &
+DEV_PID=$!
+sleep 5
+curl -s http://localhost:3000/test
+All three `data-testid` attributes are confirmed in the rendered page. Now let me write the handoff:
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F27-draft-1.md
+
+  [TodoWrite] 
+Sprint complete. Here's a summary of what was built:
+
+---
+
+**F27 Sprint 1 — Testing page left panel**
+
+**Tests written first (53 cases across 4 files):**
+- `useEventSender.test.ts` — hook behavior: fetch call shape, success/error returns, `lastDeviceId` tracking, `sendSeed` flow, loading flag
+- `QuickFireButtons.test.tsx` — 5 buttons, correct payloads, device_id sharing across anonymous→identify flow, feedback display
+- `CustomEventForm.test.tsx` — collapsible toggle, disabled submit, all optional fields, JSON validation, feedback
+- `SeedDataButton.test.tsx` — click triggers seedSeed, loading disabled state, event count display, error display
+
+**Production code:**
+- `useEventSender.ts` — hook with `sendEvent`, `sendSeed`, `lastDeviceId`, `loading`, and exported `generateId`
+- `QuickFireButtons.tsx` — 5 quick-fire buttons using the hook internally (owns `lastDeviceId` for the anonymous→identify chain)
+- `CustomEventForm.tsx` — collapsible form, accepts `sendEvent` prop, JSON validation inline
+- `SeedDataButton.tsx` — accepts `sendSeed` prop, shows event count on success
+- `src/app/test/page.tsx` — two-panel layout; right panel is "Live Feed coming soon" placeholder for F28
+
+**Two fixes needed during implementation:**
+- Vitest 4.x changed `vi.fn<[Args], Return>()` → `vi.fn<FnType>()` (1-arg generic)
+- MUI v9 removed `inputProps` → replaced with `slotProps={{ htmlInput: {...} }}`
+
+**All contract checks pass:** 454 tests ✅, typecheck ✅, lint ✅ (7 pre-existing warnings, 0 new), build ✅, HTTP checks ✅
+✓ Session 'GEN:F27:1' complete  ($3.4283)
+
+  ▶ EVALUATE — F27 sprint 1: Build Testing page left panel with quick-fire buttons and custom event form at /test
+
+→ Session : EVAL:F27:1  (budget: $10)
+
+  [Agent] 
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/useEventSender.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/QuickFireButtons.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/CustomEventForm.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/SeedDataButton.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/test/page.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/useEventSender.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/QuickFireButtons.test.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/CustomEventForm.test.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/SeedDataButton.test.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/useEventSender.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/useEventSender.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/QuickFireButtons.test.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/CustomEventForm.test.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/SeedDataButton.test.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/test/page.tsx
+Now let me run the Phase A checks in parallel.
+
+  [Bash] pnpm test --reporter=verbose 2>&1 | tail -60
+
+  [Bash] pnpm typecheck 2>&1
+
+  [Bash] pnpm lint 2>&1 | tail -30
+
+  [Bash] pnpm build 2>&1 | tail -30
+All Phase A checks pass. Now Phase B — HTTP checks.
+
+  [Bash] grep -c 'export.*useEventSender\|export function useEventSender\|export const useEventSender' src/components/test/useEve
+
+  [Bash] grep 'from.*QuickFireButtons\|from.*CustomEventForm\|from.*SeedDataButton' /Users/riccardocaranfil/bitrefill/minipanel-b
+
+  [Bash] pnpm build 2>/dev/null && pnpm start &
+SERVER_PID=$!
+echo "Server PID: $SERVER_PID"
+sleep 8
+curl -s --retry 5 --retry-co
+
+  [Bash] curl -s http://localhost:3000/test | grep -o 'data-testid="quick-fire-buttons"\|data-testid="custom-event-form"\|data-te
+
+  [Bash] kill $SERVER_PID 2>/dev/null; kill $(lsof -ti:3000) 2>/dev/null; true
+All checks pass. Now I'll write the eval file.
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F27-eval-1.md
+**F27 Eval Sprint 1 — Score: 10/10 — APPROVED**
+
+All 14 sprint contract criteria pass.
+
+**Phase A results:**
+- `pnpm typecheck` — exit 0, clean
+- `pnpm lint` — exit 0, 7 pre-existing warnings in `seed.test.ts` (not from this feature)
+- `pnpm build` — exit 0, `/test` built as static page
+- `pnpm test` — 454 passing, 25 skipped, 0 failures
+- All file/export/import checks — present and correct
+
+**Phase B results:**
+- `GET /test` — all three `data-testid` attributes (`quick-fire-buttons`, `custom-event-form`, `seed-data-button`) confirmed present in static HTML
+
+**No new tests written.** The plan's only stated integration gap ("HTTP checks for `/test` page rendering") was covered by the Phase B curl verification. No e2e tests added — Playwright exists but this feature's flows require a live ClickHouse backend, which is addressed by the manual verification scenarios in SPEC.md §11.
+
+**One minor observation (non-blocking):** `src/app/test/page.tsx` lacks an explicit `"use client"` directive at the top, yet it uses the `useEventSender` hook. The build succeeds and the page renders correctly (it ships as a static page), but if RSC features are added later the directive will need to be added.
+✓ Session 'EVAL:F27:1' complete  ($0.6195)
+✓ Feature F27 approved after 1 sprint(s) ✅  ($4.6297)
