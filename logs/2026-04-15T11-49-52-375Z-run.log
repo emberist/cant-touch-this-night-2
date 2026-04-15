@@ -2787,3 +2787,220 @@ Now update `features/status.md`:
 - **Known gap:** The integration test from eval-1 requires `POST /api/seed` (returns 404 — not yet implemented), so it cannot run via the live-server path. It gracefully skips when the server is absent. Not a F11 defect.
 ✓ Session 'EVAL:F11:2' complete  ($1.0311)
 ✓ Feature F11 approved after 2 sprint(s) ✅  ($3.7231)
+✓ Git commit created for F11
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  F12: Implement POST /api/funnels route with ordered step conversion using resolved identities
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+  ▶ PLAN — F12: Implement POST /api/funnels route with ordered step conversion using resolved identities
+
+→ Session : PLAN:F12  (budget: $30)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/status.md
+
+  [Glob] features/F*-done
+
+  [Glob] features/F*-done*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/identity.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/clickhouse.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/trends/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/trends.ts
+
+  [Glob] src/lib/*.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/vitest.config.ts
+
+  [Glob] playwright.config.*
+Now let me look at the existing test patterns and check if there's a MEMORY.md.
+
+  [Glob] src/**/*.test.ts
+
+  [Glob] MEMORY.md
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/scripts/schema.sql
+Let me look at an existing test to understand the test patterns used in this project.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/trends.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/trends/__tests__/route.test.ts
+Now I have a complete picture of the project. Let me write the plan.
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F12-plan.md
+Plan written to `features/F12-plan.md`. 
+
+**Summary:** F12 implements the `POST /api/funnels` route using ClickHouse's `windowFunnel()` aggregate function to compute ordered step conversion with resolved identities. The implementation splits into:
+
+1. **`src/lib/funnels.ts`** — query builder + executor that uses `windowFunnel` with identity-resolved JOINs, then transforms raw level counts into cumulative per-step user counts with conversion rates
+2. **`src/app/api/funnels/route.ts`** — POST handler with validation (2–5 steps, required dates)
+3. **Two test files** — unit tests for both the query logic and the route handler, following the project's existing mock patterns
+
+Key design decision: `windowFunnel(2147483647)` with a huge window parameter means only event ordering matters (no time constraint between steps), which matches the spec since per-user time windows are explicitly deferred in §13.
+✓ Session 'PLAN:F12' complete  ($0.5476)
+
+  ▶ GENERATE — F12 sprint 1: Implement POST /api/funnels route with ordered step conversion using resolved identities
+
+→ Session : GEN:F12:1  (budget: $30)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F12-plan.md
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/clickhouse.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/identity.ts
+
+  [Glob] src/lib/__tests__/*.test.ts
+
+  [Glob] src/app/api/**/__tests__/*.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/trends.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/trends/__tests__/route.test.ts
+Now let me look at the existing trends lib and an existing route for patterns:
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/trends.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/trends/route.ts
+
+  [Glob] vitest.config*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/vitest.config.ts
+Let me look at an existing POST route to understand the pattern:
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/__tests__/route.test.ts
+Now I have all the patterns I need. Let me implement everything. I'll start by creating the test files, then the implementation files.
+
+  [ToolSearch] 
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/funnels.test.ts
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/funnels/__tests__/route.test.ts
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/funnels.ts
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/funnels/route.ts
+Now let's run the tests, lint, and typecheck:
+
+  [Bash] pnpm test 2>&1
+All tests pass. Now lint and typecheck:
+
+  [Bash] pnpm lint:fix 2>&1 && pnpm lint 2>&1
+Lint is clean. Now typecheck and build:
+
+  [Bash] pnpm typecheck 2>&1
+
+  [Bash] pnpm build 2>&1
+All checks pass. Let me do the final test run to confirm everything is clean:
+
+  [Bash] pnpm test 2>&1 | tail -5
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F12-draft-1.md
+
+  [TodoWrite] 
+Sprint complete. Here's a summary of what was done:
+
+## F12 — POST /api/funnels
+
+**Files created:**
+
+- **`src/lib/funnels.ts`** — Core logic using ClickHouse's `windowFunnel()` aggregate. `buildFunnelQuery` generates parameterized SQL (`{step_0:String}`, `{step_1:String}`, …) with the resolved identity JOIN. `queryFunnel` reads per-level row counts and computes cumulative user counts (a user who reached level L contributes to steps 1..L), then derives `conversion_from_prev` and `conversion_overall` with zero-safe division.
+
+- **`src/app/api/funnels/route.ts`** — POST handler that validates `steps` (array, 2–5 non-empty strings), `start`, and `end`, then delegates to `queryFunnel`.
+
+- **`src/lib/__tests__/funnels.test.ts`** — 19 unit tests covering SQL structure and all result-transformation math.
+
+- **`src/app/api/funnels/__tests__/route.test.ts`** — 10 unit tests covering all validation, success, and 500 error paths.
+
+**Verification:**
+- `pnpm test` — 179 passed, 0 failures
+- `pnpm lint` — exit 0
+- `pnpm typecheck` — exit 0
+- `pnpm build` — exit 0 (`/api/funnels` visible in route table)
+✓ Session 'GEN:F12:1' complete  ($1.0847)
+
+  ▶ EVALUATE — F12 sprint 1: Implement POST /api/funnels route with ordered step conversion using resolved identities
+
+→ Session : EVAL:F12:1  (budget: $10)
+I'll start by reading all the relevant files in parallel to understand the implementation.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/funnels.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/funnels/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/funnels.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/funnels/__tests__/route.test.ts
+Now let me run the test suite and other checks in parallel.
+
+  [Bash] pnpm test --reporter=verbose 2>&1 | tail -60
+
+  [Bash] pnpm typecheck 2>&1 | tail -30
+
+  [Bash] pnpm lint 2>&1 | tail -20
+
+  [Bash] pnpm build 2>&1 | tail -30
+Phase A checks all pass. Let me now check if Playwright e2e infrastructure exists and verify file exports precisely.
+
+  [Bash] ls /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/playwright_tests/ 2>/dev/null && echo "EXISTS" || echo "MIS
+
+  [Bash] grep -n "^export" /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/funnels.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/identity.integration.test.ts
+
+  [Bash] ls /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/trends/__tests__/ 2>/dev/null && cat /Users/ric
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/trends/__tests__/route.integration.test.ts
+Now I have all the context I need. I'll write the HTTP integration test for `POST /api/funnels` (the integration gap from the plan), then produce the eval file.
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/funnels/__tests__/route.integration.test.ts
+
+  [Bash] pnpm test --reporter=verbose 2>&1 | tail -30
+All checks pass. Now I'll write the eval file.
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F12-eval-1.md
+**F12 Eval Sprint 1 — APPROVED (10/10)**
+
+## Phase A checks — all pass
+
+| Criterion | Result |
+|-----------|--------|
+| `pnpm test` → 0 failures | ✅ 189 passed, 16 skipped |
+| `pnpm lint` → exit 0 | ✅ No fixes applied |
+| `pnpm typecheck` → exit 0 | ✅ |
+| `pnpm build` → exit 0 | ✅ `/api/funnels` in route table |
+| `src/lib/funnels.ts` exports all 4 required symbols | ✅ |
+| `src/app/api/funnels/route.ts` exports `POST` | ✅ |
+| `src/lib/__tests__/funnels.test.ts` — 19 test cases | ✅ |
+| `src/app/api/funnels/__tests__/route.test.ts` — 10 test cases | ✅ |
+
+## Integration test written
+
+`src/app/api/funnels/__tests__/route.integration.test.ts` — covers the plan's integration gap: HTTP-level validation errors, response shape with seeded data, step name ordering, step-1 conversion invariants, and funnel monotonicity. Skips gracefully when the dev server is not running.
+
+## Notes
+
+- `windowFunnel(2147483647)` window is correct per §13.2 (time window deferred).
+- Empty-result path returns `{ steps: [] }` — not spec'd for this edge case, but covered by an explicit test and defensible.
+- All generator-written tests are correct; none required fixes.
+✓ Session 'EVAL:F12:1' complete  ($0.4345)
+✓ Feature F12 approved after 1 sprint(s) ✅  ($2.0668)

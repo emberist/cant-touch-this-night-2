@@ -1,5 +1,8 @@
 # Loop Lab — Status Timeline
 
+- `2026-04-15T13:53:07.721Z` **EVALUATE** — F12 sprint 1 — Implement POST /api/funnels route with ordered step conversion using resolved identities
+- `2026-04-15T13:32:43.110Z` **GENERATE** — F12 sprint 1 — Implement POST /api/funnels route with ordered step conversion using resolved identities
+- `2026-04-15T13:30:32.024Z` **PLAN** — F12 — Implement POST /api/funnels route with ordered step conversion using resolved identities
 - `2026-04-15T13:26:00.000Z` **EVALUATE** — F11 sprint 2 — APPROVED (9/10) — timestamp bug fixed; all criteria pass; HTTP endpoint verified
 - `2026-04-15T13:24:46.192Z` **EVALUATE** — F11 sprint 2 — Implement breakdown and breakdown_limit support in GET /api/trends
 - `2026-04-15T13:22:25.363Z` **GENERATE** — F11 sprint 2 — Implement breakdown and breakdown_limit support in GET /api/trends
