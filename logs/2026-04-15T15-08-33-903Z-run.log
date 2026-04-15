@@ -3777,3 +3777,249 @@ All 14 sprint contract criteria pass.
 **One minor observation (non-blocking):** `src/app/test/page.tsx` lacks an explicit `"use client"` directive at the top, yet it uses the `useEventSender` hook. The build succeeds and the page renders correctly (it ships as a static page), but if RSC features are added later the directive will need to be added.
 ✓ Session 'EVAL:F27:1' complete  ($0.6195)
 ✓ Feature F27 approved after 1 sprint(s) ✅  ($4.6297)
+✓ Git commit created for F27
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  F28: Build Testing page right panel with SSE-powered live event feed, pause/resume, and status indicator
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+  ▶ PLAN — F28: Build Testing page right panel with SSE-powered live event feed, pause/resume, and status indicator
+
+→ Session : PLAN:F28  (budget: $30)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/status.md
+
+  [Glob] features/F*-done
+Let me examine the existing Testing page and live API route that F28 builds on.
+
+  [Glob] features/F*-done.md
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/test/page.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/live/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/live.ts
+
+  [Glob] src/components/test/*.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/tsconfig.json
+Now let me check the existing test conventions and the `useEventSender` hook since it's closely related.
+
+  [Glob] src/components/test/useEventSender.ts*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/identity.ts
+
+  [Glob] src/**/*.test.ts*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/useEventSender.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/vitest.config.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/useEventSender.test.ts
+Let me also check for existing MEMORY.md and playwright config.
+
+  [Glob] MEMORY.md
+
+  [Glob] playwright.config.*
+Now I have everything needed. Let me write the plan.
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F28-plan.md
+Plan written to `features/F28-plan.md`. 
+
+**Summary**: F28 builds the Testing page right panel — a live event feed powered by SSE. Two new files:
+
+1. **`useLiveFeed.ts`** — hook that connects to `GET /api/live`, manages event state (prepend, 200 cap), pause/resume buffering, connection status, and cleanup
+2. **`LiveFeed.tsx`** — component rendering status indicator (green/red dot), pause/resume + clear buttons, and event cards with relative timestamps, colored event name chips, identity chips, and compact JSON properties
+
+Plus a one-line change to `test/page.tsx` to swap in the real component for the placeholder. 11 sprint contract checks including tests, lint, typecheck, build, file existence, and 3 HTTP checks.
+✓ Session 'PLAN:F28' complete  ($0.4740)
+
+  ▶ GENERATE — F28 sprint 1: Build Testing page right panel with SSE-powered live event feed, pause/resume, and status indicator
+
+→ Session : GEN:F28:1  (budget: $30)
+
+  [Glob] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/memory/MEMORY.md
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F28-plan.md
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/test/page.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/identity.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/ui/JsonChip.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/ui/IdentityChip.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json
+
+  [Glob] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/vitest.config*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/vitest.config.ts
+
+  [Glob] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/**
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/useEventSender.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/QuickFireButtons.test.tsx
+Now let me look at the existing hook implementation for reference:
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/useEventSender.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/live.ts
+Let me look at the TypeScript config and a few more files:
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/tsconfig.json
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/CustomEventForm.tsx
+
+  [Glob] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/__mocks__/**
+
+  [Glob] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/__mocks__/**
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/CustomEventForm.test.tsx
+Now I have a thorough understanding of the codebase. Let me implement everything in the correct order.
+
+**Step 1: Write test files first**
+
+  [ToolSearch] 
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/useLiveFeed.test.ts
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/LiveFeed.test.tsx
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/useLiveFeed.ts
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/LiveFeed.tsx
+
+  [TodoWrite] 
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/test/page.tsx
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/test/page.tsx
+
+  [TodoWrite] 
+Now let me run the test suite:
+
+  [Bash] pnpm test 2>&1
+All 478 tests passing. Now lint:
+
+  [Bash] pnpm lint:fix 2>&1 && pnpm lint 2>&1
+
+  [Bash] pnpm lint; echo "EXIT: $?"
+Lint exits 0 (warnings only, all pre-existing style rules). Now typecheck:
+
+  [Bash] pnpm typecheck 2>&1
+
+  [Bash] pnpm build 2>&1
+Build succeeds. Now verify the HTTP checks by starting the production server briefly:
+
+  [Bash] pnpm start &> /tmp/next-start.log & DEV_PID=$!; sleep 4; curl -s http://localhost:3000/test | grep -o 'Live\|Pause\|Clea
+All three HTTP checks pass: `Clear`, `Live`, `Pause` confirmed in the rendered page. Now verify the final test run and write the handoff:
+
+  [Bash] pnpm test 2>&1 | tail -5
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F28-draft-1.md
+
+  [TodoWrite] 
+All done. Here's a summary of what was built:
+
+## F28 Sprint 1 complete
+
+**Tests written first (Step 1):**
+- `useLiveFeed.test.ts` — 13 cases covering: initial state, EventSource lifecycle (URL, unmount cleanup), status transitions (open→live, error→disconnected), message ordering (newest-first prepend), 200-event cap, pause buffering, resume flush, clearEvents
+- `LiveFeed.test.tsx` — 13 cases covering: status indicator text, Pause/Resume/Clear buttons, empty state, event cards (name chip, identity, properties), Pause→Resume toggle, Clear callback
+
+**Implementation (Step 2):**
+- **`useLiveFeed.ts`** — hook uses `pausedRef` (not state) inside the `onmessage` handler to avoid stale closures; buffer is a ref (`bufferRef`) that gets flushed atomically inside `setPaused`'s updater on resume; 200-event cap enforced on every prepend
+- **`LiveFeed.tsx`** — connection status dot + "Live"/"Disconnected" text, Pause/Resume and Clear toolbar buttons, empty state, event cards with colored MUI `Chip` per event type, `IdentityChip`, relative timestamp, `JsonChip`
+- **`src/app/test/page.tsx`** — placeholder replaced with `<LiveFeed />`
+
+**Self-evaluation results:** 478 tests passing / 0 failing, lint exit 0, typecheck clean, build succeeds, all three HTTP checks confirmed (`Live`, `Pause`, `Clear` present in rendered HTML).
+✓ Session 'GEN:F28:1' complete  ($1.5525)
+
+  ▶ EVALUATE — F28 sprint 1: Build Testing page right panel with SSE-powered live event feed, pause/resume, and status indicator
+
+→ Session : EVAL:F28:1  (budget: $10)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F28-plan.md
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F28-draft-1.md
+Now let me read the implementation files and test files in parallel.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/useLiveFeed.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/LiveFeed.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/useLiveFeed.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/test/__tests__/LiveFeed.test.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/test/page.tsx
+Now let me run Phase A checks — tests, lint, typecheck, and build — in parallel.
+
+  [Bash] pnpm test --reporter=verbose 2>&1 | tail -40
+
+  [Bash] pnpm typecheck 2>&1
+
+  [Bash] pnpm lint 2>&1 | tail -30
+
+  [Bash] pnpm build 2>&1 | tail -20
+All Phase A checks pass. Now let me verify the lint warnings more precisely to see what's new vs. pre-existing.
+
+  [Bash] pnpm lint 2>&1 | grep "useLiveFeed\|LiveFeed" | head -20
+Phase A passes. Now Phase B — HTTP checks. Let me start the dev server.
+
+  [Bash] pnpm dev &> /tmp/devserver.log & DEV_PID=$! && echo "PID: $DEV_PID"
+
+  [Bash] curl -s --retry 15 --retry-connrefused --retry-delay 2 -o /dev/null -w "%{http_code}" http://localhost:3000/test
+
+  [Bash] cat /tmp/devserver.log | head -30
+
+  [Bash] kill 50565 2>/dev/null; true
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json
+The build succeeded and `/test` is static. I can use `next start` which doesn't run `predev`.
+
+  [Bash] pnpm start &> /tmp/nextstart.log & NEXT_PID=$! && echo "PID: $NEXT_PID" && sleep 5 && curl -s --retry 8 --retry-connrefu
+
+  [Bash] curl -s http://localhost:3000/test | grep -o "Live\|Pause\|Clear\|Disconnected" | sort | uniq
+
+  [Bash] kill 52054 2>/dev/null; kill $(lsof -ti:3000) 2>/dev/null; true
+All checks pass. Let me now write the eval file.
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F28-eval-1.md
+**F28 Eval — Score: 10/10 — APPROVED**
+
+All sprint contract criteria verified independently:
+
+| Phase | Check | Result |
+|-------|-------|--------|
+| A | Tests (478 passing, 0 failing, 25 skipped) | ✅ |
+| A | Lint (17 warnings, exit 0) | ✅ |
+| A | Typecheck (`tsc --noEmit`) | ✅ |
+| A | Build (`next build`, `/test` static) | ✅ |
+| A | File + export checks (all 4 files) | ✅ |
+| B | GET `/test` contains `Live` | ✅ |
+| B | GET `/test` contains `Pause` | ✅ |
+| B | GET `/test` contains `Clear` | ✅ |
+
+**Unit test correctness**: All 13 hook tests and 13 component tests pass and match the plan's test cases exactly. No factual errors found.
+
+**Implementation correctness**: The `pausedRef` stale-closure pattern is correct. Prepend ordering, 200-cap, pause buffering, resume flush, buffer-clear-on-clear, and EventSource cleanup are all implemented correctly and covered by tests.
+
+**No new test files written** — the integration gap was HTTP checks, verified directly. No e2e tests required by the plan.
+✓ Session 'EVAL:F28:1' complete  ($0.4693)
+✓ Feature F28 approved after 1 sprint(s) ✅  ($2.4957)

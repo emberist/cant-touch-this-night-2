@@ -6,6 +6,7 @@ import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { CustomEventForm } from "@/components/test/CustomEventForm";
+import { LiveFeed } from "@/components/test/LiveFeed";
 import { QuickFireButtons } from "@/components/test/QuickFireButtons";
 import { SeedDataButton } from "@/components/test/SeedDataButton";
 import { useEventSender } from "@/components/test/useEventSender";
@@ -50,14 +51,12 @@ export default function TestPage(): React.JSX.Element {
           </Stack>
         </Paper>
 
-        {/* Right panel — Live Feed (placeholder for F28) */}
-        <Paper variant="outlined" sx={{ p: 2 }}>
+        {/* Right panel — Live Feed */}
+        <Paper variant="outlined" sx={{ p: 2, minHeight: 400 }}>
           <Typography variant="h6" gutterBottom>
             Live Feed
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Live Feed coming soon
-          </Typography>
+          <LiveFeed />
         </Paper>
       </Box>
     </Box>
