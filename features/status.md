@@ -1,5 +1,8 @@
 # Loop Lab — Status Timeline
 
+- `2026-04-15T17:12:32.411Z` **EVALUATE** — F24 sprint 1 — Build Funnels page at /funnels with 2-5 step builder, date range, and horizontal funnel bar chart
+- `2026-04-15T17:02:43.191Z` **GENERATE** — F24 sprint 1 — Build Funnels page at /funnels with 2-5 step builder, date range, and horizontal funnel bar chart
+- `2026-04-15T17:01:04.448Z` **PLAN** — F24 — Build Funnels page at /funnels with 2-5 step builder, date range, and horizontal funnel bar chart
 - `2026-04-15T16:59:20.821Z` **EVALUATE** — F23 sprint 1 — Build TrendChart component with Recharts LineChart and chart type switcher (Line/Bar/Area/Table)
 - `2026-04-15T16:58:21.658Z` **GENERATE** — F23 sprint 1 — Build TrendChart component with Recharts LineChart and chart type switcher (Line/Bar/Area/Table)
 - `2026-04-15T16:56:28.174Z` **PLAN** — F23 — Build TrendChart component with Recharts LineChart and chart type switcher (Line/Bar/Area/Table)

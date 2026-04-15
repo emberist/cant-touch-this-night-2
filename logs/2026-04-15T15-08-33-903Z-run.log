@@ -2275,3 +2275,365 @@ The integration gap from the generator's draft ("Requires dev server; not verifi
 One minor observation noted in the eval: the `useEffect` in `TrendChart.tsx` resets chart type on every `series` change, so a user's manual selection (e.g. switching to Area) gets overridden on data refresh. Spec-compliant for now, but worth a UX polish ticket later.
 ✓ Session 'EVAL:F23:1' complete  ($0.3293)
 ✓ Feature F23 approved after 1 sprint(s) ✅  ($1.2009)
+✓ Git commit created for F23
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  F24: Build Funnels page at /funnels with 2-5 step builder, date range, and horizontal funnel bar chart
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+  ▶ PLAN — F24: Build Funnels page at /funnels with 2-5 step builder, date range, and horizontal funnel bar chart
+
+→ Session : PLAN:F24  (budget: $30)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/status.md
+
+  [Glob] features/F*-done
+
+  [Glob] features/F*-done*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/funnels/route.ts
+
+  [Glob] src/app/funnels/**/*
+
+  [Glob] src/components/FunnelChart*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/funnels/page.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/trends/page.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/TrendChart.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/funnels.ts
+
+  [Glob] src/components/trends/**/*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/schema/route.ts
+Now let me look at the existing Trends controls pattern (for reuse in Funnels) and the Sidebar to understand the existing navigation.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/trends/TrendsControls.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/trends/useTrends.ts
+
+  [Glob] playwright.config.*
+Now let me check the existing test patterns and the MEMORY.md file.
+
+  [Glob] src/**/__tests__/*funnel*
+
+  [Glob] src/**/*.test.*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/MEMORY.md
+Let me look at how tests reference the vitest config and what the existing test structure looks like for a UI component.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/__tests__/TrendChart.test.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/funnels.test.ts
+Now I have a complete picture. The API route (`POST /api/funnels`) and logic (`src/lib/funnels.ts`) are already built (F12). The existing funnels page at `src/app/funnels/page.tsx` is a placeholder. I need to plan the full frontend: step builder, date range, funnel chart visualization, and the hook/component wiring.
+
+Let me check if there's a `FunnelChart` component file already.
+
+  [Glob] src/components/**/Funnel*
+
+  [Glob] src/components/funnels/**/*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/vitest.config.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/tsconfig.json
+I have all the information I need. Let me write the plan.
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F24-plan.md
+Plan written to `features/F24-plan.md`. 
+
+**Summary:** F24 builds the Funnels page UI on top of the existing `POST /api/funnels` backend (F12). It creates 4 new files:
+
+1. **`useFunnels.ts`** — hook managing step state (2–5), date range, and POST requests to the funnels API
+2. **`StepBuilder.tsx`** — ordered list of event name Autocomplete selectors with add/remove (2–5 range enforced)
+3. **`FunnelDateRange.tsx`** — preset chips (7d/30d/90d) + custom date pickers, matching the Trends pattern
+4. **`FunnelChart.tsx`** — horizontal Recharts BarChart with user counts, conversion % annotations, and red drop-off highlights
+
+The placeholder `funnels/page.tsx` gets wired up as a client component composing all of the above. Sprint contract includes test suite, lint, typecheck, build, and 3 HTTP checks against the rendered page.
+✓ Session 'PLAN:F24' complete  ($0.6552)
+
+  ▶ GENERATE — F24 sprint 1: Build Funnels page at /funnels with 2-5 step builder, date range, and horizontal funnel bar chart
+
+→ Session : GEN:F24:1  (budget: $30)
+
+  [Agent] 
+
+  [Bash] find /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2 -type f -name "package.json" | head -5
+
+  [Bash] ls -la /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/ | grep -E "package\.json|vitest|tsconfig"
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/vitest.config.ts
+
+  [Bash] ls -la /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/
+
+  [Bash] find /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/funnels -type f
+
+  [Bash] find /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/trends -type f
+
+  [Bash] find /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/funnels -type f 2>/dev/null
+
+  [Bash] ls -la /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/
+
+  [Bash] find /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components -type f
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/funnels/page.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/trends/page.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/funnels/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/funnels.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/schema-cache.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/TrendChart.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/trends/TrendsControls.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/trends/useTrends.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/funnels/__tests__/route.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/__tests__/TrendChart.test.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/trends/__tests__/useTrends.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/trends.ts
+
+  [Bash] find /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/trends -type f
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/trends/__tests__/TrendsControls.test.tsx
+Let me read the key reference files before writing any code.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/trends/useTrends.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/trends/__tests__/useTrends.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/trends/TrendsControls.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/TrendChart.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/__tests__/TrendChart.test.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/trends/__tests__/TrendsControls.test.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/funnels.ts
+Now I have everything I need. Let me write the unit tests first, then implement the feature.
+
+  [Bash] ls /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/funnels 2>/dev/null || echo "does not exist"
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/funnels/page.tsx
+**Step 1 — Write unit tests first.**
+
+  [Bash] mkdir -p /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/funnels/__tests__
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/funnels/__tests__/useFunnels.test.ts
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/funnels/__tests__/StepBuilder.test.tsx
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/__tests__/FunnelChart.test.tsx
+Good. Now let me verify the tests fail as expected (before implementation), then move to **Step 2 — Implement**.
+
+  [Bash] pnpm test --reporter=verbose 2>&1 | tail -30
+Tests fail as expected. Now implementing the production code.
+
+**Step 2 — Implement in order.**
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/funnels/useFunnels.ts
+
+  [Bash] pnpm test src/components/funnels/__tests__/useFunnels.test.ts 2>&1 | tail -20
+All 17 hook tests pass. Now implement `StepBuilder`:
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/funnels/StepBuilder.tsx
+
+  [Bash] pnpm test src/components/funnels/__tests__/StepBuilder.test.tsx 2>&1 | tail -20
+All 11 StepBuilder tests pass. Now implement `FunnelDateRange`:
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/funnels/FunnelDateRange.tsx
+Now implement `FunnelChart`:
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/FunnelChart.tsx
+
+  [Bash] pnpm test src/components/__tests__/FunnelChart.test.tsx 2>&1 | tail -30
+All 10 FunnelChart tests pass. Now wire up the funnels page:
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/funnels/page.tsx
+**Self-evaluation — run all checks from the sprint contract.**
+
+  [Bash] pnpm test 2>&1 | tail -10
+
+  [Bash] pnpm typecheck 2>&1
+Two type errors to fix in `FunnelChart.tsx`:
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/FunnelChart.tsx
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/FunnelChart.tsx
+
+  [Bash] pnpm typecheck 2>&1
+Clean. Now lint and build:
+
+  [Bash] pnpm lint:fix 2>&1 | tail -5 && pnpm lint 2>&1 | tail -10
+Let me see the specific lint errors:
+
+  [Bash] pnpm lint 2>&1 | grep -E "error|warning" | head -30
+
+  [Bash] pnpm lint 2>&1 | grep -v "warning" | head -60
+
+  [Bash] pnpm lint 2>&1 | grep "error\|FIXABLE\|src/components/funnels" | head -30
+
+  [Bash] pnpm lint 2>&1 | grep -E "^src/components/funnels|^src/app/funnels" | head -20
+
+  [Bash] git stash && pnpm lint 2>&1 | grep "Found" && git stash pop
+
+  [Bash] pnpm lint -- src/components/funnels/ src/components/__tests__/FunnelChart.test.tsx src/components/FunnelChart.tsx src/ap
+My files have 2 errors. Let me see the full output:
+
+  [Bash] pnpm lint -- src/components/funnels/ src/components/__tests__/FunnelChart.test.tsx src/components/FunnelChart.tsx src/ap
+
+  [Bash] ./node_modules/.bin/biome check src/components/funnels/ src/components/__tests__/FunnelChart.test.tsx src/components/Fun
+Two errors to fix: `noArrayIndexKey` in both `FunnelChart.tsx` and `StepBuilder.tsx`. I'll use `step.name` as key in FunnelChart (names are unique in a result), and a biome-ignore in StepBuilder (steps can be empty/duplicate strings):
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/FunnelChart.tsx
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/FunnelChart.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/funnels/StepBuilder.tsx
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/funnels/StepBuilder.tsx
+Now fix the unused parameter in the test:
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/funnels/__tests__/useFunnels.test.ts
+
+  [Bash] ./node_modules/.bin/biome check src/components/funnels/ src/components/__tests__/FunnelChart.test.tsx src/components/Fun
+My files are clean. Now run the full suite:
+
+  [Bash] pnpm lint 2>&1 | tail -5
+0 errors, 7 warnings (all pre-existing). Now run tests and build:
+
+  [Bash] pnpm test 2>&1 | tail -8
+
+  [Bash] pnpm typecheck 2>&1
+
+  [Bash] pnpm build 2>&1 | tail -15
+Build passes. Now verify file criteria:
+
+  [Bash] grep -l "export function useFunnels" src/components/funnels/useFunnels.ts && grep -l "export function StepBuilder" src/c
+All file checks pass. Now HTTP checks — start the dev server (without ClickHouse, which isn't needed for the page to serve):
+
+  [Bash] next dev --port 3099 &> /tmp/nextdev-f24.log & DEV_PID=$! && echo $DEV_PID > /tmp/nextdev-f24.pid && sleep 8 && curl -s 
+
+  [Bash] curl -s http://localhost:3099/funnels 2>&1 | grep -o 'data-testid="step-builder"\|data-testid="funnel-date-range"\|data-
+
+  [Bash] cat /tmp/nextdev-f24.log | tail -20
+
+  [Bash] npx next dev --port 3099 &> /tmp/nextdev-f24.log & echo $! > /tmp/nextdev-f24.pid && sleep 10 && curl -s http://localhos
+All three `data-testid` attributes are present. Kill the dev server:
+
+  [Bash] kill $(cat /tmp/nextdev-f24.pid) 2>/dev/null; kill $(lsof -ti:3099) 2>/dev/null; true
+All criteria pass. Now write the handoff file:
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F24-draft-1.md
+Done. Here's a summary of what was built for **F24**:
+
+---
+
+## F24 — Funnels page complete
+
+### What was built
+
+**Tests first (38 new tests, all passing):**
+- `useFunnels.test.ts` — 17 tests covering initial state, step management (add/remove/set), runFunnel validation, loading/error/result
+- `StepBuilder.test.tsx` — 11 tests covering container testid, combobox count, Add/Remove button states and callbacks
+- `FunnelChart.test.tsx` — 10 tests covering skeleton, empty state, user counts, conversion annotations, drop-off testids
+
+**Production code:**
+- `useFunnels.ts` — hook with explicit `runFunnel()` (validates ≥2 non-empty steps before POSTing), step limits (2–5), 30-day default date range
+- `StepBuilder.tsx` — ordered Autocomplete list; Add disabled at 5, Remove disabled at 2
+- `FunnelDateRange.tsx` — preset chips (Last 7d/30d/90d) + date pickers
+- `FunnelChart.tsx` — annotation rows showing user count + conversion % + red drop-off between steps, plus Recharts `BarChart` with `layout="vertical"`
+- `src/app/funnels/page.tsx` — wires everything together with a "Run Funnel" button
+
+### Sprint contract: all ✅
+- 386 tests passing, 0 failures
+- `pnpm lint` → 0 errors (7 pre-existing warnings, unchanged)
+- `pnpm typecheck` → clean
+- `pnpm build` → clean, `/funnels` in output
+- All file existence checks pass
+- HTTP: `data-testid="step-builder"`, `data-testid="funnel-date-range"`, `data-testid="funnel-chart"` all present in `/funnels` response
+✓ Session 'GEN:F24:1' complete  ($2.3698)
+
+  ▶ EVALUATE — F24 sprint 1: Build Funnels page at /funnels with 2-5 step builder, date range, and horizontal funnel bar chart
+
+→ Session : EVAL:F24:1  (budget: $10)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F24-draft-1.md
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F24-plan.md
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/funnels/useFunnels.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/FunnelChart.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/funnels/page.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/funnels/__tests__/useFunnels.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/__tests__/FunnelChart.test.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/funnels/__tests__/StepBuilder.test.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/funnels/StepBuilder.tsx
+Now let me run Phase A checks - test suite, lint, typecheck, and build:
+
+  [Bash] pnpm test --reporter=verbose 2>&1 | tail -50
+
+  [Bash] pnpm lint 2>&1 | tail -20
+
+  [Bash] pnpm typecheck 2>&1 | tail -20
+
+  [Bash] pnpm build 2>&1 | tail -30
+All Phase A checks pass. Now let me verify file exports and move to Phase B HTTP checks:
+
+  [Bash] grep -n "export function useFunnels" src/components/funnels/useFunnels.ts && grep -n "export function StepBuilder" src/c
+
+  [Bash] pnpm next dev --port 3001 &>/tmp/next-dev.log & DEV_PID=$! && echo "Started PID $DEV_PID" && sleep 5 && curl -s --retry 
+
+  [Bash] curl -s http://localhost:3001/funnels | grep -o 'data-testid="step-builder"\|data-testid="funnel-date-range"\|data-testi
+
+  [Bash] kill $DEV_PID 2>/dev/null; kill $(lsof -ti:3001) 2>/dev/null; true
+Let me check the Playwright infrastructure and whether it warrants e2e tests:
+
+  [Bash] ls playwright_tests/ 2>/dev/null && cat playwright.config.ts 2>/dev/null | head -30 || echo "No Playwright config found"
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/playwright_tests/trends.spec.ts
+Playwright is set up and funnels is a new page. I'll write a funnels e2e test following the existing patterns:
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/playwright_tests/funnels.spec.ts
+Now let me write the eval file:
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F24-eval-1.md
+**F24 Eval Sprint 1 — Score: 10/10 — APPROVED**
+
+All Phase A and Phase B checks passed independently.
+
+| Criterion | Result |
+|-----------|--------|
+| `pnpm test` → 0 failures | ✅ 386 passing, 25 skipped |
+| `pnpm lint` → exit 0 | ✅ 7 pre-existing warnings only |
+| `pnpm typecheck` → exit 0 | ✅ |
+| `pnpm build` → exit 0 | ✅ `/funnels` in build output |
+| File exports (`useFunnels`, `StepBuilder`, `FunnelDateRange`, `FunnelChart`) | ✅ all 4 confirmed |
+| `page.tsx` has `"use client"` + imports `useFunnels` | ✅ |
+| HTTP GET `/funnels` contains all 3 `data-testid` attributes | ✅ confirmed via curl |
+
+**Integration gap covered:** wrote `playwright_tests/funnels.spec.ts` with 8 scenarios (heading, all 3 test IDs visible, default 2 comboboxes, Add Step interaction, Run Funnel button). Follows the same convention as the existing `trends.spec.ts`.
+
+No unit test fixes were required — generator tests are correct and complete.
+✓ Session 'EVAL:F24:1' complete  ($0.5031)
+✓ Feature F24 approved after 1 sprint(s) ✅  ($3.5281)
