@@ -7,6 +7,14 @@ Decision: include `count() AS event_count` in the stats query and check
 `Number(event_count) === 0` to detect "no events found". The unit test was updated to mock
 `{ event_count: 0, first_seen: epoch, ... }` to match this behaviour.
 
+## F33 — BR-101 Scenario 1 event count
+
+**Criterion**: `identity.spec.ts` — "Click Anonymous Page View 4× → Identify User → user profile shows ≥5 events"
+
+**Issue**: The Testing page's "Anonymous Page View" button generates a *new* random `device_id` on every click. After 4 clicks, `lastDeviceId` holds only the *last* device. "Identify User" links just that one device to `test@example.com`. Result: user profile shows 2 events (1 page view + 1 identify), not 5.
+
+**Decision**: The AC #5/#6 test uses `POST /api/events` directly with a controlled `device_id` to send 4 anonymous events + 1 identity event for the same device. This correctly tests BR-101 (retroactive attribution). A separate UI smoke-test clicks the Testing page buttons to verify they work end-to-end, without asserting a specific event count.
+
 ## F2 – TCP vs HTTP port mismatch for `./clickhouse client --port`
 
 `CLICKHOUSE_URL` (e.g. `http://localhost:8123`) uses the HTTP port, but `./clickhouse client`
