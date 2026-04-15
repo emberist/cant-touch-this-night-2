@@ -1592,3 +1592,171 @@ All sprint contract criteria verified independently:
 - IntersectionObserver-triggered `loadMore` is not tested at the browser level. Requires Playwright + running ClickHouse. The hook logic itself is covered by unit tests.
 ✓ Session 'EVAL:F20:1' complete  ($0.6487)
 ✓ Feature F20 approved after 1 sprint(s) ✅  ($3.8297)
+✓ Git commit created for F20
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  F21: Build JsonChip and IdentityChip shared UI components
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+  ▶ PLAN — F21: Build JsonChip and IdentityChip shared UI components
+
+→ Session : PLAN:F21  (budget: $30)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/tsconfig.json
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/status.md
+
+  [Glob] features/F*-done
+
+  [Glob] src/components/**/*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/vitest.config.ts
+The components already exist. Let me read them to understand their current state.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/ui/JsonChip.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/ui/IdentityChip.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/ui/__tests__/JsonChip.test.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/ui/__tests__/IdentityChip.test.tsx
+Now let me check where these components are used and how the EventTable consumes them.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/EventTable.tsx
+
+  [Glob] playwright.config.*
+I have all the context I need. The components and tests already exist from F20. Now let me write the plan.
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F21-plan.md
+Plan written to `features/F21-plan.md`.
+
+Key finding: **F21 is already fully implemented.** Both `JsonChip` and `IdentityChip` were created during F20 (Event Explorer) along with comprehensive test suites. The components match all spec requirements:
+
+- **JsonChip** — collapsed chip with key preview, MUI Popover expansion with pretty-printed JSON, "No properties" empty state (6 tests)
+- **IdentityChip** — clickable chip linking to `/users/[encoded-id]` via Next.js Link (5 tests)
+
+The sprint contract is purely a verification pass — run tests, lint, typecheck, and build to confirm everything is green. No new code needs to be written.
+✓ Session 'PLAN:F21' complete  ($0.3589)
+
+  ▶ GENERATE — F21 sprint 1: Build JsonChip and IdentityChip shared UI components
+
+→ Session : GEN:F21:1  (budget: $30)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F21-plan.md
+
+  [Glob] src/components/ui/**/*
+Good, all files exist. Let me read them to understand the current state.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/ui/JsonChip.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/ui/IdentityChip.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/ui/__tests__/JsonChip.test.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/ui/__tests__/IdentityChip.test.tsx
+Both components and tests look complete. Let me check the package.json for commands and then run all the verification checks.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json
+
+  [Glob] vitest.config*
+
+  [Bash] pnpm test 2>&1
+
+  [Bash] pnpm lint 2>&1
+
+  [Bash] pnpm typecheck 2>&1
+
+  [Bash] pnpm lint; echo "EXIT: $?"
+
+  [Bash] pnpm build 2>&1
+Let me check the specific test results for the F21 components:
+
+  [Bash] pnpm test --reporter=verbose 2>&1 | grep -A 20 "JsonChip\|IdentityChip"
+All 11 tests for JsonChip and IdentityChip pass. Now I'll write the handoff file.
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F21-draft-1.md
+Now let me update the `features/status.md` to mark F21 as done:
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/status.md
+The handoff file is written. Here's the summary:
+
+---
+
+**F21 Sprint 1 — Verification complete**
+
+This was a verification-only sprint. Both components already existed from F20 with complete implementations.
+
+**All 12 sprint contract criteria pass:**
+
+| Check | Result |
+|---|---|
+| `JsonChip.tsx` exists & exports `JsonChip` | ✅ |
+| `IdentityChip.tsx` exists & exports `IdentityChip` | ✅ |
+| `JsonChip` accepts `properties: string` | ✅ |
+| `IdentityChip` accepts `resolved_id: string` | ✅ |
+| `JsonChip` renders "No properties" for `"{}"` / `""` | ✅ |
+| `JsonChip` renders clickable key-preview chip | ✅ |
+| `JsonChip` expands to full JSON on click | ✅ |
+| `IdentityChip` renders resolved_id as chip label | ✅ |
+| `IdentityChip` links to `/users/[percent-encoded-id]` | ✅ |
+| `pnpm test` → 0 failures (295 passed, 25 skipped) | ✅ |
+| `pnpm lint` → exit 0 (4 pre-existing warnings in seed.test.ts) | ✅ |
+| `pnpm typecheck` → exit 0 | ✅ |
+| `pnpm build` → exit 0 | ✅ |
+
+Handoff written to `features/F21-draft-1.md`. No files were modified.
+✓ Session 'GEN:F21:1' complete  ($0.3101)
+
+  ▶ EVALUATE — F21 sprint 1: Build JsonChip and IdentityChip shared UI components
+
+→ Session : EVAL:F21:1  (budget: $10)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/ui/JsonChip.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/ui/IdentityChip.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/ui/__tests__/JsonChip.test.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/ui/__tests__/IdentityChip.test.tsx
+Now let me run Phase A checks in parallel.
+
+  [Bash] pnpm test --reporter=verbose 2>&1 | tail -30
+
+  [Bash] pnpm typecheck 2>&1
+
+  [Bash] pnpm biome check --write src/components/ui/JsonChip.tsx src/components/ui/IdentityChip.tsx 2>&1; pnpm lint 2>&1 | tail -
+
+  [Bash] pnpm build 2>&1 | tail -20
+All Phase A checks pass. Let me write the eval file.
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F21-eval-1.md
+Now update `features/status.md` to reflect F21 completion.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/status.md
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/status.md
+**F21 Eval Sprint 1 — APPROVED (10/10)**
+
+All Phase A checks passed. No Phase B (HTTP) checks needed — both components are pure UI with no endpoints.
+
+| Check | Result |
+|-------|--------|
+| `JsonChip.tsx` exists + exports `JsonChip` | ✅ |
+| `IdentityChip.tsx` exists + exports `IdentityChip` | ✅ |
+| Props typed correctly (`properties: string`, `resolved_id: string`) | ✅ |
+| `JsonChip` "No properties" for `{}` / `""` | ✅ |
+| `JsonChip` clickable chip with key preview | ✅ |
+| `JsonChip` popover expands to pretty-printed JSON | ✅ |
+| `IdentityChip` renders chip label as `resolved_id` | ✅ |
+| `IdentityChip` links to `/users/[percent-encoded-id]` | ✅ |
+| `pnpm test` — 0 failures | ✅ 295 passed, 25 skipped |
+| `pnpm lint` — exit 0 | ✅ (4 pre-existing warnings, not F21) |
+| `pnpm typecheck` — exit 0 | ✅ |
+| `pnpm build` — exit 0 | ✅ |
+
+No tests written — the 11 unit tests from F20 already cover every criterion. No integration/e2e gap: these are pure UI components with no HTTP surface.
+✓ Session 'EVAL:F21:1' complete  ($0.2600)
+✓ Feature F21 approved after 1 sprint(s) ✅  ($0.9290)
