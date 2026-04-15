@@ -872,3 +872,256 @@ All sprint contract criteria pass:
 **One minor note** (not a bug): `insertEvent`'s return value computes `resolved_id` client-side as `user_id ?? device_id` without querying the identity mapping. If a device-only event is inserted after that device was already mapped to a user, the return value shows `device_id` rather than the mapped user. This is consistent with the spec's write-path ordering and doesn't affect query correctness (all reads use `queryEventsWithResolvedId`'s LEFT JOIN).
 ✓ Session 'EVAL:F4:1' complete  ($0.3702)
 ✓ Feature F4 approved after 1 sprint(s) ✅  ($1.7207)
+✓ Git commit created for F4
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  F5: Implement POST /api/events route for single event ingestion with identity resolution
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+  ▶ PLAN — F5: Implement POST /api/events route for single event ingestion with identity resolution
+
+→ Session : PLAN:F5  (budget: $30)
+
+
+I'll start by reading the project's config files and understanding the current state before writing the plan.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/status.md
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/tsconfig.json
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/clickhouse.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/identity.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/scripts/schema.sql
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/scripts/migrate.ts
+
+  [Glob] features/F*-done
+
+  [Glob] playwright.config.*
+
+  [Glob] vitest.config.*
+
+  [Glob] biome.json*
+Let me check the existing test files and app directory structure.
+
+  [Glob] src/**/*.test.*
+
+  [Glob] src/app/api/**/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/vitest.config.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/identity.test.ts
+Let me check the Next.js docs for route handler conventions since AGENTS.md warns about breaking changes.
+
+  [Glob] node_modules/next/dist/docs/*.md
+
+  [Glob] node_modules/next/dist/docs/**/*
+
+  [Bash] ls /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/node_modules/next/dist/docs/ 2>/dev/null || echo "NO_DOCS_D
+
+  [Bash] find /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/node_modules/next/dist/docs/01-app -name "*route*" -o -na
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/node_modules/next/dist/docs/01-app/03-api-reference/03-file-co
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/node_modules/next/dist/docs/01-app/01-getting-started/15-route
+Now let me check if MEMORY.md exists and look at the existing app directory structure.
+
+  [Bash] ls /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/ 2>/dev/null
+
+  [Glob] MEMORY.md
+I have all the information needed. Now I'll write the plan.
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F5-plan.md
+Plan written to `features/F5-plan.md`. 
+
+**Summary**: F5 is a thin route — one new file (`src/app/api/events/route.ts`) that wires the already-complete `insertEvent` from `src/lib/identity.ts` to an HTTP POST handler. The handler parses JSON, delegates to `insertEvent`, and maps outcomes to `201`/`400`/`409` responses. All business logic and identity resolution already exist from F4; this sprint is purely the HTTP adapter layer.
+✓ Session 'PLAN:F5' complete  ($0.6169)
+
+  ▶ GENERATE — F5 sprint 1: Implement POST /api/events route for single event ingestion with identity resolution
+
+→ Session : GEN:F5:1  (budget: $30)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F5-plan.md
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/identity.ts
+
+  [Glob] src/**/*.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/identity.test.ts
+
+  [Glob] vitest.config*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/vitest.config.ts
+
+  [Glob] src/app/api/**
+Let me check the Next.js docs and understand the API route conventions for this version.
+
+  [Bash] ls /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/node_modules/next/dist/docs/ 2>/dev/null | head -30
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/clickhouse.test.ts
+
+  [Bash] ls /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/node_modules/next/dist/docs/01-app/ 2>/dev/null | head -20
+
+  [Bash] ls /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/node_modules/next/dist/docs/01-app/03-api-reference/ | grep
+
+  [Bash] ls /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/node_modules/next/dist/docs/01-app/03-api-reference/ 2>/dev
+
+  [Bash] ls /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/node_modules/next/dist/docs/01-app/03-api-reference/03-file
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/node_modules/next/dist/docs/01-app/03-api-reference/03-file-co
+Now I have all the context I need. Let me create the test file first, then implement the route handler.
+
+  [ToolSearch] 
+
+  [Bash] ls /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/ 2>/dev/null || echo "directory not found"
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/__tests__/route.test.ts
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/route.ts
+
+  [TodoWrite] 
+
+  [Bash] pnpm test 2>&1
+The `MockIdentityConflictError` class needs to be hoisted to avoid the temporal dead zone issue. Let me fix the test:
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/__tests__/route.test.ts
+
+  [Bash] pnpm test 2>&1
+All 42 tests pass. Now lint and typecheck:
+
+  [Bash] pnpm lint:fix 2>&1 && pnpm lint 2>&1
+Lint passes clean. Now typecheck and build:
+
+  [Bash] pnpm typecheck 2>&1
+The route doesn't use any `NextRequest`-specific features. Change the parameter type to the base `Request`:
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/route.ts
+
+  [Bash] pnpm typecheck 2>&1 && echo "TYPECHECK_OK"
+
+  [Bash] pnpm build 2>&1
+Build passes. Let me run the full test suite one final time to confirm everything is green:
+
+  [Bash] pnpm test 2>&1 && pnpm lint 2>&1
+All green. Now write the handoff file:
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F5-draft-1.md
+
+  [TodoWrite] 
+Sprint complete. Here's the summary:
+
+## F5 Sprint 1 — Done
+
+### Files created
+
+- **`src/app/api/events/route.ts`** — thin HTTP adapter: parses JSON body, calls `insertEvent()`, maps errors to 400/409, success to 201.
+- **`src/app/api/events/__tests__/route.test.ts`** — 9 unit tests covering all test-plan cases.
+
+### Self-evaluation results
+
+| Criterion | Result |
+|---|---|
+| `route.ts` exists, exports `POST` | ✅ |
+| `pnpm test` — 0 failures | ✅ 42 passing |
+| `pnpm lint` — exits 0 | ✅ |
+| `pnpm typecheck` — exits 0 | ✅ |
+| `pnpm build` — exits 0 | ✅ `/api/events` shows as dynamic |
+| Integration gaps (3) | — requires dev server + ClickHouse |
+
+### One noteworthy fix
+
+`MockIdentityConflictError` had to be defined **inside `vi.hoisted()`** rather than as a top-level class — top-level class declarations are in the temporal dead zone when `vi.mock()` factories run (hoisted before module initialization).
+✓ Session 'GEN:F5:1' complete  ($0.8313)
+
+  ▶ EVALUATE — F5 sprint 1: Implement POST /api/events route for single event ingestion with identity resolution
+
+→ Session : EVAL:F5:1  (budget: $10)
+
+  [Agent] 
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/__tests__/route.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/identity.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json
+
+  [Bash] grep -n "export.*POST\|export async function POST" src/app/api/events/route.ts
+
+  [Bash] pnpm test 2>&1
+
+  [Bash] pnpm lint:fix 2>&1; echo "EXIT:$?"
+
+  [Bash] pnpm typecheck 2>&1; echo "EXIT:$?"
+
+  [Bash] pnpm lint 2>&1; echo "EXIT:$?"
+
+  [Bash] pnpm build 2>&1; echo "EXIT:$?"
+
+  [Bash] curl -s http://localhost:8123/ping; echo "EXIT:$?"
+
+  [Bash] curl -s -o /dev/null -w "%{http_code}" http://localhost:3000 2>&1; echo "EXIT:$?"
+
+  [Bash] ls /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/node_modules/next/dist/docs/ 2>&1 | head -30
+
+  [Bash] ls /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/node_modules/next/dist/docs/01-app/01-getting-started/ 2>&1
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/node_modules/next/dist/docs/01-app/01-getting-started/15-route
+
+  [Glob] vitest.config*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/vitest.config.ts
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/__tests__/route.integration.test.ts
+
+  [Bash] pnpm test 2>&1
+
+  [Bash] pnpm lint 2>&1; echo "EXIT:$?"
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/__tests__/route.integration.test.ts
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/__tests__/route.integration.test.ts
+
+  [Bash] pnpm lint 2>&1; echo "EXIT:$?"
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F5-eval-1.md
+Let me verify the files that were written.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F5-eval-1.md
+The eval is complete. Here's the summary:
+
+## F5 Eval Sprint 1 — Result: **APPROVED (9/10)**
+
+### Phase A checks (all passed)
+
+| Criterion | Result |
+|-----------|--------|
+| `route.ts` exports `POST` | ✅ |
+| `pnpm test` — 0 failures | ✅ (45 passed, 16 skipped) |
+| `pnpm lint` | ✅ (25 files, no errors) |
+| `pnpm typecheck` | ✅ (clean) |
+| `pnpm build` | ✅ (`/api/events` listed as dynamic route) |
+
+### Phase B — Integration gaps (infrastructure-blocked)
+
+ClickHouse was not running at eval time, so the 3 HTTP integration criteria couldn't be exercised live. The integration test file was written at `src/app/api/events/__tests__/route.integration.test.ts` — it self-skips with a warning when the server is unreachable, and will run automatically once `pnpm dev` brings up the full stack.
+
+### One point withheld
+
+The 9/10 (vs 10) reflects that integration HTTP scenarios remain unverified until ClickHouse + Next.js are running together. No code defects were found.
+✓ Session 'EVAL:F5:1' complete  ($0.4745)
+✓ Feature F5 approved after 1 sprint(s) ✅  ($1.9228)
