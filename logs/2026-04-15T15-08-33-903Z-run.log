@@ -2637,3 +2637,287 @@ All Phase A and Phase B checks passed independently.
 No unit test fixes were required — generator tests are correct and complete.
 ✓ Session 'EVAL:F24:1' complete  ($0.5031)
 ✓ Feature F24 approved after 1 sprint(s) ✅  ($3.5281)
+✓ Git commit created for F24
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  F25: Build User search page at /users with search input and results list
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+  ▶ PLAN — F25: Build User search page at /users with search input and results list
+
+→ Session : PLAN:F25  (budget: $30)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/status.md
+
+  [Glob] features/F*-done
+
+  [Glob] features/F*-done*
+
+  [Bash] ls /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/
+Good, F1–F24 are all done. Now let me look at the existing API and component implementations relevant to F25.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/users/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/users/[id]/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/ui/IdentityChip.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/layout.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/Sidebar.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/users.ts
+
+  [Glob] src/app/users/**/*
+
+  [Glob] playwright.config.*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/users/page.tsx
+
+  [Glob] src/app/users/[id]/**/*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/explore/page.tsx
+Now let me look at a few more existing components for patterns and conventions.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/EventTable.tsx
+
+  [Glob] src/components/explore/**/*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/tsconfig.json
+Let me look at the explore hook pattern and existing tests to understand conventions.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/explore/useEventExplorer.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/explore/__tests__/useEventExplorer.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/vitest.config.ts
+I have all the context I need. Let me write the plan.
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F25-plan.md
+Plan written to `features/F25-plan.md`. 
+
+**Summary:**
+
+F25 builds the User search page at `/users` on top of the existing `GET /api/users` API (F13). Three files are in scope:
+
+1. **`src/components/users/useUserSearch.ts`** — custom hook (mirrors the `useEventExplorer` pattern) managing search query, debounce, cursor pagination, and loading state
+2. **`src/components/users/__tests__/useUserSearch.test.ts`** — unit tests covering fetch lifecycle, pagination, debounce, and filter reset
+3. **`src/app/users/page.tsx`** — replaces the current stub with a client component: MUI TextField search input, results table with IdentityChip links, infinite scroll, empty/loading states
+
+No new API routes needed — the backend is fully in place from F13/F14. The sprint contract includes 9 binary checks: test suite, lint, typecheck, build, file existence (3), and HTTP checks (2).
+✓ Session 'PLAN:F25' complete  ($0.5281)
+
+  ▶ GENERATE — F25 sprint 1: Build User search page at /users with search input and results list
+
+→ Session : GEN:F25:1  (budget: $30)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F25-plan.md
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/explore/useEventExplorer.ts
+
+  [Glob] src/**/__tests__/*.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/explore/__tests__/useEventExplorer.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/users.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/users/page.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/ui/IdentityChip.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/trends/__tests__/useTrends.test.ts
+
+  [Glob] vitest.config.*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/vitest.config.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/explore/page.tsx
+Now I have enough context. Let me write the tests first, then implement.
+
+  [ToolSearch] 
+
+  [TodoWrite] 
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/funnels/__tests__/useFunnels.test.ts
+Good. Now I have a clear pattern. Let me write the test file and the hook. The plan mentions debounce — since `useEventExplorer` doesn't use it, I need to implement it using `setTimeout` in the hook, and the test will use `vi.useFakeTimers()`.
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/users/__tests__/useUserSearch.test.ts
+
+  [TodoWrite] 
+Now create the `useUserSearch` hook:
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/users/useUserSearch.ts
+Now run the tests to see if they pass:
+
+  [Bash] pnpm test --reporter=verbose 2>&1 | tail -80
+The debounce tests timeout because `waitFor` uses `setInterval` internally, which gets faked. I need to use `await act(...)` instead of `waitFor` in the fake-timer tests, and only mock `setTimeout`/`clearTimeout` to leave `setInterval` available for `waitFor`.
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/users/__tests__/useUserSearch.test.ts
+
+  [Bash] pnpm test src/components/users/__tests__/useUserSearch.test.ts --reporter=verbose 2>&1
+The `toFake` partial approach still blocks `waitFor`. The issue is that `@testing-library/react` v16's `waitFor` uses `setTimeout` for its internal timeout. I'll switch to a pattern where fake timers are set up AFTER the initial mount fetch, then use `await act(async () => {})` to flush promises after advancing timers:
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/users/__tests__/useUserSearch.test.ts
+
+  [Bash] pnpm test src/components/users/__tests__/useUserSearch.test.ts --reporter=verbose 2>&1
+All 14 tests pass. Now implement the users page:
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/users/page.tsx
+
+  [TodoWrite] 
+
+  [Bash] pnpm typecheck 2>&1
+
+  [Bash] ls node_modules/@mui/ 2>/dev/null | head -20
+`@mui/icons-material` isn't installed, and `inputProps` is removed in MUI v9. Let me check how existing pages handle text fields:
+
+  [Bash] grep -r "TextField" src/components --include="*.tsx" -l
+
+  [Bash] grep -A5 "TextField" src/components/explore/EventFilterBar.tsx | head -20
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/node_modules/next/dist/docs/
+
+  [Bash] grep -r "slotProps" src/components --include="*.tsx" | head -5
+Good — use `slotProps.htmlInput` for `data-testid`. Remove the icon (no `@mui/icons-material`) and fix `inputProps`:
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/users/page.tsx
+
+  [Edit] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/users/page.tsx
+
+  [Bash] pnpm typecheck 2>&1
+
+  [Bash] pnpm lint:fix 2>&1 && pnpm lint 2>&1
+The 7 warnings are all pre-existing issues in other files. Now run the full test suite and build:
+
+  [Bash] pnpm test 2>&1 | tail -20
+400 passing, 0 failing. Now build:
+
+  [Bash] pnpm build 2>&1 | tail -30
+Build passes. Now verify all the file-existence criteria:
+
+  [Bash] ls src/components/users/useUserSearch.ts src/components/users/__tests__/useUserSearch.test.ts 2>&1 && grep -c '"use clie
+All file checks pass. Now update todos and write the handoff:
+
+  [TodoWrite] 
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F25-draft-1.md
+
+  [TodoWrite] 
+F25 Sprint 1 is complete. Here's a summary:
+
+## What was done
+
+**Step 1 — Tests written first** (`src/components/users/__tests__/useUserSearch.test.ts`):
+14 unit tests covering all plan cases: initial fetch, users population, loading state, hasMore, loadMore (append + no-op guards), setQuery with q param, cursor reset on query change, empty query unfiltered fetch, and debounce.
+
+**Step 2 — Hook implemented** (`src/components/users/useUserSearch.ts`):
+`useUserSearch` — maintains `users`, `loading`, `hasMore`, `query`, `cursor` state. `setQuery` debounces at 300ms. `loadMore` guards against `loading || !hasMore`. Initial page fetched on mount.
+
+**Step 3 — Page implemented** (`src/app/users/page.tsx`):
+Full client component with MUI TextField (search, `data-testid="users-search"`), MUI Table (`data-testid="users-table"`) with `IdentityChip`, loading skeletons, empty state, IntersectionObserver infinite scroll, and explicit Load More fallback button.
+
+## Self-evaluation results
+
+| Check | Result |
+|---|---|
+| `pnpm test` | ✅ 400 passing, 0 failing |
+| `pnpm lint` | ✅ exits 0 (7 pre-existing warnings in other files) |
+| `pnpm typecheck` | ✅ exits 0 |
+| `pnpm build` | ✅ exits 0, `/users` compiled |
+| HTTP checks | ⚠️ Integration gap per plan — requires live dev server |
+
+**Non-obvious implementation detail**: Fake timer tests use a pattern of completing the initial fetch with real timers first, then switching to `vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] })` to avoid deadlocking `waitFor`, which internally uses `setTimeout` for polling in `@testing-library/react` v16.
+✓ Session 'GEN:F25:1' complete  ($1.3373)
+
+  ▶ EVALUATE — F25 sprint 1: Build User search page at /users with search input and results list
+
+→ Session : EVAL:F25:1  (budget: $10)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F25-plan.md
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F25-draft-1.md
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/users/useUserSearch.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/users/page.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/users/__tests__/useUserSearch.test.ts
+Now let me run the Phase A checks in parallel.
+
+  [Bash] pnpm test --reporter=verbose 2>&1 | tail -40
+
+  [Bash] pnpm typecheck 2>&1 | tail -20
+
+  [Bash] pnpm lint 2>&1 | tail -20
+
+  [Bash] pnpm build 2>&1 | tail -30
+All Phase A checks pass. Now Phase B — start the dev server for HTTP checks.
+
+  [Bash] cat /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json | grep -E '"dev"|port|PORT' | head -5
+
+  [Bash] next dev --port 3099 &> /tmp/minipanel-dev.log & DEV_PID=$!
+echo "DEV_PID=$DEV_PID"
+# Wait for server ready
+for i in $(s
+
+  [Bash] for i in $(seq 1 30); do
+  STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:3099/ 2>/dev/null)
+  if [ "$
+
+  [Bash] cat /tmp/minipanel-dev.log | tail -30
+
+  [Bash] npx next dev --port 3099 &> /tmp/minipanel-dev.log & DEV_PID=$!
+echo "DEV_PID=$DEV_PID"
+for i in $(seq 1 30); do
+  STATU
+
+  [Bash] curl -s http://localhost:3099/users 2>/dev/null | grep -o 'data-testid="users-search"' | head -3
+curl -s http://localhos
+
+  [Bash] kill $DEV_PID 2>/dev/null; kill $(lsof -ti:3099) 2>/dev/null; true
+Both HTTP checks pass. Let me now check whether Playwright is configured for e2e tests.
+
+  [Bash] ls /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/playwright_tests/ 2>/dev/null && cat /Users/riccardocaranfi
+
+  [Bash] cat /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/playwright.config.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/playwright_tests/trends.spec.ts
+Good. Playwright is configured. Let me write the e2e tests for the integration gaps, then compose the eval.
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/playwright_tests/users.spec.ts
+Now write the eval file.
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F25-eval-1.md
+**F25 Eval — Sprint 1**
+
+**Score: 10/10 — APPROVED**
+
+All sprint contract criteria pass:
+
+| Criterion | Result |
+|-----------|--------|
+| Test suite 0 failures | ✅ 400 passed, 25 skipped, 0 failing |
+| Linter exits 0 | ✅ 7 pre-existing warnings, no errors |
+| Type check exits 0 | ✅ |
+| Build exits 0 | ✅ `/users` listed as ○ Static |
+| `useUserSearch.ts` exists + exports hook | ✅ |
+| `useUserSearch.test.ts` exists | ✅ 14 unit tests covering all plan cases |
+| `page.tsx` has `"use client"` + imports hook | ✅ |
+| HTTP: `data-testid="users-search"` in HTML | ✅ confirmed via dev server curl |
+| HTTP: `data-testid="users-table"` in HTML | ✅ confirmed via dev server curl |
+
+**Integration tests written:** `playwright_tests/users.spec.ts` — covers both HTTP integration-gap criteria plus a heading visibility check, following the same `BASE_URL` convention as `trends.spec.ts`. Requires a running server (webServer not configured in playwright.config.ts, per project convention).
+
+**Notable implementation details verified:**
+- `data-testid="users-search"` correctly placed on `slotProps.htmlInput` (MUI v9 pattern — old `inputProps` removed) and does appear in SSR'd HTML
+- `data-testid="users-table"` on `TableContainer` renders correctly
+- `window.location.origin` usage inside `useEffect` only — safe from SSR errors
+✓ Session 'EVAL:F25:1' complete  ($0.4742)
+✓ Feature F25 approved after 1 sprint(s) ✅  ($2.3397)
