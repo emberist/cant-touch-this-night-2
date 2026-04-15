@@ -1,5 +1,8 @@
 # Loop Lab — Status Timeline
 
+- `2026-04-15T16:13:57.749Z` **EVALUATE** — F18 sprint 1 — Build MUI navigation shell with persistent left sidebar and route links in layout.tsx
+- `2026-04-15T16:09:38.984Z` **GENERATE** — F18 sprint 1 — Build MUI navigation shell with persistent left sidebar and route links in layout.tsx
+- `2026-04-15T16:08:24.301Z` **PLAN** — F18 — Build MUI navigation shell with persistent left sidebar and route links in layout.tsx
 - `2026-04-15T16:06:29.244Z` **EVALUATE** — F17 sprint 2 — Implement GET /api/live SSE route polling ClickHouse for new events every second
 - `2026-04-15T16:03:44.816Z` **GENERATE** — F17 sprint 2 — Implement GET /api/live SSE route polling ClickHouse for new events every second
 - `2026-04-15T15:59:27.819Z` **EVALUATE** — F17 sprint 1 — Implement GET /api/live SSE route polling ClickHouse for new events every second

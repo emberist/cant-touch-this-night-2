@@ -1,9 +1,9 @@
 import Typography from "@mui/material/Typography";
 
-export default function Dashboard(): React.JSX.Element {
+export default function TrendsPage(): React.JSX.Element {
   return (
     <Typography variant="h4" component="h1">
-      Dashboard
+      Trends
     </Typography>
   );
 }

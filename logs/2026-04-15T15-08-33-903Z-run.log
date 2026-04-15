@@ -659,3 +659,277 @@ All sprint contract criteria pass:
 **The Sprint 2 fix works.** The `controller.enqueue(encoder.encode(":\n\n"))` keep-alive comment at the top of `start()` flushes headers to the TCP socket immediately — confirmed by `curl` receiving `HTTP/1.1 200 OK` with `content-type: text/event-stream` and 3 bytes (`:\n\n`) before any ClickHouse activity.
 ✓ Session 'EVAL:F17:2' complete  ($0.3834)
 ✓ Feature F17 approved after 2 sprint(s) ✅  ($3.2503)
+✓ Git commit created for F17
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  F18: Build MUI navigation shell with persistent left sidebar and route links in layout.tsx
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+  ▶ PLAN — F18: Build MUI navigation shell with persistent left sidebar and route links in layout.tsx
+
+→ Session : PLAN:F18  (budget: $30)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/tsconfig.json
+
+  [Glob] features/F*-done
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/layout.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/page.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/status.md
+
+  [Glob] src/components/**/*.tsx
+
+  [Glob] src/app/**/page.tsx
+
+  [Glob] playwright.config.*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/globals.css
+
+  [Glob] src/app/explore/**
+
+  [Glob] src/app/trends/**
+Let me check the Next.js docs for layout conventions as required by AGENTS.md.
+
+  [Glob] node_modules/next/dist/docs/*
+
+  [Glob] vitest.config.*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/vitest.config.ts
+
+  [Glob] src/**/*.test.ts
+Now I have everything I need. Let me also quickly check if there's a `MEMORY.md` and look at how the existing layout is set up with MUI.
+
+  [Glob] MEMORY.md
+Now I have all the context needed. Let me write the plan.
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F18-plan.md
+Plan written to `features/F18-plan.md`. 
+
+Key points:
+
+- **Scope**: Persistent MUI sidebar with 6 navigation links (Explore, Trends, Funnels, Users, Test, Generate) in `layout.tsx`, plus stub pages for each route so links don't 404.
+- **No business logic to unit test** — this is purely presentational. All verification is via type/lint/build checks and HTTP checks confirming sidebar links and stub pages render.
+- **3 risks flagged**: Client Component boundary for `usePathname()`, sidebar width (defaulting to 240px), and `@mui/icons-material` dependency not yet installed.
+- **4 implementation steps**: Sidebar component → layout modification → dashboard home page → stub route pages.
+✓ Session 'PLAN:F18' complete  ($0.4315)
+
+  ▶ GENERATE — F18 sprint 1: Build MUI navigation shell with persistent left sidebar and route links in layout.tsx
+
+→ Session : GEN:F18:1  (budget: $30)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F18-plan.md
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/layout.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/page.tsx
+
+  [Glob] **/*.test.ts
+
+  [Glob] vitest.config.*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/vitest.config.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/__tests__/seed.test.ts
+Now I have a good picture. The test plan says there are **no unit tests to write** for this feature — it's purely presentational UI with no business logic. The plan explicitly calls it an "integration gap" for HTTP checks. Let me check the Next.js version and read the docs note.
+
+  [Glob] node_modules/next/dist/docs/**/*.md
+
+  [Bash] ls /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/node_modules/next/dist/docs/ 2>/dev/null | head -20
+
+  [Bash] ls /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/node_modules/next/dist/docs/01-app/ 2>/dev/null | head -20
+
+  [Bash] ls /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/ 2>/dev/null || echo "no components dir"
+
+  [Bash] cat /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/node_modules/next/dist/docs/01-app/01-getting-started/inde
+
+  [Bash] cat /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/node_modules/next/dist/docs/index.md | head -30
+Now I have what I need. The test plan explicitly states **no unit tests** should be written for this feature (it's purely presentational UI). Let me proceed with implementation.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/biome.json
+
+  [Bash] ls /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/node_modules/@mui/icons-material 2>/dev/null | head -5 || e
+
+  [Bash] ls /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/node_modules/@mui/icons-material 2>/dev/null | wc -l; echo 
+
+  [Bash] ls /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/node_modules/@mui/material-nextjs/v16-appRouter* 2>/dev/nul
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/globals.css
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/tsconfig.json
+
+  [Bash] cat /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/node_modules/@mui/material/ListItemButton/ListItemButton.d
+
+  [Bash] grep -r "ListItemButton" /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/node_modules/@mui/material/ListItemBu
+
+  [Bash] grep -r "href" /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/node_modules/@mui/material/ButtonBase/ButtonBas
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/node_modules/@mui/material/ButtonBase/ButtonBase.d.ts
+Now I have everything I need. The test plan explicitly says no unit tests are needed for this purely presentational feature. Let me implement all files.
+
+**Step 1: Create `src/components/Sidebar.tsx`**
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/Sidebar.tsx
+**Step 2: Modify `src/app/layout.tsx`**
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/layout.tsx
+**Step 3: Modify `src/app/page.tsx`**
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/page.tsx
+**Step 4: Create all stub pages**
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/explore/page.tsx
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/trends/page.tsx
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/funnels/page.tsx
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/users/page.tsx
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/test/page.tsx
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/generate/page.tsx
+Now let me run the static checks:
+
+  [Bash] pnpm typecheck 2>&1
+
+  [Bash] pnpm lint 2>&1
+Lint exits 0 (4 pre-existing warnings in `seed.test.ts`, none in my new files). Now:
+
+  [Bash] pnpm test 2>&1
+
+  [Bash] pnpm build 2>&1
+All static checks pass. Now let me do the HTTP checks by starting the dev server (skipping `predev` since ClickHouse isn't available in this context):
+
+  [Bash] next start -p 3001 &
+DEV_PID=$!
+echo "PID: $DEV_PID"
+sleep 4
+echo "Server started"
+
+  [Bash] node_modules/.bin/next start -p 3001 &
+DEV_PID=$!
+echo "PID: $DEV_PID"
+sleep 5
+echo "ready"
+
+  [Bash] curl -s http://localhost:3001/ | grep -o 'Dashboard\|Explore\|Trends\|Funnels\|Users\|Test\|Generate' | sort | uniq
+
+  [Bash] curl -s http://localhost:3001/explore | grep -o 'Explore'
+curl -s http://localhost:3001/trends | grep -o 'Trends'
+curl -
+All HTTP checks pass (multiple matches per page are expected since the sidebar also contains each label). Let me kill the server and write the handoff:
+
+  [Bash] kill 6397 2>/dev/null; kill $(lsof -ti:3001) 2>/dev/null; true
+Now write the handoff file:
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F18-draft-1.md
+All done. Here's a summary of the sprint:
+
+## F18 Sprint 1 — Complete
+
+**No unit tests written** — the test plan explicitly states this feature has no unit-testable business logic.
+
+### What was implemented
+
+1. **`src/components/Sidebar.tsx`** — `"use client"` MUI `Drawer` (permanent, 240px) with navigation links for Explore, Trends, Funnels, Users, Test, Generate. Uses `LinkComponent={NextLink}` + `href` for Next.js client-side navigation and `usePathname()` for active-route highlighting.
+
+2. **`src/app/layout.tsx`** — Added `Sidebar` import, wrapped content in a `flex min-h-screen` container with sidebar left + `<main className="flex-1 p-6">` right.
+
+3. **`src/app/page.tsx`** — Replaced boilerplate with MUI `Typography` h4 "Dashboard".
+
+4. **Six stub pages** — `/explore`, `/trends`, `/funnels`, `/users`, `/test`, `/generate` each export an MUI `Typography` h4 with the page name.
+
+### Sprint contract results
+
+| Check | Result |
+|---|---|
+| `pnpm typecheck` | ✅ 0 errors |
+| `pnpm lint` | ✅ 0 errors (4 pre-existing warnings in `seed.test.ts`) |
+| `pnpm build` | ✅ 20 pages compiled |
+| `pnpm test` | ✅ 260 passing, 25 skipped |
+| All HTTP checks (`/`, `/explore`, `/trends`, `/funnels`, `/users`, `/test`, `/generate`) | ✅ All pass |
+✓ Session 'GEN:F18:1' complete  ($0.9899)
+
+  ▶ EVALUATE — F18 sprint 1: Build MUI navigation shell with persistent left sidebar and route links in layout.tsx
+
+→ Session : EVAL:F18:1  (budget: $10)
+I'll start by reading the key files and then run the verification checks in parallel.
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/layout.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/page.tsx
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F18-draft-1.md
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/components/Sidebar.tsx
+
+  [Glob] src/app/*/page.tsx
+Good. All stub pages exist. Now let me run Phase A checks.
+
+  [Bash] pnpm typecheck 2>&1
+
+  [Bash] pnpm lint --fix 2>&1 && pnpm lint 2>&1
+
+  [Bash] pnpm lint; echo "exit code: $?"
+
+  [Bash] pnpm test 2>&1 | tail -30
+
+  [Bash] pnpm build 2>&1 | tail -30
+All Phase A checks pass. Now Phase B — HTTP checks. Let me start the dev server and run them.
+
+  [Glob] features/F18-eval-*.md
+
+  [Bash] pnpm dev &> /tmp/minipanel-dev.log & DEV_PID=$! && echo "PID=$DEV_PID" && sleep 5 && curl -s --retry 10 --retry-connrefu
+
+  [Bash] curl -s --retry 20 --retry-connrefused --retry-delay 2 -o /dev/null -w "%{http_code}" http://localhost:3000
+
+  [Bash] cat /tmp/minipanel-dev.log 2>&1 | head -50
+
+  [Bash] ls /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/clickhouse 2>/dev/null && echo "binary exists" || echo "bin
+
+  [Bash] ./clickhouse server -- --path=.clickhouse &> /tmp/clickhouse.log & CH_PID=$! && echo "ClickHouse PID=$CH_PID" && sleep 5
+
+  [Bash] next dev &> /tmp/nextjs-dev.log & NEXT_PID=$! && echo "Next.js PID=$NEXT_PID" && curl -s --retry 20 --retry-connrefused 
+
+  [Bash] cat /tmp/nextjs-dev.log 2>&1 | head -20
+
+  [Bash] pnpm exec next dev &> /tmp/nextjs-dev2.log & NEXT_PID=$! && echo "Next.js PID=$NEXT_PID" && curl -s --retry 20 --retry-c
+Dev server is up. Now run all HTTP checks.
+
+  [Bash] 
+check_contains() {
+  local url="$1" term="$2"
+  local body=$(curl -s "$url")
+  if echo "$body" | grep -q "$term"; then
+
+All HTTP checks pass. Now kill the servers.
+
+  [Bash] kill $NEXT_PID 2>/dev/null; kill $(lsof -ti:3000) 2>/dev/null; kill $CH_PID 2>/dev/null; kill $(lsof -ti:8123) 2>/dev/nu
+All checks complete. Now I'll write the evaluation file.
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F18-eval-1.md
+**F18 Eval Sprint 1 — Score: 10/10 — APPROVED**
+
+All 23 sprint contract criteria pass:
+
+| Phase | Result |
+|-------|--------|
+| `pnpm typecheck` | ✅ exit 0, 0 errors |
+| `pnpm lint` | ✅ exit 0 (4 pre-existing warnings in seed.test.ts, 0 in new files) |
+| `pnpm build` | ✅ exit 0, all 14 routes built |
+| `pnpm test` | ✅ 260 passed, 25 skipped, 0 failures |
+| File checks (7 files) | ✅ all present with correct exports |
+| HTTP checks (13 checks) | ✅ all pass — sidebar links and stub headings render correctly |
+
+**Tests written:** None. The plan's test analysis is sound — this feature is purely presentational UI with no module-under-test. Writing unit tests here would test MUI rendering, not application code.
+
+**One environment note documented in the eval:** `pnpm dev` has a chicken-and-egg issue where the `predev` migration requires ClickHouse to already be running before `concurrently` starts it. HTTP checks required starting ClickHouse manually first. This is a pre-existing project constraint, not an F18 regression.
+✓ Session 'EVAL:F18:1' complete  ($0.4201)
+✓ Feature F18 approved after 1 sprint(s) ✅  ($1.8415)
