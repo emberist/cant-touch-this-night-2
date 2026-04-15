@@ -12,7 +12,8 @@ import { execFileSync } from "node:child_process";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
-const CLICKHOUSE_HTTP_URL = process.env.CLICKHOUSE_URL ?? "http://localhost:8123";
+const CLICKHOUSE_HTTP_URL =
+  process.env.CLICKHOUSE_URL ?? "http://localhost:8123";
 const CLICKHOUSE_PASSWORD = process.env.CLICKHOUSE_PASSWORD ?? "password";
 
 async function isClickHouseReachable(): Promise<boolean> {

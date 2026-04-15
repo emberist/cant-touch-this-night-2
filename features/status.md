@@ -1,5 +1,8 @@
 # Loop Lab — Status Timeline
 
+- `2026-04-15T12:11:05.613Z` **EVALUATE** — F3 sprint 1 — Add concurrently dev script and predev hook to start ClickHouse and Next.js together
+- `2026-04-15T12:09:52.752Z` **GENERATE** — F3 sprint 1 — Add concurrently dev script and predev hook to start ClickHouse and Next.js together
+- `2026-04-15T12:09:03.245Z` **PLAN** — F3 — Add concurrently dev script and predev hook to start ClickHouse and Next.js together
 - `2026-04-15T12:04:34.044Z` **EVALUATE** — F2 sprint 1 — Create idempotent migration script (scripts/migrate.ts + scripts/schema.sql) for database and tables
 - `2026-04-15T11:58:47.887Z` **GENERATE** — F2 sprint 1 — Create idempotent migration script (scripts/migrate.ts + scripts/schema.sql) for database and tables
 - `2026-04-15T11:57:00.309Z` **PLAN** — F2 — Create idempotent migration script (scripts/migrate.ts + scripts/schema.sql) for database and tables

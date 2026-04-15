@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "predev": "tsx scripts/migrate.ts",
-    "dev": "next dev",
+    "dev": "concurrently -n CH,NEXT -c cyan,green \"./clickhouse server -- --path=.clickhouse\" \"next dev\"",
     "build": "next build",
     "start": "next start",
     "migrate": "tsx scripts/migrate.ts",
@@ -34,6 +34,7 @@
     "tailwindcss": "^4",
     "tsx": "^4.19.3",
     "typescript": "^5",
-    "vitest": "^4.1.4"
+    "vitest": "^4.1.4",
+    "concurrently": "^9.0.0"
   }
 }
