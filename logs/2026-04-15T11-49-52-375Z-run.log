@@ -1125,3 +1125,192 @@ ClickHouse was not running at eval time, so the 3 HTTP integration criteria coul
 The 9/10 (vs 10) reflects that integration HTTP scenarios remain unverified until ClickHouse + Next.js are running together. No code defects were found.
 ✓ Session 'EVAL:F5:1' complete  ($0.4745)
 ✓ Feature F5 approved after 1 sprint(s) ✅  ($1.9228)
+✓ Git commit created for F5
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  F6: Implement POST /api/events/batch route for bulk event ingestion
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+  ▶ PLAN — F6: Implement POST /api/events/batch route for bulk event ingestion
+
+→ Session : PLAN:F6  (budget: $30)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/status.md
+
+  [Glob] features/F*-done
+
+  [Glob] features/F*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/identity.ts
+Now let me check the existing test conventions and the Playwright config.
+
+  [Glob] src/**/*.test.ts
+
+  [Glob] playwright.config.*
+
+  [Glob] MEMORY.md
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/__tests__/route.test.ts
+
+  [Glob] src/app/api/events/batch/**
+Now I have everything I need. Let me write the plan.
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F6-plan.md
+Plan written to `features/F6-plan.md`. 
+
+Key decisions:
+
+- **2 files to create**: the batch route handler and its unit tests — no modifications to existing files needed since `insertEvent` from `src/lib/identity.ts` already handles all per-event logic.
+- **HTTP 200** for valid array bodies (even with partial failures — errors reported per-event in the `errors` array); **400** only for malformed input (not JSON, not an array).
+- **Sequential processing** within a batch to keep identity resolution conflict detection deterministic.
+- Tests follow the same mock pattern as the existing `src/app/api/events/__tests__/route.test.ts`.
+✓ Session 'PLAN:F6' complete  ($0.3362)
+
+  ▶ GENERATE — F6 sprint 1: Implement POST /api/events/batch route for bulk event ingestion
+
+→ Session : GEN:F6:1  (budget: $30)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F6-plan.md
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/package.json
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/route.ts
+
+  [Glob] src/app/api/events/__tests__/**/*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/__tests__/route.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/identity.ts
+Now I have a clear picture. Let me check the vitest config and then write the tests and implementation.
+
+  [Glob] vitest.config*
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/vitest.config.ts
+Good. Now I'll write the test file first, then the implementation.
+
+  [Bash] mkdir -p /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/batch/__tests__
+**Step 1 — Write unit tests first**
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/batch/__tests__/route.test.ts
+Confirm tests fail before implementation:
+
+  [Bash] pnpm test --reporter=verbose 2>&1 | tail -30
+Tests fail as expected — missing implementation. **Step 2 — Implement.**
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/batch/route.ts
+
+  [Bash] pnpm test --reporter=verbose 2>&1 | tail -40
+All 54 tests pass. Now lint and type check:
+
+  [Bash] pnpm lint:fix 2>&1 | tail -10
+
+  [Bash] pnpm lint 2>&1 | tail -10
+
+  [Bash] pnpm typecheck 2>&1
+
+  [Bash] pnpm build 2>&1 | tail -20
+All checks pass. Now write the handoff file:
+
+  [Bash] pnpm test 2>&1 | tail -5
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F6-draft-1.md
+Done. Here's a summary of what was done:
+
+## F6 Sprint 1 Complete
+
+**Files created:**
+
+- `src/app/api/events/batch/route.ts` — POST handler that:
+  - Returns 400 for non-JSON or non-array bodies
+  - Iterates sequentially over the array, calling `insertEvent` for each item
+  - Collects `{ ok, errors: [{index, error}] }` — both `Error` and `IdentityConflictError` land in the errors array (not as HTTP 409s); 200 is returned for all valid-array requests
+
+- `src/app/api/events/batch/__tests__/route.test.ts` — 11 unit tests mocking `insertEvent` (same pattern as the single-event route tests)
+
+**Self-evaluation results:**
+
+| Criterion | Result |
+|---|---|
+| File exists + exports `POST` | ✅ |
+| `pnpm test` 0 failures | ✅ 54 pass, 16 skipped |
+| `pnpm lint` exit 0 | ✅ |
+| `pnpm typecheck` exit 0 | ✅ |
+| `pnpm build` exit 0 | ✅ |
+✓ Session 'GEN:F6:1' complete  ($0.4577)
+
+  ▶ EVALUATE — F6 sprint 1: Implement POST /api/events/batch route for bulk event ingestion
+
+→ Session : EVAL:F6:1  (budget: $10)
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/batch/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/batch/__tests__/route.test.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F6-plan.md
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/route.ts
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/lib/identity.ts
+Now let me run the test suite and lint/typecheck/build checks, and also check for the existing integration test pattern.
+
+  [Bash] pnpm test 2>&1 | tail -50
+
+  [Glob] src/app/api/events/__tests__/**
+
+  [Read] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/__tests__/route.integration.test.ts
+
+  [Bash] pnpm lint 2>&1 | tail -20
+
+  [Bash] pnpm typecheck 2>&1 | tail -20
+
+  [Bash] pnpm build 2>&1 | tail -30
+All Phase A checks pass. Now I need to write the integration HTTP test (the plan's noted "integration gap") before running Phase B. Let me check if the dev server is up and write the integration test.
+
+  [Bash] curl -s -o /dev/null -w "%{http_code}" --max-time 2 http://localhost:3000 2>&1 || echo "not_running"
+Dev server not running. I'll write the integration test following the F5 pattern (graceful skip when server unavailable), then start the dev server to actually run the Phase B HTTP check.
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/src/app/api/events/batch/__tests__/route.integration.test.ts
+
+  [Bash] pnpm test 2>&1 | tail -20
+
+  [Bash] pnpm lint 2>&1 | tail -10
+All Phase A checks pass. Now Phase B — start the dev server and run HTTP checks.
+
+  [Bash] pnpm dev &> /tmp/minipanel-dev.log 2>&1 & DEV_PID=$! ; echo "DEV_PID=$DEV_PID"
+
+  [Bash] curl -s --retry 10 --retry-connrefused --retry-delay 2 -o /dev/null -w "%{http_code}" http://localhost:3000 2>&1
+
+  [Bash] cat /tmp/minipanel-dev.log 2>&1 | head -40
+
+  [Bash] kill 76661 2>/dev/null; kill $(lsof -ti:3000) 2>/dev/null; true
+ClickHouse not running — Phase B HTTP checks skipped (same situation as F5; integration tests gracefully skip when server is unavailable). Now writing the eval file.
+
+  [Write] /Users/riccardocaranfil/bitrefill/minipanel-blank-night-2/features/F6-eval-1.md
+**F6 Eval — Sprint 1**
+
+## Score: 9/10 — APPROVED
+
+### Phase A results (all pass)
+
+| Criterion | Result |
+|-----------|--------|
+| File exists + exports `POST` | ✅ |
+| `pnpm test` → 0 failures | ✅ 59 passed, 0 failed |
+| `pnpm lint` → exit 0 | ✅ "28 files. No fixes applied." |
+| `pnpm typecheck` → exit 0 | ✅ clean |
+| `pnpm build` → exit 0 | ✅ `/api/events/batch` listed as ƒ Dynamic |
+
+### Phase B (HTTP integration)
+
+Dev server cannot start because ClickHouse isn't running locally. Integration tests (`src/app/api/events/batch/__tests__/route.integration.test.ts`) follow the F5 pattern: they probe `isServerAvailable()` at `beforeAll` and skip gracefully with a warning when the server is unreachable. The file covers all 5 scenarios from the plan's integration gap.
+
+### Implementation notes
+
+The batch route's catch block has a redundant `instanceof IdentityConflictError` check (since `IdentityConflictError extends Error`, the second clause alone covers it), but this is harmless — both branches produce identical behaviour. No correctness issues found.
+✓ Session 'EVAL:F6:1' complete  ($0.4470)
+✓ Feature F6 approved after 1 sprint(s) ✅  ($1.2410)
