@@ -30,7 +30,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 The minipanel comes empty, but you can access [http://localhost:3000/generate](http://localhost:3000/generate) to add some data 
 
-> 1M at once, it will be fine!
+> Add 1M at once, it will be fine!
 
 **Warning: dark mode is not working properly!**
 
