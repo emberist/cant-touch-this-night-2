@@ -1,37 +1,32 @@
-import { execFileSync } from "node:child_process";
+import { spawnSync } from "node:child_process";
+import { readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const DEFAULT_URL = "http://localhost:8123";
-const DEFAULT_PASSWORD = "password";
-
-function parseClickhouseUrl(urlStr: string): { host: string; port: string } {
-  const parsed = new URL(urlStr);
-  return {
-    host: parsed.hostname,
-    port: parsed.port || "8123",
-  };
-}
+const DEFAULT_HOST = "localhost";
+const DEFAULT_NATIVE_PORT = "9000";
+const DEFAULT_PASSWORD = "";
 
 export function runMigration(): void {
-  const urlStr = process.env.CLICKHOUSE_URL ?? DEFAULT_URL;
+  const host = process.env.CLICKHOUSE_HOST ?? DEFAULT_HOST;
+  const port = process.env.CLICKHOUSE_NATIVE_PORT ?? DEFAULT_NATIVE_PORT;
   const password = process.env.CLICKHOUSE_PASSWORD ?? DEFAULT_PASSWORD;
-  const { host, port } = parseClickhouseUrl(urlStr);
 
   const scriptDir = path.dirname(fileURLToPath(import.meta.url));
   const schemaFile = path.resolve(scriptDir, "schema.sql");
+  const sql = readFileSync(schemaFile, "utf-8");
 
-  execFileSync(
-    "./clickhouse",
-    [
-      "client",
-      `--host=${host}`,
-      `--port=${port}`,
-      `--password=${password}`,
-      `--queries-file=${schemaFile}`,
-    ],
-    { stdio: "inherit" },
-  );
+  const args = ["client", `--host=${host}`, `--port=${port}`];
+  if (password) args.push(`--password=${password}`);
+
+  const result = spawnSync("./clickhouse", args, {
+    input: sql,
+    stdio: ["pipe", "inherit", "inherit"],
+  });
+
+  if (result.status !== 0) {
+    throw new Error(`clickhouse client exited with code ${result.status}`);
+  }
 
   console.log("Migration completed successfully.");
 }

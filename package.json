@@ -3,8 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "predev": "tsx scripts/migrate.ts",
-    "dev": "concurrently -n CH,NEXT -c cyan,green \"./clickhouse server -- --path=.clickhouse\" \"next dev\"",
+    "dev": "bash scripts/dev.sh",
     "build": "next build",
     "start": "next start",
     "migrate": "tsx scripts/migrate.ts",
