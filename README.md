@@ -1,24 +1,38 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Pre requisites
+- [Node.js](https://nodejs.org/en) version 24 or higher
+- [PNPM](https://pnpm.io/) package manager
+
+## Installing
+
+```bash
+# clone the project
+git clone https://github.com/emberist/cant-touch-this-night-2.git
+cd cant-touch-this-night-2
+
+# install dependencies
+pnpm install
+```
+
+
 ## Getting Started
 
 First, run the development server:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
 pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Adding data
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The minipanel comes empty, but you can access [http://localhost:3000/generate](http://localhost:3000/generate) to add some data 
+
+> 1M at once, it will be fine!
+
+**Warning: dark mode is not working properly!**
 
 ## Learn More
 

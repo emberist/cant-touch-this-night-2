@@ -1,6 +1,16 @@
 #!/bin/bash
 set -e
 
+# Ensure .clickhouse data directory exists
+mkdir -p .clickhouse
+
+# Download ClickHouse executable if not present
+if [ ! -f "./clickhouse" ]; then
+  echo "[CH] ClickHouse binary not found, downloading..."
+  curl -fsSL https://clickhouse.com/ | sh
+  echo "[CH] ClickHouse downloaded."
+fi
+
 # Kill any existing ClickHouse server process
 EXISTING_PIDS=$(pgrep -f "clickhouse server" 2>/dev/null || true)
 if [ -n "$EXISTING_PIDS" ]; then
